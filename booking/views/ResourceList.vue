@@ -153,7 +153,7 @@ function generateSlug() {
             <td>{{ category.name }}</td>
             <td><code>{{ category.slug }}</code></td>
             <td>{{ category.description || '—' }}</td>
-            <td>{{ store.resources.filter(r => r.categories?.some((c: { id: string }) => c.id === category.id)).length }}</td>
+            <td>{{ store.resources.filter(r => r.categories?.some(c => c.id === category.id)).length }}</td>
             <td>
               <span :class="category.is_active ? 'badge badge--active' : 'badge badge--inactive'">
                 {{ category.is_active ? 'Active' : 'Inactive' }}
