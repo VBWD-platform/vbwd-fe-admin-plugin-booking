@@ -1,5 +1,5 @@
 import type { IPlugin, IPlatformSDK } from 'vbwd-view-component';
-import { extensionRegistry } from '@/plugins/extensionRegistry';
+import { extensionRegistry } from '../../vue/src/plugins/extensionRegistry';
 
 export const bookingAdminPlugin: IPlugin = {
   name: 'booking',
