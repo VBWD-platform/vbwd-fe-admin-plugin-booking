@@ -1,0 +1,37 @@
+{
+  "default_timezone": {
+    "type": "string",
+    "default": "Europe/Berlin",
+    "description": "Default timezone for booking slots"
+  },
+  "max_advance_booking_days": {
+    "type": "integer",
+    "default": 90,
+    "description": "Maximum days in advance a booking can be made"
+  },
+  "default_confirmation_mode": {
+    "type": "string",
+    "default": "auto",
+    "description": "Default confirmation mode for new resources (auto or manual)"
+  },
+  "default_slot_duration_minutes": {
+    "type": "integer",
+    "default": 60,
+    "description": "Default slot duration for new resources"
+  },
+  "default_buffer_minutes": {
+    "type": "integer",
+    "default": 15,
+    "description": "Default buffer time between slots"
+  },
+  "invoice_prefix": {
+    "type": "string",
+    "default": "BK",
+    "description": "Prefix for booking invoice numbers"
+  },
+  "max_bookings_per_user_per_day": {
+    "type": "integer",
+    "default": 5,
+    "description": "Maximum bookings a user can make per day"
+  }
+}
