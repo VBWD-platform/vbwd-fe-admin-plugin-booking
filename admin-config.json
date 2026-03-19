@@ -1,0 +1,14 @@
+{
+  "booking": {
+    "nav_section": {
+      "id": "booking",
+      "label": "Bookings",
+      "items": [
+        { "label": "Dashboard", "to": "/admin/booking" },
+        { "label": "All Bookings", "to": "/admin/booking/list" },
+        { "label": "Resources", "to": "/admin/booking/resources" }
+      ]
+    },
+    "dashboard_widget": true
+  }
+}
