@@ -52,9 +52,56 @@ jobs:
         working-directory: vbwd-fe-admin
         run: ./bin/pre-commit-check.sh --plugin booking --unit
 
+  integration:
+    name: Integration — booking (fe-admin)
+    needs: ci
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clone vbwd-fe-admin
+        uses: actions/checkout@v4
+        with:
+          repository: VBWD-platform/vbwd-fe-admin
+          ref: main
+          path: vbwd-fe-admin
+          submodules: recursive
+
+      - name: Clone plugin (under test)
+        uses: actions/checkout@v4
+        with:
+          path: vbwd-fe-admin/plugins/booking
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: vbwd-fe-admin/package-lock.json
+
+      - name: Build fe-core submodule
+        working-directory: vbwd-fe-admin/vbwd-fe-core
+        run: npm install && npm run build
+
+      - name: Install dependencies
+        working-directory: vbwd-fe-admin
+        run: npm install
+
+      - name: Install ALL plugins (vue-tsc needs full project)
+        working-directory: vbwd-fe-admin/plugins
+        run: |
+          for entry in "analytics-widget:vbwd-fe-admin-plugin-analytics-widget" "cms-admin:vbwd-fe-admin-plugin-cms" "email-admin:vbwd-fe-admin-plugin-email" "ghrm-admin:vbwd-fe-admin-plugin-ghrm" "taro-admin:vbwd-fe-admin-plugin-taro"; do
+            name="${entry%%:*}"; repo="${entry##*:}"
+            [ -d "$name" ] && continue
+            git clone --depth=1 -q "https://github.com/VBWD-platform/${repo}.git" "$name" 2>/dev/null || echo "Skipping $name"
+          done
+
+      - name: Run integration tests
+        working-directory: vbwd-fe-admin
+        run: ./bin/pre-commit-check.sh --plugin booking --integration
+
   e2e:
     name: E2E — booking (fe-admin)
-    needs: ci
+    needs: integration
     runs-on: ubuntu-latest
 
     steps:
