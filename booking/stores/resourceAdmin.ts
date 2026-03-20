@@ -34,10 +34,19 @@ export interface BookableResource {
   categories: Array<{ id: string; name: string; slug: string }>;
 }
 
+export interface ResourceType {
+  id: string;
+  name: string;
+  slug: string;
+  sort_order: number;
+  is_active: boolean;
+}
+
 export const useResourceAdminStore = defineStore('resourceAdmin', () => {
   const resources = ref<BookableResource[]>([]);
   const currentResource = ref<BookableResource | null>(null);
   const categories = ref<ResourceCategory[]>([]);
+  const resourceTypes = ref<ResourceType[]>([]);
   const loading = ref(false);
 
   // ── Resources ──────────────────────────────────────────────────────────
@@ -105,10 +114,36 @@ export const useResourceAdminStore = defineStore('resourceAdmin', () => {
     categories.value = categories.value.filter(category => category.id !== categoryId);
   }
 
+  // ── Resource Types ──────────────────────────────────────────────────
+
+  async function fetchResourceTypes() {
+    const response = await api.get('/admin/booking/resource-types') as { resource_types: ResourceType[] };
+    resourceTypes.value = response.resource_types;
+  }
+
+  async function createResourceType(data: Partial<ResourceType>) {
+    const response = await api.post('/admin/booking/resource-types', data) as ResourceType;
+    resourceTypes.value.push(response);
+    return response;
+  }
+
+  async function updateResourceType(typeId: string, data: Partial<ResourceType>) {
+    const response = await api.put(`/admin/booking/resource-types/${typeId}`, data) as ResourceType;
+    const index = resourceTypes.value.findIndex(resourceType => resourceType.id === typeId);
+    if (index !== -1) resourceTypes.value[index] = response;
+    return response;
+  }
+
+  async function deleteResourceType(typeId: string) {
+    await api.delete(`/admin/booking/resource-types/${typeId}`);
+    resourceTypes.value = resourceTypes.value.filter(resourceType => resourceType.id !== typeId);
+  }
+
   return {
     resources,
     currentResource,
     categories,
+    resourceTypes,
     loading,
     fetchResources,
     fetchResourceDetail,
@@ -119,5 +154,9 @@ export const useResourceAdminStore = defineStore('resourceAdmin', () => {
     createCategory,
     updateCategory,
     deleteCategory,
+    fetchResourceTypes,
+    createResourceType,
+    updateResourceType,
+    deleteResourceType,
   };
 });

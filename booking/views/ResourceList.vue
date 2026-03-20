@@ -8,6 +8,7 @@
     <div class="tabs">
       <button class="tab-btn" :class="{ active: activeTab === 'resources' }" @click="activeTab = 'resources'">Resources</button>
       <button class="tab-btn" :class="{ active: activeTab === 'categories' }" @click="activeTab = 'categories'">Categories</button>
+      <button class="tab-btn" :class="{ active: activeTab === 'types' }" @click="activeTab = 'types'">Types</button>
     </div>
 
     <!-- Resources Tab -->
@@ -95,6 +96,42 @@
         </div>
       </div>
     </template>
+
+    <!-- Types Tab -->
+    <template v-if="activeTab === 'types'">
+      <div v-if="store.resourceTypes.length" class="plans-table-wrap">
+        <table class="plans-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Slug</th>
+              <th>Resources</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="resourceType in store.resourceTypes" :key="resourceType.id" class="plan-row">
+              <td>{{ resourceType.name }}</td>
+              <td><span class="category-slug">{{ resourceType.slug }}</span></td>
+              <td>{{ countResourcesByType(resourceType.slug) }}</td>
+              <td><span class="status-badge" :class="resourceType.is_active ? 'active' : 'inactive'">{{ resourceType.is_active ? 'Active' : 'Inactive' }}</span></td>
+              <td @click.stop><button class="action-btn archive" @click="deleteResourceType(resourceType.id)">Delete</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div v-else class="empty-state"><p>No resource types yet.</p></div>
+
+      <div class="add-form-section">
+        <h3>Add Type</h3>
+        <div class="add-form-row">
+          <input v-model="newTypeName" type="text" placeholder="Type name" class="search-input" @blur="generateTypeSlug">
+          <input v-model="newTypeSlug" type="text" placeholder="slug" class="search-input">
+          <button class="create-btn" :disabled="!newTypeName || !newTypeSlug" @click="createResourceType">Add</button>
+        </div>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -105,7 +142,7 @@ import { useResourceAdminStore } from '../stores/resourceAdmin';
 
 const router = useRouter();
 const store = useResourceAdminStore();
-const activeTab = ref<'resources' | 'categories'>('resources');
+const activeTab = ref<'resources' | 'categories' | 'types'>('resources');
 const searchQuery = ref('');
 type SortColumn = 'name' | 'capacity' | 'price' | null;
 type SortDirection = 'asc' | 'desc';
@@ -113,8 +150,10 @@ const sortColumn = ref<SortColumn>(null);
 const sortDirection = ref<SortDirection>('asc');
 const newCategoryName = ref('');
 const newCategorySlug = ref('');
+const newTypeName = ref('');
+const newTypeSlug = ref('');
 
-onMounted(async () => { await Promise.all([store.fetchResources(), store.fetchCategories()]); });
+onMounted(async () => { await Promise.all([store.fetchResources(), store.fetchCategories(), store.fetchResourceTypes()]); });
 
 const filteredResources = computed(() => {
   if (!searchQuery.value.trim()) return store.resources;
@@ -165,6 +204,22 @@ async function createCategory() {
   await store.createCategory({ name: newCategoryName.value, slug: newCategorySlug.value });
   newCategoryName.value = '';
   newCategorySlug.value = '';
+}
+function countResourcesByType(typeSlug: string): number {
+  return store.resources.filter(r => r.resource_type === typeSlug).length;
+}
+function generateTypeSlug() {
+  newTypeSlug.value = newTypeName.value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+}
+async function createResourceType() {
+  if (!newTypeName.value || !newTypeSlug.value) return;
+  await store.createResourceType({ name: newTypeName.value, slug: newTypeSlug.value });
+  newTypeName.value = '';
+  newTypeSlug.value = '';
+}
+async function deleteResourceType(typeId: string) {
+  if (!confirm('Delete this resource type?')) return;
+  await store.deleteResourceType(typeId);
 }
 </script>
 

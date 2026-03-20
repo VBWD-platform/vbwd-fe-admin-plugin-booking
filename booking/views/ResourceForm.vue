@@ -10,11 +10,27 @@ const store = useResourceAdminStore();
 const isEdit = computed(() => route.params.id && route.params.id !== 'new');
 const saving = ref(false);
 
+const availableCategories = computed(() =>
+  store.categories.filter(category => !form.value.category_ids.includes(category.id))
+);
+const assignedCategories = computed(() =>
+  store.categories.filter(category => form.value.category_ids.includes(category.id))
+);
+
+function assignCategory(categoryId: string) {
+  if (!form.value.category_ids.includes(categoryId)) {
+    form.value.category_ids.push(categoryId);
+  }
+}
+function unassignCategory(categoryId: string) {
+  form.value.category_ids = form.value.category_ids.filter(id => id !== categoryId);
+}
+
 const form = ref({
   name: '',
   slug: '',
   description: '',
-  resource_type: 'specialist',
+  resource_type: '',
   capacity: 1,
   slot_duration_minutes: 30 as number | null,
   price: '0.00',
@@ -26,7 +42,7 @@ const form = ref({
 });
 
 onMounted(async () => {
-  await store.fetchCategories();
+  await Promise.all([store.fetchCategories(), store.fetchResourceTypes()]);
   if (isEdit.value) {
     await store.fetchResourceDetail(route.params.id as string);
     if (store.currentResource) {
@@ -90,11 +106,7 @@ async function save() {
         <div class="resource-form__field">
           <label>Type</label>
           <select v-model="form.resource_type">
-            <option value="specialist">Specialist</option>
-            <option value="room">Room</option>
-            <option value="space">Space</option>
-            <option value="seat">Seat</option>
-            <option value="class">Class</option>
+            <option v-for="resourceType in store.resourceTypes" :key="resourceType.slug" :value="resourceType.slug">{{ resourceType.name }}</option>
           </select>
         </div>
 
@@ -146,17 +158,37 @@ async function save() {
         <textarea v-model="form.description" rows="3"></textarea>
       </div>
 
-      <div class="resource-form__field resource-form__field--full">
-        <label>Categories</label>
-        <div class="resource-form__categories">
-          <label v-for="category in store.categories" :key="category.id" class="resource-form__category-checkbox">
-            <input
-              type="checkbox"
-              :value="category.id"
-              v-model="form.category_ids"
-            />
-            {{ category.name }}
-          </label>
+      <div class="categories-section">
+        <h3>Categories</h3>
+        <div class="categories-panels">
+          <div class="category-panel">
+            <h4>Available</h4>
+            <div class="category-list">
+              <div
+                v-for="category in availableCategories"
+                :key="category.id"
+                class="category-item"
+              >
+                <span>{{ category.name }}</span>
+                <button type="button" class="assign-btn" @click="assignCategory(category.id)">+</button>
+              </div>
+              <p v-if="availableCategories.length === 0" class="empty-hint">All categories assigned</p>
+            </div>
+          </div>
+          <div class="category-panel">
+            <h4>Assigned</h4>
+            <div class="category-list">
+              <div
+                v-for="category in assignedCategories"
+                :key="category.id"
+                class="category-item"
+              >
+                <span>{{ category.name }}</span>
+                <button type="button" class="unassign-btn" @click="unassignCategory(category.id)">&times;</button>
+              </div>
+              <p v-if="assignedCategories.length === 0" class="empty-hint">No categories assigned</p>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -211,17 +243,95 @@ async function save() {
   font-size: 0.9rem;
 }
 
-.resource-form__categories {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
+.categories-section {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #eee;
 }
 
-.resource-form__category-checkbox {
+.categories-section h3 {
+  margin: 0 0 15px 0;
+  color: #2c3e50;
+}
+
+.categories-panels {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.category-panel h4 {
+  margin: 0 0 10px 0;
+  color: #555;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.category-list {
+  border: 1px solid #e9ecef;
+  border-radius: 4px;
+  min-height: 100px;
+  max-height: 250px;
+  overflow-y: auto;
+  padding: 8px;
+}
+
+.category-item {
   display: flex;
   align-items: center;
-  gap: 0.25rem;
-  font-weight: normal;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.category-item:hover {
+  background: #f8f9fa;
+}
+
+.category-item span:first-child {
+  flex: 1;
+}
+
+.assign-btn,
+.unassign-btn {
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.assign-btn {
+  background: #d4edda;
+  color: #155724;
+}
+
+.assign-btn:hover {
+  background: #c3e6cb;
+}
+
+.unassign-btn {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.unassign-btn:hover {
+  background: #f5c6cb;
+}
+
+.empty-hint {
+  text-align: center;
+  color: #999;
+  font-size: 13px;
+  padding: 20px 0;
 }
 
 .resource-form__actions {
