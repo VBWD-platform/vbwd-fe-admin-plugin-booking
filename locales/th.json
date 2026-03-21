@@ -1,0 +1,218 @@
+{
+  "booking": {
+    "nav": {
+      "dashboard": "แดชบอร์ด",
+      "allBookings": "การจองทั้งหมด",
+      "resources": "ทรัพยากร"
+    },
+    "resources": {
+      "title": "ทรัพยากรและหมวดหมู่",
+      "tabs": {
+        "resources": "ทรัพยากร",
+        "categories": "หมวดหมู่",
+        "schemas": "สคีมา"
+      },
+      "newResource": "+ ทรัพยากรใหม่",
+      "search": "ค้นหาทรัพยากร...",
+      "noResourcesFound": "ไม่พบทรัพยากร",
+      "createFirst": "สร้างทรัพยากรแรก",
+      "table": {
+        "name": "ชื่อ",
+        "schema": "สคีมา",
+        "capacity": "ความจุ",
+        "price": "ราคา",
+        "categories": "หมวดหมู่",
+        "status": "สถานะ",
+        "actions": "การดำเนินการ"
+      },
+      "exportCsv": "ส่งออก CSV",
+      "exportJson": "ส่งออก JSON",
+      "import": "นำเข้า",
+      "importResult": "นำเข้าแล้ว: สร้าง {created} รายการ, อัปเดต {updated} รายการ",
+      "importErrors": "{count} ข้อผิดพลาด",
+      "importFailed": "การนำเข้าล้มเหลว"
+    },
+    "resourceForm": {
+      "newResource": "ทรัพยากรใหม่",
+      "editResource": "แก้ไขทรัพยากร",
+      "name": "ชื่อ",
+      "slug": "Slug",
+      "schema": "สคีมา",
+      "noSchema": "ไม่มีสคีมา",
+      "capacity": "ความจุ",
+      "slotDuration": "ระยะเวลาต่อช่วง (นาที)",
+      "slotDurationHint": "เว้นว่างสำหรับแบบยืดหยุ่น (เช่น ต่อคืน)",
+      "price": "ราคา",
+      "currency": "สกุลเงิน",
+      "priceUnit": "หน่วยราคา",
+      "priceUnits": {
+        "perSlot": "ต่อช่วง",
+        "perHour": "ต่อชั่วโมง",
+        "perNight": "ต่อคืน",
+        "perSeat": "ต่อที่นั่ง"
+      },
+      "sortOrder": "ลำดับการจัดเรียง",
+      "description": "คำอธิบาย",
+      "active": "เปิดใช้งาน",
+      "schemaPreview": "ตัวอย่างฟิลด์สคีมา",
+      "saving": "กำลังบันทึก...",
+      "update": "อัปเดต",
+      "create": "สร้าง",
+      "cancel": "ยกเลิก"
+    },
+    "categories": {
+      "title": "หมวดหมู่",
+      "addCategory": "เพิ่มหมวดหมู่",
+      "categoryName": "ชื่อหมวดหมู่",
+      "slug": "slug",
+      "noCategoriesYet": "ยังไม่มีหมวดหมู่",
+      "table": {
+        "name": "ชื่อ",
+        "slug": "Slug",
+        "description": "คำอธิบาย",
+        "resources": "ทรัพยากร",
+        "status": "สถานะ",
+        "actions": "การดำเนินการ"
+      },
+      "available": "ที่มีอยู่",
+      "assigned": "ที่กำหนดแล้ว",
+      "allAssigned": "กำหนดหมวดหมู่ทั้งหมดแล้ว",
+      "noneAssigned": "ยังไม่ได้กำหนดหมวดหมู่"
+    },
+    "categoryEditor": {
+      "editCategory": "แก้ไขหมวดหมู่",
+      "name": "ชื่อ",
+      "slug": "Slug",
+      "description": "คำอธิบาย",
+      "imageUrl": "URL รูปภาพ",
+      "sortOrder": "ลำดับการจัดเรียง",
+      "active": "เปิดใช้งาน",
+      "saving": "กำลังบันทึก...",
+      "save": "บันทึก",
+      "cancel": "ยกเลิก"
+    },
+    "schemas": {
+      "title": "สคีมา",
+      "addSchema": "เพิ่มสคีมา",
+      "schemaName": "ชื่อสคีมา",
+      "slug": "slug",
+      "noSchemasYet": "ยังไม่มีสคีมา",
+      "table": {
+        "name": "ชื่อ",
+        "slug": "Slug",
+        "fields": "ฟิลด์",
+        "resources": "ทรัพยากร",
+        "status": "สถานะ",
+        "actions": "การดำเนินการ"
+      }
+    },
+    "schemaEditor": {
+      "title": "ตัวแก้ไขสคีมา",
+      "noFieldsYet": "ยังไม่มีฟิลด์ เพิ่มฟิลด์ที่ผู้ใช้ต้องกรอกเมื่อทำการจอง",
+      "table": {
+        "label": "ป้ายกำกับ",
+        "id": "ID",
+        "type": "ประเภท",
+        "required": "จำเป็น",
+        "options": "ตัวเลือก",
+        "actions": "การดำเนินการ"
+      },
+      "fieldTypes": {
+        "string": "สตริง",
+        "text": "ข้อความ",
+        "integer": "จำนวนเต็ม",
+        "boolean": "บูลีน",
+        "select": "เลือก"
+      },
+      "fieldLabel": "ป้ายกำกับฟิลด์",
+      "optionsHint": "ตัวเลือก1, ตัวเลือก2, ...",
+      "addField": "+ เพิ่มฟิลด์",
+      "remove": "ลบ",
+      "saving": "กำลังบันทึก...",
+      "save": "บันทึก",
+      "cancel": "ยกเลิก"
+    },
+    "dashboard": {
+      "title": "แดชบอร์ดการจอง",
+      "todaysBookings": "การจองวันนี้",
+      "upcoming": "ที่กำลังจะมาถึง",
+      "resources": "ทรัพยากร",
+      "categories": "หมวดหมู่",
+      "recentBookings": "การจองล่าสุด",
+      "noBookingsYet": "ยังไม่มีการจอง",
+      "unknown": "ไม่ทราบ",
+      "table": {
+        "resource": "ทรัพยากร",
+        "date": "วันที่",
+        "status": "สถานะ",
+        "quantity": "จำนวน"
+      }
+    },
+    "bookings": {
+      "title": "การจองทั้งหมด",
+      "allStatuses": "ทุกสถานะ",
+      "noBookingsFound": "ไม่พบการจอง",
+      "statuses": {
+        "confirmed": "ยืนยันแล้ว",
+        "pending": "รอดำเนินการ",
+        "cancelled": "ยกเลิกแล้ว",
+        "completed": "เสร็จสิ้น",
+        "noShow": "ไม่มาตามนัด"
+      },
+      "table": {
+        "resource": "ทรัพยากร",
+        "start": "เริ่มต้น",
+        "end": "สิ้นสุด",
+        "status": "สถานะ",
+        "quantity": "จำนวน",
+        "created": "สร้างเมื่อ"
+      }
+    },
+    "bookingDetail": {
+      "title": "รายละเอียดการจอง",
+      "backToBookings": "กลับไปยังการจอง",
+      "notFound": "ไม่พบการจอง",
+      "resource": "ทรัพยากร",
+      "status": "สถานะ",
+      "start": "เริ่มต้น",
+      "end": "สิ้นสุด",
+      "quantity": "จำนวน",
+      "invoice": "ใบแจ้งหนี้",
+      "viewInvoice": "ดูใบแจ้งหนี้",
+      "customFields": "ฟิลด์กำหนดเอง",
+      "userNotes": "บันทึกของผู้ใช้",
+      "adminNotes": "บันทึกของผู้ดูแล",
+      "actions": {
+        "confirm": "ยืนยัน",
+        "cancel": "ยกเลิก",
+        "markComplete": "ทำเครื่องหมายว่าเสร็จสิ้น",
+        "markNoShow": "ทำเครื่องหมายว่าไม่มาตามนัด",
+        "cancelUserPolicy": "ยกเลิก (นโยบายผู้ใช้)",
+        "cancelByProvider": "ยกเลิกโดยผู้ให้บริการ"
+      },
+      "cancelByProviderModal": {
+        "title": "ยกเลิกโดยผู้ให้บริการ",
+        "description": "จะทำการคืนเงิน 100% โดยไม่คำนึงถึงนโยบายการยกเลิก",
+        "reasonPlaceholder": "เหตุผลในการยกเลิก (จำเป็น)",
+        "confirm": "ยืนยันการยกเลิกโดยผู้ให้บริการ",
+        "cancel": "ยกเลิก"
+      }
+    },
+    "imageGallery": {
+      "title": "รูปภาพ",
+      "setPrimary": "ตั้งเป็นรูปหลัก",
+      "remove": "ลบ",
+      "addImage": "เพิ่มรูปภาพ",
+      "uploading": "กำลังอัปโหลด..."
+    },
+    "common": {
+      "loading": "กำลังโหลด...",
+      "edit": "แก้ไข",
+      "delete": "ลบ",
+      "add": "เพิ่ม",
+      "active": "เปิดใช้งาน",
+      "inactive": "ปิดใช้งาน",
+      "noData": "—"
+    }
+  }
+}

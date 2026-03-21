@@ -1,0 +1,218 @@
+{
+  "booking": {
+    "nav": {
+      "dashboard": "仪表盘",
+      "allBookings": "所有预订",
+      "resources": "资源"
+    },
+    "resources": {
+      "title": "资源与分类",
+      "tabs": {
+        "resources": "资源",
+        "categories": "分类",
+        "schemas": "模式"
+      },
+      "newResource": "+ 新建资源",
+      "search": "搜索资源...",
+      "noResourcesFound": "未找到资源。",
+      "createFirst": "创建第一个资源",
+      "table": {
+        "name": "名称",
+        "schema": "模式",
+        "capacity": "容量",
+        "price": "价格",
+        "categories": "分类",
+        "status": "状态",
+        "actions": "操作"
+      },
+      "exportCsv": "导出 CSV",
+      "exportJson": "导出 JSON",
+      "import": "导入",
+      "importResult": "已导入：{created} 条创建，{updated} 条更新",
+      "importErrors": "{count} 个错误",
+      "importFailed": "导入失败"
+    },
+    "resourceForm": {
+      "newResource": "新建资源",
+      "editResource": "编辑资源",
+      "name": "名称",
+      "slug": "Slug",
+      "schema": "模式",
+      "noSchema": "无模式",
+      "capacity": "容量",
+      "slotDuration": "时段时长（分钟）",
+      "slotDurationHint": "留空表示灵活设置（例如按晚计算）",
+      "price": "价格",
+      "currency": "货币",
+      "priceUnit": "价格单位",
+      "priceUnits": {
+        "perSlot": "每时段",
+        "perHour": "每小时",
+        "perNight": "每晚",
+        "perSeat": "每座"
+      },
+      "sortOrder": "排序",
+      "description": "描述",
+      "active": "启用",
+      "schemaPreview": "模式字段预览",
+      "saving": "保存中...",
+      "update": "更新",
+      "create": "创建",
+      "cancel": "取消"
+    },
+    "categories": {
+      "title": "分类",
+      "addCategory": "添加分类",
+      "categoryName": "分类名称",
+      "slug": "slug",
+      "noCategoriesYet": "暂无分类。",
+      "table": {
+        "name": "名称",
+        "slug": "Slug",
+        "description": "描述",
+        "resources": "资源",
+        "status": "状态",
+        "actions": "操作"
+      },
+      "available": "可用",
+      "assigned": "已分配",
+      "allAssigned": "所有分类已分配",
+      "noneAssigned": "未分配分类"
+    },
+    "categoryEditor": {
+      "editCategory": "编辑分类",
+      "name": "名称",
+      "slug": "Slug",
+      "description": "描述",
+      "imageUrl": "图片 URL",
+      "sortOrder": "排序",
+      "active": "启用",
+      "saving": "保存中...",
+      "save": "保存",
+      "cancel": "取消"
+    },
+    "schemas": {
+      "title": "模式",
+      "addSchema": "添加模式",
+      "schemaName": "模式名称",
+      "slug": "slug",
+      "noSchemasYet": "暂无模式。",
+      "table": {
+        "name": "名称",
+        "slug": "Slug",
+        "fields": "字段",
+        "resources": "资源",
+        "status": "状态",
+        "actions": "操作"
+      }
+    },
+    "schemaEditor": {
+      "title": "模式编辑器",
+      "noFieldsYet": "暂无字段。添加用户在预订时需要填写的字段。",
+      "table": {
+        "label": "标签",
+        "id": "ID",
+        "type": "类型",
+        "required": "必填",
+        "options": "选项",
+        "actions": "操作"
+      },
+      "fieldTypes": {
+        "string": "字符串",
+        "text": "文本",
+        "integer": "整数",
+        "boolean": "布尔值",
+        "select": "下拉选择"
+      },
+      "fieldLabel": "字段标签",
+      "optionsHint": "选项1, 选项2, ...",
+      "addField": "+ 添加字段",
+      "remove": "移除",
+      "saving": "保存中...",
+      "save": "保存",
+      "cancel": "取消"
+    },
+    "dashboard": {
+      "title": "预订仪表盘",
+      "todaysBookings": "今日预订",
+      "upcoming": "即将到来",
+      "resources": "资源",
+      "categories": "分类",
+      "recentBookings": "最近的预订",
+      "noBookingsYet": "暂无预订。",
+      "unknown": "未知",
+      "table": {
+        "resource": "资源",
+        "date": "日期",
+        "status": "状态",
+        "quantity": "数量"
+      }
+    },
+    "bookings": {
+      "title": "所有预订",
+      "allStatuses": "所有状态",
+      "noBookingsFound": "未找到预订。",
+      "statuses": {
+        "confirmed": "已确认",
+        "pending": "待处理",
+        "cancelled": "已取消",
+        "completed": "已完成",
+        "noShow": "未到场"
+      },
+      "table": {
+        "resource": "资源",
+        "start": "开始",
+        "end": "结束",
+        "status": "状态",
+        "quantity": "数量",
+        "created": "创建时间"
+      }
+    },
+    "bookingDetail": {
+      "title": "预订详情",
+      "backToBookings": "返回预订列表",
+      "notFound": "未找到该预订。",
+      "resource": "资源",
+      "status": "状态",
+      "start": "开始",
+      "end": "结束",
+      "quantity": "数量",
+      "invoice": "发票",
+      "viewInvoice": "查看发票",
+      "customFields": "自定义字段",
+      "userNotes": "用户备注",
+      "adminNotes": "管理员备注",
+      "actions": {
+        "confirm": "确认",
+        "cancel": "取消",
+        "markComplete": "标记为已完成",
+        "markNoShow": "标记为未到场",
+        "cancelUserPolicy": "取消（用户政策）",
+        "cancelByProvider": "由服务方取消"
+      },
+      "cancelByProviderModal": {
+        "title": "由服务方取消",
+        "description": "无论取消政策如何，都将进行 100% 退款。",
+        "reasonPlaceholder": "取消原因（必填）",
+        "confirm": "确认服务方取消",
+        "cancel": "取消"
+      }
+    },
+    "imageGallery": {
+      "title": "图片",
+      "setPrimary": "设为主图",
+      "remove": "删除",
+      "addImage": "添加图片",
+      "uploading": "上传中..."
+    },
+    "common": {
+      "loading": "加载中...",
+      "edit": "编辑",
+      "delete": "删除",
+      "add": "添加",
+      "active": "启用",
+      "inactive": "停用",
+      "noData": "—"
+    }
+  }
+}

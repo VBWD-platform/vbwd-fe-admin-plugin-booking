@@ -186,7 +186,7 @@ test.describe('Booking Admin Plugin — Pages Load', () => {
     const body = await page.textContent('body');
     expect(body).toContain('Name');
     expect(body).toContain('Slug');
-    expect(body).toContain('Type');
+    expect(body).toContain('Schema');
     expect(body).toContain('Capacity');
     expect(body).toContain('Price');
     expect(body).toContain('Currency');

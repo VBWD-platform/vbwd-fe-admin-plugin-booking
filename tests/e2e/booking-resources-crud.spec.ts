@@ -57,7 +57,12 @@ test('booking: login → create categories → create resources', async ({ page 
   /* ── Create resource 1: Massage Therapist (specialist) ─────────────── */
   await page.locator('.resource-form__field').filter({ hasText: 'Name' }).locator('input').fill(`Massage Therapist ${RUN_ID}`);
   await page.locator('.resource-form__field').filter({ hasText: 'Name' }).locator('input').blur();
-  await page.locator('.resource-form__field').filter({ hasText: 'Type' }).locator('select').selectOption('specialist');
+  // Select first available schema from dropdown
+  const schemaSelect = page.locator('.resource-form__field').filter({ hasText: 'Schema' }).locator('select');
+  const schemaOptions = schemaSelect.locator('option:not([value=""])');
+  if (await schemaOptions.count() > 0) {
+    await schemaSelect.selectOption({ index: 1 });
+  }
   await page.locator('.resource-form__field').filter({ hasText: 'Capacity' }).locator('input').fill('1');
   await page.locator('.resource-form__field').filter({ hasText: 'Slot Duration' }).locator('input').fill('60');
   await page.locator('.resource-form__field').filter({ hasText: /^Price$/ }).locator('input').fill('85.00');
@@ -82,7 +87,10 @@ test('booking: login → create categories → create resources', async ({ page 
 
   await page.locator('.resource-form__field').filter({ hasText: 'Name' }).locator('input').fill(`Conference Room ${RUN_ID}`);
   await page.locator('.resource-form__field').filter({ hasText: 'Name' }).locator('input').blur();
-  await page.locator('.resource-form__field').filter({ hasText: 'Type' }).locator('select').selectOption('room');
+  const schemaSelect2 = page.locator('.resource-form__field').filter({ hasText: 'Schema' }).locator('select');
+  if (await schemaSelect2.locator('option:not([value=""])').count() > 0) {
+    await schemaSelect2.selectOption({ index: 1 });
+  }
   await page.locator('.resource-form__field').filter({ hasText: 'Capacity' }).locator('input').fill('20');
   await page.locator('.resource-form__field').filter({ hasText: 'Slot Duration' }).locator('input').fill('30');
   await page.locator('.resource-form__field').filter({ hasText: /^Price$/ }).locator('input').fill('120.00');
@@ -107,7 +115,10 @@ test('booking: login → create categories → create resources', async ({ page 
 
   await page.locator('.resource-form__field').filter({ hasText: 'Name' }).locator('input').fill(`Yoga Studio ${RUN_ID}`);
   await page.locator('.resource-form__field').filter({ hasText: 'Name' }).locator('input').blur();
-  await page.locator('.resource-form__field').filter({ hasText: 'Type' }).locator('select').selectOption('space');
+  const schemaSelect3 = page.locator('.resource-form__field').filter({ hasText: 'Schema' }).locator('select');
+  if (await schemaSelect3.locator('option:not([value=""])').count() > 0) {
+    await schemaSelect3.selectOption({ index: 1 });
+  }
   await page.locator('.resource-form__field').filter({ hasText: 'Capacity' }).locator('input').fill('15');
   // Leave slot_duration_minutes at default (flexible duration = no value)
   await page.locator('.resource-form__field').filter({ hasText: /^Price$/ }).locator('input').fill('45.00');

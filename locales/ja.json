@@ -1,0 +1,218 @@
+{
+  "booking": {
+    "nav": {
+      "dashboard": "ダッシュボード",
+      "allBookings": "すべての予約",
+      "resources": "リソース"
+    },
+    "resources": {
+      "title": "リソースとカテゴリ",
+      "tabs": {
+        "resources": "リソース",
+        "categories": "カテゴリ",
+        "schemas": "スキーマ"
+      },
+      "newResource": "+ 新規リソース",
+      "search": "リソースを検索...",
+      "noResourcesFound": "リソースが見つかりません。",
+      "createFirst": "最初のリソースを作成",
+      "table": {
+        "name": "名前",
+        "schema": "スキーマ",
+        "capacity": "定員",
+        "price": "価格",
+        "categories": "カテゴリ",
+        "status": "ステータス",
+        "actions": "操作"
+      },
+      "exportCsv": "CSV エクスポート",
+      "exportJson": "JSON エクスポート",
+      "import": "インポート",
+      "importResult": "インポート完了: {created} 件作成、{updated} 件更新",
+      "importErrors": "{count} 件のエラー",
+      "importFailed": "インポートに失敗しました"
+    },
+    "resourceForm": {
+      "newResource": "新規リソース",
+      "editResource": "リソースを編集",
+      "name": "名前",
+      "slug": "Slug",
+      "schema": "スキーマ",
+      "noSchema": "スキーマなし",
+      "capacity": "定員",
+      "slotDuration": "枠の長さ（分）",
+      "slotDurationHint": "自由設定の場合は空欄（例: 1泊あたり）",
+      "price": "価格",
+      "currency": "通貨",
+      "priceUnit": "価格単位",
+      "priceUnits": {
+        "perSlot": "1枠あたり",
+        "perHour": "1時間あたり",
+        "perNight": "1泊あたり",
+        "perSeat": "1席あたり"
+      },
+      "sortOrder": "並び順",
+      "description": "説明",
+      "active": "有効",
+      "schemaPreview": "スキーマフィールドのプレビュー",
+      "saving": "保存中...",
+      "update": "更新",
+      "create": "作成",
+      "cancel": "キャンセル"
+    },
+    "categories": {
+      "title": "カテゴリ",
+      "addCategory": "カテゴリを追加",
+      "categoryName": "カテゴリ名",
+      "slug": "slug",
+      "noCategoriesYet": "カテゴリはまだありません。",
+      "table": {
+        "name": "名前",
+        "slug": "Slug",
+        "description": "説明",
+        "resources": "リソース",
+        "status": "ステータス",
+        "actions": "操作"
+      },
+      "available": "利用可能",
+      "assigned": "割り当て済み",
+      "allAssigned": "すべてのカテゴリが割り当て済み",
+      "noneAssigned": "カテゴリ未割り当て"
+    },
+    "categoryEditor": {
+      "editCategory": "カテゴリを編集",
+      "name": "名前",
+      "slug": "Slug",
+      "description": "説明",
+      "imageUrl": "画像 URL",
+      "sortOrder": "並び順",
+      "active": "有効",
+      "saving": "保存中...",
+      "save": "保存",
+      "cancel": "キャンセル"
+    },
+    "schemas": {
+      "title": "スキーマ",
+      "addSchema": "スキーマを追加",
+      "schemaName": "スキーマ名",
+      "slug": "slug",
+      "noSchemasYet": "スキーマはまだありません。",
+      "table": {
+        "name": "名前",
+        "slug": "Slug",
+        "fields": "フィールド",
+        "resources": "リソース",
+        "status": "ステータス",
+        "actions": "操作"
+      }
+    },
+    "schemaEditor": {
+      "title": "スキーマエディタ",
+      "noFieldsYet": "フィールドはまだありません。予約時にユーザーが入力するフィールドを追加してください。",
+      "table": {
+        "label": "ラベル",
+        "id": "ID",
+        "type": "タイプ",
+        "required": "必須",
+        "options": "選択肢",
+        "actions": "操作"
+      },
+      "fieldTypes": {
+        "string": "文字列",
+        "text": "テキスト",
+        "integer": "整数",
+        "boolean": "真偽値",
+        "select": "選択"
+      },
+      "fieldLabel": "フィールドラベル",
+      "optionsHint": "選択肢1, 選択肢2, ...",
+      "addField": "+ フィールドを追加",
+      "remove": "削除",
+      "saving": "保存中...",
+      "save": "保存",
+      "cancel": "キャンセル"
+    },
+    "dashboard": {
+      "title": "予約ダッシュボード",
+      "todaysBookings": "本日の予約",
+      "upcoming": "今後の予約",
+      "resources": "リソース",
+      "categories": "カテゴリ",
+      "recentBookings": "最近の予約",
+      "noBookingsYet": "予約はまだありません。",
+      "unknown": "不明",
+      "table": {
+        "resource": "リソース",
+        "date": "日付",
+        "status": "ステータス",
+        "quantity": "数量"
+      }
+    },
+    "bookings": {
+      "title": "すべての予約",
+      "allStatuses": "すべてのステータス",
+      "noBookingsFound": "予約が見つかりません。",
+      "statuses": {
+        "confirmed": "確定済み",
+        "pending": "保留中",
+        "cancelled": "キャンセル済み",
+        "completed": "完了",
+        "noShow": "無断キャンセル"
+      },
+      "table": {
+        "resource": "リソース",
+        "start": "開始",
+        "end": "終了",
+        "status": "ステータス",
+        "quantity": "数量",
+        "created": "作成日"
+      }
+    },
+    "bookingDetail": {
+      "title": "予約の詳細",
+      "backToBookings": "予約一覧に戻る",
+      "notFound": "予約が見つかりません。",
+      "resource": "リソース",
+      "status": "ステータス",
+      "start": "開始",
+      "end": "終了",
+      "quantity": "数量",
+      "invoice": "請求書",
+      "viewInvoice": "請求書を表示",
+      "customFields": "カスタムフィールド",
+      "userNotes": "ユーザーメモ",
+      "adminNotes": "管理者メモ",
+      "actions": {
+        "confirm": "確定",
+        "cancel": "キャンセル",
+        "markComplete": "完了にする",
+        "markNoShow": "無断キャンセルにする",
+        "cancelUserPolicy": "キャンセル（ユーザーポリシー）",
+        "cancelByProvider": "提供者によるキャンセル"
+      },
+      "cancelByProviderModal": {
+        "title": "提供者によるキャンセル",
+        "description": "キャンセルポリシーに関係なく、100%の返金が行われます。",
+        "reasonPlaceholder": "キャンセル理由（必須）",
+        "confirm": "提供者キャンセルを確定",
+        "cancel": "キャンセル"
+      }
+    },
+    "imageGallery": {
+      "title": "画像",
+      "setPrimary": "メイン画像に設定",
+      "remove": "削除",
+      "addImage": "画像を追加",
+      "uploading": "アップロード中..."
+    },
+    "common": {
+      "loading": "読み込み中...",
+      "edit": "編集",
+      "delete": "削除",
+      "add": "追加",
+      "active": "有効",
+      "inactive": "無効",
+      "noData": "—"
+    }
+  }
+}

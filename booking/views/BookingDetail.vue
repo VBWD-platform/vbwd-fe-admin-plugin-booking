@@ -45,47 +45,47 @@ function goBack() {
 
 <template>
   <div class="booking-detail">
-    <button @click="goBack" class="booking-detail__back">&larr; Back to Bookings</button>
+    <button @click="goBack" class="booking-detail__back">&larr; {{ $t('booking.bookingDetail.backToBookings') }}</button>
 
-    <div v-if="store.loading">Loading...</div>
+    <div v-if="store.loading">{{ $t('booking.common.loading') }}</div>
 
     <template v-else-if="store.currentBooking">
-      <h1>Booking Detail</h1>
+      <h1>{{ $t('booking.bookingDetail.title') }}</h1>
 
       <div class="booking-detail__card">
         <div class="booking-detail__grid">
           <div class="booking-detail__field">
-            <label>Resource</label>
-            <span>{{ store.currentBooking.resource?.name || 'Unknown' }}</span>
+            <label>{{ $t('booking.bookingDetail.resource') }}</label>
+            <span>{{ store.currentBooking.resource?.name || $t('booking.dashboard.unknown') }}</span>
           </div>
           <div class="booking-detail__field">
-            <label>Status</label>
+            <label>{{ $t('booking.bookingDetail.status') }}</label>
             <span :class="`booking-status booking-status--${store.currentBooking.status}`">
               {{ store.currentBooking.status }}
             </span>
           </div>
           <div class="booking-detail__field">
-            <label>Start</label>
+            <label>{{ $t('booking.bookingDetail.start') }}</label>
             <span>{{ new Date(store.currentBooking.start_at).toLocaleString() }}</span>
           </div>
           <div class="booking-detail__field">
-            <label>End</label>
+            <label>{{ $t('booking.bookingDetail.end') }}</label>
             <span>{{ new Date(store.currentBooking.end_at).toLocaleString() }}</span>
           </div>
           <div class="booking-detail__field">
-            <label>Quantity</label>
+            <label>{{ $t('booking.bookingDetail.quantity') }}</label>
             <span>{{ store.currentBooking.quantity }}</span>
           </div>
           <div class="booking-detail__field" v-if="store.currentBooking.invoice_id">
-            <label>Invoice</label>
+            <label>{{ $t('booking.bookingDetail.invoice') }}</label>
             <router-link :to="`/admin/invoices/${store.currentBooking.invoice_id}`">
-              View Invoice
+              {{ $t('booking.bookingDetail.viewInvoice') }}
             </router-link>
           </div>
         </div>
 
         <div v-if="store.currentBooking.custom_fields && Object.keys(store.currentBooking.custom_fields).length" class="booking-detail__section">
-          <h3>Custom Fields</h3>
+          <h3>{{ $t('booking.bookingDetail.customFields') }}</h3>
           <div v-for="(value, key) in store.currentBooking.custom_fields" :key="String(key)" class="booking-detail__field">
             <label>{{ key }}</label>
             <span>{{ value }}</span>
@@ -93,51 +93,51 @@ function goBack() {
         </div>
 
         <div v-if="store.currentBooking.notes" class="booking-detail__section">
-          <h3>User Notes</h3>
+          <h3>{{ $t('booking.bookingDetail.userNotes') }}</h3>
           <p>{{ store.currentBooking.notes }}</p>
         </div>
 
         <div v-if="store.currentBooking.admin_notes" class="booking-detail__section">
-          <h3>Admin Notes</h3>
+          <h3>{{ $t('booking.bookingDetail.adminNotes') }}</h3>
           <p>{{ store.currentBooking.admin_notes }}</p>
         </div>
       </div>
 
       <!-- Admin Actions -->
       <div class="booking-detail__actions" v-if="store.currentBooking.status === 'pending'">
-        <button @click="confirmBooking" class="btn btn--primary">Confirm</button>
-        <button @click="cancelBooking" class="btn btn--danger">Cancel</button>
+        <button @click="confirmBooking" class="btn btn--primary">{{ $t('booking.bookingDetail.actions.confirm') }}</button>
+        <button @click="cancelBooking" class="btn btn--danger">{{ $t('booking.bookingDetail.actions.cancel') }}</button>
       </div>
 
       <div class="booking-detail__actions" v-if="store.currentBooking.status === 'confirmed'">
-        <button @click="completeBooking" class="btn btn--primary">Mark Complete</button>
-        <button @click="markNoShow" class="btn btn--warning">Mark No-Show</button>
-        <button @click="cancelBooking" class="btn btn--danger">Cancel (User Policy)</button>
-        <button @click="showCancelByProvider = true" class="btn btn--danger-outline">Cancel by Provider</button>
+        <button @click="completeBooking" class="btn btn--primary">{{ $t('booking.bookingDetail.actions.markComplete') }}</button>
+        <button @click="markNoShow" class="btn btn--warning">{{ $t('booking.bookingDetail.actions.markNoShow') }}</button>
+        <button @click="cancelBooking" class="btn btn--danger">{{ $t('booking.bookingDetail.actions.cancelUserPolicy') }}</button>
+        <button @click="showCancelByProvider = true" class="btn btn--danger-outline">{{ $t('booking.bookingDetail.actions.cancelByProvider') }}</button>
       </div>
 
       <!-- Cancel by Provider Modal -->
       <div v-if="showCancelByProvider" class="booking-detail__modal">
         <div class="booking-detail__modal-content">
-          <h3>Cancel by Provider</h3>
-          <p>This will issue a 100% refund regardless of cancellation policy.</p>
+          <h3>{{ $t('booking.bookingDetail.cancelByProviderModal.title') }}</h3>
+          <p>{{ $t('booking.bookingDetail.cancelByProviderModal.description') }}</p>
           <textarea
             v-model="cancelReason"
-            placeholder="Reason for cancellation (required)"
+            :placeholder="$t('booking.bookingDetail.cancelByProviderModal.reasonPlaceholder')"
             rows="3"
             class="booking-detail__textarea"
           ></textarea>
           <div class="booking-detail__modal-actions">
             <button @click="cancelByProvider" :disabled="!cancelReason.trim()" class="btn btn--danger">
-              Confirm Provider Cancellation
+              {{ $t('booking.bookingDetail.cancelByProviderModal.confirm') }}
             </button>
-            <button @click="showCancelByProvider = false" class="btn btn--secondary">Cancel</button>
+            <button @click="showCancelByProvider = false" class="btn btn--secondary">{{ $t('booking.bookingDetail.cancelByProviderModal.cancel') }}</button>
           </div>
         </div>
       </div>
     </template>
 
-    <p v-else>Booking not found.</p>
+    <p v-else>{{ $t('booking.bookingDetail.notFound') }}</p>
   </div>
 </template>
 

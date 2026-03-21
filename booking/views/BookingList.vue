@@ -24,28 +24,28 @@ function viewDetail(bookingId: string) {
 <template>
   <div class="booking-list">
     <div class="booking-list__header">
-      <h1>All Bookings</h1>
+      <h1>{{ $t('booking.bookings.title') }}</h1>
       <select v-model="statusFilter" class="booking-list__filter">
-        <option value="">All Statuses</option>
-        <option value="confirmed">Confirmed</option>
-        <option value="pending">Pending</option>
-        <option value="cancelled">Cancelled</option>
-        <option value="completed">Completed</option>
-        <option value="no_show">No Show</option>
+        <option value="">{{ $t('booking.bookings.allStatuses') }}</option>
+        <option value="confirmed">{{ $t('booking.bookings.statuses.confirmed') }}</option>
+        <option value="pending">{{ $t('booking.bookings.statuses.pending') }}</option>
+        <option value="cancelled">{{ $t('booking.bookings.statuses.cancelled') }}</option>
+        <option value="completed">{{ $t('booking.bookings.statuses.completed') }}</option>
+        <option value="no_show">{{ $t('booking.bookings.statuses.noShow') }}</option>
       </select>
     </div>
 
-    <div v-if="store.loading" class="booking-list__loading">Loading...</div>
+    <div v-if="store.loading" class="booking-list__loading">{{ $t('booking.common.loading') }}</div>
 
     <table v-else-if="filteredBookings.length" class="booking-list__table">
       <thead>
         <tr>
-          <th>Resource</th>
-          <th>Start</th>
-          <th>End</th>
-          <th>Status</th>
-          <th>Quantity</th>
-          <th>Created</th>
+          <th>{{ $t('booking.bookings.table.resource') }}</th>
+          <th>{{ $t('booking.bookings.table.start') }}</th>
+          <th>{{ $t('booking.bookings.table.end') }}</th>
+          <th>{{ $t('booking.bookings.table.status') }}</th>
+          <th>{{ $t('booking.bookings.table.quantity') }}</th>
+          <th>{{ $t('booking.bookings.table.created') }}</th>
         </tr>
       </thead>
       <tbody>
@@ -55,7 +55,7 @@ function viewDetail(bookingId: string) {
           @click="viewDetail(booking.id)"
           class="booking-list__row"
         >
-          <td>{{ booking.resource?.name || 'Unknown' }}</td>
+          <td>{{ booking.resource?.name || $t('booking.dashboard.unknown') }}</td>
           <td>{{ new Date(booking.start_at).toLocaleString() }}</td>
           <td>{{ new Date(booking.end_at).toLocaleString() }}</td>
           <td>
@@ -69,7 +69,7 @@ function viewDetail(bookingId: string) {
       </tbody>
     </table>
 
-    <p v-else>No bookings found.</p>
+    <p v-else>{{ $t('booking.bookings.noBookingsFound') }}</p>
   </div>
 </template>
 

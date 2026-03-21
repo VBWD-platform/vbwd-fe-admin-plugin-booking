@@ -1,0 +1,218 @@
+{
+  "booking": {
+    "nav": {
+      "dashboard": "Dashboard",
+      "allBookings": "All Bookings",
+      "resources": "Resources"
+    },
+    "resources": {
+      "title": "Resources & Categories",
+      "tabs": {
+        "resources": "Resources",
+        "categories": "Categories",
+        "schemas": "Schemas"
+      },
+      "newResource": "+ New Resource",
+      "search": "Search resources...",
+      "noResourcesFound": "No resources found.",
+      "createFirst": "Create first resource",
+      "table": {
+        "name": "Name",
+        "schema": "Schema",
+        "capacity": "Capacity",
+        "price": "Price",
+        "categories": "Categories",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "exportCsv": "Export CSV",
+      "exportJson": "Export JSON",
+      "import": "Import",
+      "importResult": "Imported: {created} created, {updated} updated",
+      "importErrors": "{count} errors",
+      "importFailed": "Import failed"
+    },
+    "resourceForm": {
+      "newResource": "New Resource",
+      "editResource": "Edit Resource",
+      "name": "Name",
+      "slug": "Slug",
+      "schema": "Schema",
+      "noSchema": "No schema",
+      "capacity": "Capacity",
+      "slotDuration": "Slot Duration (minutes)",
+      "slotDurationHint": "Leave empty for flexible (e.g. per night)",
+      "price": "Price",
+      "currency": "Currency",
+      "priceUnit": "Price Unit",
+      "priceUnits": {
+        "perSlot": "Per Slot",
+        "perHour": "Per Hour",
+        "perNight": "Per Night",
+        "perSeat": "Per Seat"
+      },
+      "sortOrder": "Sort Order",
+      "description": "Description",
+      "active": "Active",
+      "schemaPreview": "Schema Fields Preview",
+      "saving": "Saving...",
+      "update": "Update",
+      "create": "Create",
+      "cancel": "Cancel"
+    },
+    "categories": {
+      "title": "Categories",
+      "addCategory": "Add Category",
+      "categoryName": "Category name",
+      "slug": "slug",
+      "noCategoriesYet": "No categories yet.",
+      "table": {
+        "name": "Name",
+        "slug": "Slug",
+        "description": "Description",
+        "resources": "Resources",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "available": "Available",
+      "assigned": "Assigned",
+      "allAssigned": "All categories assigned",
+      "noneAssigned": "No categories assigned"
+    },
+    "categoryEditor": {
+      "editCategory": "Edit Category",
+      "name": "Name",
+      "slug": "Slug",
+      "description": "Description",
+      "imageUrl": "Image URL",
+      "sortOrder": "Sort Order",
+      "active": "Active",
+      "saving": "Saving...",
+      "save": "Save",
+      "cancel": "Cancel"
+    },
+    "schemas": {
+      "title": "Schemas",
+      "addSchema": "Add Schema",
+      "schemaName": "Schema name",
+      "slug": "slug",
+      "noSchemasYet": "No schemas yet.",
+      "table": {
+        "name": "Name",
+        "slug": "Slug",
+        "fields": "Fields",
+        "resources": "Resources",
+        "status": "Status",
+        "actions": "Actions"
+      }
+    },
+    "schemaEditor": {
+      "title": "Schema Editor",
+      "noFieldsYet": "No fields yet. Add fields that users must fill when booking.",
+      "table": {
+        "label": "Label",
+        "id": "ID",
+        "type": "Type",
+        "required": "Required",
+        "options": "Options",
+        "actions": "Actions"
+      },
+      "fieldTypes": {
+        "string": "String",
+        "text": "Text",
+        "integer": "Integer",
+        "boolean": "Boolean",
+        "select": "Select"
+      },
+      "fieldLabel": "Field label",
+      "optionsHint": "Option1, Option2, ...",
+      "addField": "+ Add Field",
+      "remove": "Remove",
+      "saving": "Saving...",
+      "save": "Save",
+      "cancel": "Cancel"
+    },
+    "dashboard": {
+      "title": "Booking Dashboard",
+      "todaysBookings": "Today's Bookings",
+      "upcoming": "Upcoming",
+      "resources": "Resources",
+      "categories": "Categories",
+      "recentBookings": "Recent Bookings",
+      "noBookingsYet": "No bookings yet.",
+      "unknown": "Unknown",
+      "table": {
+        "resource": "Resource",
+        "date": "Date",
+        "status": "Status",
+        "quantity": "Quantity"
+      }
+    },
+    "bookings": {
+      "title": "All Bookings",
+      "allStatuses": "All Statuses",
+      "noBookingsFound": "No bookings found.",
+      "statuses": {
+        "confirmed": "Confirmed",
+        "pending": "Pending",
+        "cancelled": "Cancelled",
+        "completed": "Completed",
+        "noShow": "No Show"
+      },
+      "table": {
+        "resource": "Resource",
+        "start": "Start",
+        "end": "End",
+        "status": "Status",
+        "quantity": "Quantity",
+        "created": "Created"
+      }
+    },
+    "bookingDetail": {
+      "title": "Booking Detail",
+      "backToBookings": "Back to Bookings",
+      "notFound": "Booking not found.",
+      "resource": "Resource",
+      "status": "Status",
+      "start": "Start",
+      "end": "End",
+      "quantity": "Quantity",
+      "invoice": "Invoice",
+      "viewInvoice": "View Invoice",
+      "customFields": "Custom Fields",
+      "userNotes": "User Notes",
+      "adminNotes": "Admin Notes",
+      "actions": {
+        "confirm": "Confirm",
+        "cancel": "Cancel",
+        "markComplete": "Mark Complete",
+        "markNoShow": "Mark No-Show",
+        "cancelUserPolicy": "Cancel (User Policy)",
+        "cancelByProvider": "Cancel by Provider"
+      },
+      "cancelByProviderModal": {
+        "title": "Cancel by Provider",
+        "description": "This will issue a 100% refund regardless of cancellation policy.",
+        "reasonPlaceholder": "Reason for cancellation (required)",
+        "confirm": "Confirm Provider Cancellation",
+        "cancel": "Cancel"
+      }
+    },
+    "imageGallery": {
+      "title": "Images",
+      "setPrimary": "Set as primary",
+      "remove": "Remove",
+      "addImage": "Add image",
+      "uploading": "Uploading..."
+    },
+    "common": {
+      "loading": "Loading...",
+      "edit": "Edit",
+      "delete": "Delete",
+      "add": "Add",
+      "active": "Active",
+      "inactive": "Inactive",
+      "noData": "—"
+    }
+  }
+}

@@ -1,0 +1,218 @@
+{
+  "booking": {
+    "nav": {
+      "dashboard": "Panel",
+      "allBookings": "Todas las reservas",
+      "resources": "Recursos"
+    },
+    "resources": {
+      "title": "Recursos y categorías",
+      "tabs": {
+        "resources": "Recursos",
+        "categories": "Categorías",
+        "schemas": "Esquemas"
+      },
+      "newResource": "+ Nuevo recurso",
+      "search": "Buscar recursos...",
+      "noResourcesFound": "No se encontraron recursos.",
+      "createFirst": "Crear primer recurso",
+      "table": {
+        "name": "Nombre",
+        "schema": "Esquema",
+        "capacity": "Capacidad",
+        "price": "Precio",
+        "categories": "Categorías",
+        "status": "Estado",
+        "actions": "Acciones"
+      },
+      "exportCsv": "Exportar CSV",
+      "exportJson": "Exportar JSON",
+      "import": "Importar",
+      "importResult": "Importado: {created} creados, {updated} actualizados",
+      "importErrors": "{count} errores",
+      "importFailed": "Error en la importación"
+    },
+    "resourceForm": {
+      "newResource": "Nuevo recurso",
+      "editResource": "Editar recurso",
+      "name": "Nombre",
+      "slug": "Slug",
+      "schema": "Esquema",
+      "noSchema": "Sin esquema",
+      "capacity": "Capacidad",
+      "slotDuration": "Duración del turno (minutos)",
+      "slotDurationHint": "Dejar vacío para flexible (p. ej. por noche)",
+      "price": "Precio",
+      "currency": "Moneda",
+      "priceUnit": "Unidad de precio",
+      "priceUnits": {
+        "perSlot": "Por turno",
+        "perHour": "Por hora",
+        "perNight": "Por noche",
+        "perSeat": "Por plaza"
+      },
+      "sortOrder": "Orden",
+      "description": "Descripción",
+      "active": "Activo",
+      "schemaPreview": "Vista previa de campos del esquema",
+      "saving": "Guardando...",
+      "update": "Actualizar",
+      "create": "Crear",
+      "cancel": "Cancelar"
+    },
+    "categories": {
+      "title": "Categorías",
+      "addCategory": "Añadir categoría",
+      "categoryName": "Nombre de categoría",
+      "slug": "slug",
+      "noCategoriesYet": "Aún no hay categorías.",
+      "table": {
+        "name": "Nombre",
+        "slug": "Slug",
+        "description": "Descripción",
+        "resources": "Recursos",
+        "status": "Estado",
+        "actions": "Acciones"
+      },
+      "available": "Disponibles",
+      "assigned": "Asignadas",
+      "allAssigned": "Todas las categorías asignadas",
+      "noneAssigned": "Sin categorías asignadas"
+    },
+    "categoryEditor": {
+      "editCategory": "Editar categoría",
+      "name": "Nombre",
+      "slug": "Slug",
+      "description": "Descripción",
+      "imageUrl": "URL de imagen",
+      "sortOrder": "Orden",
+      "active": "Activo",
+      "saving": "Guardando...",
+      "save": "Guardar",
+      "cancel": "Cancelar"
+    },
+    "schemas": {
+      "title": "Esquemas",
+      "addSchema": "Añadir esquema",
+      "schemaName": "Nombre del esquema",
+      "slug": "slug",
+      "noSchemasYet": "Aún no hay esquemas.",
+      "table": {
+        "name": "Nombre",
+        "slug": "Slug",
+        "fields": "Campos",
+        "resources": "Recursos",
+        "status": "Estado",
+        "actions": "Acciones"
+      }
+    },
+    "schemaEditor": {
+      "title": "Editor de esquemas",
+      "noFieldsYet": "Aún no hay campos. Añade campos que los usuarios deben rellenar al reservar.",
+      "table": {
+        "label": "Etiqueta",
+        "id": "ID",
+        "type": "Tipo",
+        "required": "Obligatorio",
+        "options": "Opciones",
+        "actions": "Acciones"
+      },
+      "fieldTypes": {
+        "string": "Cadena",
+        "text": "Texto",
+        "integer": "Entero",
+        "boolean": "Booleano",
+        "select": "Selección"
+      },
+      "fieldLabel": "Etiqueta del campo",
+      "optionsHint": "Opción1, Opción2, ...",
+      "addField": "+ Añadir campo",
+      "remove": "Eliminar",
+      "saving": "Guardando...",
+      "save": "Guardar",
+      "cancel": "Cancelar"
+    },
+    "dashboard": {
+      "title": "Panel de reservas",
+      "todaysBookings": "Reservas de hoy",
+      "upcoming": "Próximas",
+      "resources": "Recursos",
+      "categories": "Categorías",
+      "recentBookings": "Reservas recientes",
+      "noBookingsYet": "Aún no hay reservas.",
+      "unknown": "Desconocido",
+      "table": {
+        "resource": "Recurso",
+        "date": "Fecha",
+        "status": "Estado",
+        "quantity": "Cantidad"
+      }
+    },
+    "bookings": {
+      "title": "Todas las reservas",
+      "allStatuses": "Todos los estados",
+      "noBookingsFound": "No se encontraron reservas.",
+      "statuses": {
+        "confirmed": "Confirmada",
+        "pending": "Pendiente",
+        "cancelled": "Cancelada",
+        "completed": "Completada",
+        "noShow": "No presentado"
+      },
+      "table": {
+        "resource": "Recurso",
+        "start": "Inicio",
+        "end": "Fin",
+        "status": "Estado",
+        "quantity": "Cantidad",
+        "created": "Creada"
+      }
+    },
+    "bookingDetail": {
+      "title": "Detalle de reserva",
+      "backToBookings": "Volver a reservas",
+      "notFound": "Reserva no encontrada.",
+      "resource": "Recurso",
+      "status": "Estado",
+      "start": "Inicio",
+      "end": "Fin",
+      "quantity": "Cantidad",
+      "invoice": "Factura",
+      "viewInvoice": "Ver factura",
+      "customFields": "Campos personalizados",
+      "userNotes": "Notas del usuario",
+      "adminNotes": "Notas del administrador",
+      "actions": {
+        "confirm": "Confirmar",
+        "cancel": "Cancelar",
+        "markComplete": "Marcar como completada",
+        "markNoShow": "Marcar como no presentado",
+        "cancelUserPolicy": "Cancelar (política de usuario)",
+        "cancelByProvider": "Cancelar por proveedor"
+      },
+      "cancelByProviderModal": {
+        "title": "Cancelar por proveedor",
+        "description": "Se emitirá un reembolso del 100% independientemente de la política de cancelación.",
+        "reasonPlaceholder": "Motivo de la cancelación (obligatorio)",
+        "confirm": "Confirmar cancelación del proveedor",
+        "cancel": "Cancelar"
+      }
+    },
+    "imageGallery": {
+      "title": "Imagenes",
+      "setPrimary": "Establecer como principal",
+      "remove": "Eliminar",
+      "addImage": "Agregar imagen",
+      "uploading": "Subiendo..."
+    },
+    "common": {
+      "loading": "Cargando...",
+      "edit": "Editar",
+      "delete": "Eliminar",
+      "add": "Añadir",
+      "active": "Activo",
+      "inactive": "Inactivo",
+      "noData": "—"
+    }
+  }
+}

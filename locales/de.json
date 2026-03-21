@@ -1,0 +1,218 @@
+{
+  "booking": {
+    "nav": {
+      "dashboard": "Dashboard",
+      "allBookings": "Alle Buchungen",
+      "resources": "Ressourcen"
+    },
+    "resources": {
+      "title": "Ressourcen & Kategorien",
+      "tabs": {
+        "resources": "Ressourcen",
+        "categories": "Kategorien",
+        "schemas": "Schemas"
+      },
+      "newResource": "+ Neue Ressource",
+      "search": "Ressourcen suchen...",
+      "noResourcesFound": "Keine Ressourcen gefunden.",
+      "createFirst": "Erste Ressource erstellen",
+      "table": {
+        "name": "Name",
+        "schema": "Schema",
+        "capacity": "Kapazität",
+        "price": "Preis",
+        "categories": "Kategorien",
+        "status": "Status",
+        "actions": "Aktionen"
+      },
+      "exportCsv": "CSV exportieren",
+      "exportJson": "JSON exportieren",
+      "import": "Importieren",
+      "importResult": "Importiert: {created} erstellt, {updated} aktualisiert",
+      "importErrors": "{count} Fehler",
+      "importFailed": "Import fehlgeschlagen"
+    },
+    "resourceForm": {
+      "newResource": "Neue Ressource",
+      "editResource": "Ressource bearbeiten",
+      "name": "Name",
+      "slug": "Slug",
+      "schema": "Schema",
+      "noSchema": "Kein Schema",
+      "capacity": "Kapazität",
+      "slotDuration": "Zeitfensterdauer (Minuten)",
+      "slotDurationHint": "Leer lassen für flexibel (z.B. pro Nacht)",
+      "price": "Preis",
+      "currency": "Währung",
+      "priceUnit": "Preiseinheit",
+      "priceUnits": {
+        "perSlot": "Pro Zeitfenster",
+        "perHour": "Pro Stunde",
+        "perNight": "Pro Nacht",
+        "perSeat": "Pro Platz"
+      },
+      "sortOrder": "Sortierreihenfolge",
+      "description": "Beschreibung",
+      "active": "Aktiv",
+      "schemaPreview": "Schema-Felder Vorschau",
+      "saving": "Speichern...",
+      "update": "Aktualisieren",
+      "create": "Erstellen",
+      "cancel": "Abbrechen"
+    },
+    "categories": {
+      "title": "Kategorien",
+      "addCategory": "Kategorie hinzufügen",
+      "categoryName": "Kategoriename",
+      "slug": "slug",
+      "noCategoriesYet": "Noch keine Kategorien.",
+      "table": {
+        "name": "Name",
+        "slug": "Slug",
+        "description": "Beschreibung",
+        "resources": "Ressourcen",
+        "status": "Status",
+        "actions": "Aktionen"
+      },
+      "available": "Verfügbar",
+      "assigned": "Zugewiesen",
+      "allAssigned": "Alle Kategorien zugewiesen",
+      "noneAssigned": "Keine Kategorien zugewiesen"
+    },
+    "categoryEditor": {
+      "editCategory": "Kategorie bearbeiten",
+      "name": "Name",
+      "slug": "Slug",
+      "description": "Beschreibung",
+      "imageUrl": "Bild-URL",
+      "sortOrder": "Sortierreihenfolge",
+      "active": "Aktiv",
+      "saving": "Speichern...",
+      "save": "Speichern",
+      "cancel": "Abbrechen"
+    },
+    "schemas": {
+      "title": "Schemas",
+      "addSchema": "Schema hinzufügen",
+      "schemaName": "Schemaname",
+      "slug": "slug",
+      "noSchemasYet": "Noch keine Schemas.",
+      "table": {
+        "name": "Name",
+        "slug": "Slug",
+        "fields": "Felder",
+        "resources": "Ressourcen",
+        "status": "Status",
+        "actions": "Aktionen"
+      }
+    },
+    "schemaEditor": {
+      "title": "Schema-Editor",
+      "noFieldsYet": "Noch keine Felder. Fügen Sie Felder hinzu, die Benutzer bei der Buchung ausfüllen müssen.",
+      "table": {
+        "label": "Bezeichnung",
+        "id": "ID",
+        "type": "Typ",
+        "required": "Pflichtfeld",
+        "options": "Optionen",
+        "actions": "Aktionen"
+      },
+      "fieldTypes": {
+        "string": "Zeichenkette",
+        "text": "Text",
+        "integer": "Ganzzahl",
+        "boolean": "Wahrheitswert",
+        "select": "Auswahl"
+      },
+      "fieldLabel": "Feldbezeichnung",
+      "optionsHint": "Option1, Option2, ...",
+      "addField": "+ Feld hinzufügen",
+      "remove": "Entfernen",
+      "saving": "Speichern...",
+      "save": "Speichern",
+      "cancel": "Abbrechen"
+    },
+    "dashboard": {
+      "title": "Buchungs-Dashboard",
+      "todaysBookings": "Heutige Buchungen",
+      "upcoming": "Bevorstehend",
+      "resources": "Ressourcen",
+      "categories": "Kategorien",
+      "recentBookings": "Letzte Buchungen",
+      "noBookingsYet": "Noch keine Buchungen.",
+      "unknown": "Unbekannt",
+      "table": {
+        "resource": "Ressource",
+        "date": "Datum",
+        "status": "Status",
+        "quantity": "Anzahl"
+      }
+    },
+    "bookings": {
+      "title": "Alle Buchungen",
+      "allStatuses": "Alle Status",
+      "noBookingsFound": "Keine Buchungen gefunden.",
+      "statuses": {
+        "confirmed": "Bestätigt",
+        "pending": "Ausstehend",
+        "cancelled": "Storniert",
+        "completed": "Abgeschlossen",
+        "noShow": "Nicht erschienen"
+      },
+      "table": {
+        "resource": "Ressource",
+        "start": "Beginn",
+        "end": "Ende",
+        "status": "Status",
+        "quantity": "Anzahl",
+        "created": "Erstellt"
+      }
+    },
+    "bookingDetail": {
+      "title": "Buchungsdetails",
+      "backToBookings": "Zurück zu Buchungen",
+      "notFound": "Buchung nicht gefunden.",
+      "resource": "Ressource",
+      "status": "Status",
+      "start": "Beginn",
+      "end": "Ende",
+      "quantity": "Anzahl",
+      "invoice": "Rechnung",
+      "viewInvoice": "Rechnung anzeigen",
+      "customFields": "Benutzerdefinierte Felder",
+      "userNotes": "Benutzernotizen",
+      "adminNotes": "Admin-Notizen",
+      "actions": {
+        "confirm": "Bestätigen",
+        "cancel": "Stornieren",
+        "markComplete": "Als abgeschlossen markieren",
+        "markNoShow": "Als nicht erschienen markieren",
+        "cancelUserPolicy": "Stornieren (Benutzerrichtlinie)",
+        "cancelByProvider": "Vom Anbieter stornieren"
+      },
+      "cancelByProviderModal": {
+        "title": "Vom Anbieter stornieren",
+        "description": "Dies führt zu einer 100%igen Rückerstattung unabhängig von der Stornierungsrichtlinie.",
+        "reasonPlaceholder": "Grund für die Stornierung (erforderlich)",
+        "confirm": "Anbieterstornierung bestätigen",
+        "cancel": "Abbrechen"
+      }
+    },
+    "imageGallery": {
+      "title": "Bilder",
+      "setPrimary": "Als Hauptbild festlegen",
+      "remove": "Entfernen",
+      "addImage": "Bild hinzufügen",
+      "uploading": "Wird hochgeladen..."
+    },
+    "common": {
+      "loading": "Laden...",
+      "edit": "Bearbeiten",
+      "delete": "Löschen",
+      "add": "Hinzufügen",
+      "active": "Aktiv",
+      "inactive": "Inaktiv",
+      "noData": "—"
+    }
+  }
+}

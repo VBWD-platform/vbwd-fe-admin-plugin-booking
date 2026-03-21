@@ -14,19 +14,50 @@ export interface ResourceCategory {
   is_active: boolean;
 }
 
+export interface SchemaField {
+  id: string;
+  label: string;
+  type: 'string' | 'text' | 'integer' | 'boolean' | 'select';
+  required: boolean;
+  placeholder?: string;
+  options?: string[];
+}
+
+export interface CustomSchema {
+  id: string;
+  name: string;
+  slug: string;
+  fields: SchemaField[];
+  sort_order: number;
+  is_active: boolean;
+}
+
+export interface ResourceImage {
+  id: string;
+  resource_id: string;
+  cms_image_id: string;
+  url?: string;
+  alt?: string;
+  caption?: string;
+  is_primary: boolean;
+  sort_order: number;
+}
+
 export interface BookableResource {
   id: string;
   name: string;
   slug: string;
   description: string | null;
   resource_type: string;
+  resource_type_name: string;
+  custom_schema_id: string | null;
   capacity: number;
   slot_duration_minutes: number | null;
   price: string;
   currency: string;
   price_unit: string;
   availability: Record<string, unknown>;
-  custom_fields_schema: Array<Record<string, unknown>> | null;
+  custom_fields_schema: SchemaField[] | null;
   image_url: string | null;
   config: Record<string, unknown>;
   is_active: boolean;
@@ -34,19 +65,11 @@ export interface BookableResource {
   categories: Array<{ id: string; name: string; slug: string }>;
 }
 
-export interface ResourceType {
-  id: string;
-  name: string;
-  slug: string;
-  sort_order: number;
-  is_active: boolean;
-}
-
 export const useResourceAdminStore = defineStore('resourceAdmin', () => {
   const resources = ref<BookableResource[]>([]);
   const currentResource = ref<BookableResource | null>(null);
   const categories = ref<ResourceCategory[]>([]);
-  const resourceTypes = ref<ResourceType[]>([]);
+  const schemas = ref<CustomSchema[]>([]);
   const loading = ref(false);
 
   // ── Resources ──────────────────────────────────────────────────────────
@@ -96,6 +119,10 @@ export const useResourceAdminStore = defineStore('resourceAdmin', () => {
     categories.value = response.categories;
   }
 
+  async function fetchCategory(categoryId: string) {
+    return await api.get(`/admin/booking/categories/${categoryId}`) as ResourceCategory;
+  }
+
   async function createCategory(data: Partial<ResourceCategory>) {
     const response = await api.post('/admin/booking/categories', data) as ResourceCategory;
     categories.value.push(response);
@@ -114,36 +141,65 @@ export const useResourceAdminStore = defineStore('resourceAdmin', () => {
     categories.value = categories.value.filter(category => category.id !== categoryId);
   }
 
-  // ── Resource Types ──────────────────────────────────────────────────
+  // ── Schemas ────────────────────────────────────────────────────────────
 
-  async function fetchResourceTypes() {
-    const response = await api.get('/admin/booking/resource-types') as { resource_types: ResourceType[] };
-    resourceTypes.value = response.resource_types;
+  async function fetchSchemas() {
+    const response = await api.get('/admin/booking/schemas') as { schemas: CustomSchema[] };
+    schemas.value = response.schemas;
   }
 
-  async function createResourceType(data: Partial<ResourceType>) {
-    const response = await api.post('/admin/booking/resource-types', data) as ResourceType;
-    resourceTypes.value.push(response);
+  async function fetchSchema(schemaId: string) {
+    return await api.get(`/admin/booking/schemas/${schemaId}`) as CustomSchema;
+  }
+
+  async function createSchema(data: Partial<CustomSchema>) {
+    const response = await api.post('/admin/booking/schemas', data) as CustomSchema;
+    schemas.value.push(response);
     return response;
   }
 
-  async function updateResourceType(typeId: string, data: Partial<ResourceType>) {
-    const response = await api.put(`/admin/booking/resource-types/${typeId}`, data) as ResourceType;
-    const index = resourceTypes.value.findIndex(resourceType => resourceType.id === typeId);
-    if (index !== -1) resourceTypes.value[index] = response;
+  async function updateSchema(schemaId: string, data: Partial<CustomSchema>) {
+    const response = await api.put(`/admin/booking/schemas/${schemaId}`, data) as CustomSchema;
+    const index = schemas.value.findIndex(schema => schema.id === schemaId);
+    if (index !== -1) schemas.value[index] = response;
     return response;
   }
 
-  async function deleteResourceType(typeId: string) {
-    await api.delete(`/admin/booking/resource-types/${typeId}`);
-    resourceTypes.value = resourceTypes.value.filter(resourceType => resourceType.id !== typeId);
+  async function deleteSchema(schemaId: string) {
+    await api.delete(`/admin/booking/schemas/${schemaId}`);
+    schemas.value = schemas.value.filter(schema => schema.id !== schemaId);
+  }
+
+  // ── Resource Images ───────────────────────────────────────────────────
+
+  async function fetchResourceImages(resourceId: string) {
+    const response = await api.get(`/admin/booking/resources/${resourceId}/images`) as { images: ResourceImage[] };
+    return response.images;
+  }
+
+  async function uploadResourceImage(resourceId: string, file: File) {
+    const formData = new FormData();
+    formData.append('file', file);
+    return await api.post(`/admin/booking/resources/${resourceId}/images`, formData) as ResourceImage;
+  }
+
+  async function setResourceImagePrimary(resourceId: string, imageId: string) {
+    await api.post(`/admin/booking/resources/${resourceId}/images/${imageId}/primary`, {});
+  }
+
+  async function reorderResourceImages(resourceId: string, imageIds: string[]) {
+    await api.post(`/admin/booking/resources/${resourceId}/images/reorder`, { order: imageIds });
+  }
+
+  async function deleteResourceImage(resourceId: string, imageId: string) {
+    await api.delete(`/admin/booking/resources/${resourceId}/images/${imageId}`);
   }
 
   return {
     resources,
     currentResource,
     categories,
-    resourceTypes,
+    schemas,
     loading,
     fetchResources,
     fetchResourceDetail,
@@ -151,12 +207,19 @@ export const useResourceAdminStore = defineStore('resourceAdmin', () => {
     updateResource,
     deleteResource,
     fetchCategories,
+    fetchCategory,
     createCategory,
     updateCategory,
     deleteCategory,
-    fetchResourceTypes,
-    createResourceType,
-    updateResourceType,
-    deleteResourceType,
+    fetchSchemas,
+    fetchSchema,
+    createSchema,
+    updateSchema,
+    deleteSchema,
+    fetchResourceImages,
+    uploadResourceImage,
+    setResourceImagePrimary,
+    reorderResourceImages,
+    deleteResourceImage,
   };
 });

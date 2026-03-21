@@ -2,6 +2,7 @@
 import { onMounted, ref, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useResourceAdminStore } from '../stores/resourceAdmin';
+import ResourceImageGallery from '../components/ResourceImageGallery.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -26,11 +27,17 @@ function unassignCategory(categoryId: string) {
   form.value.category_ids = form.value.category_ids.filter(id => id !== categoryId);
 }
 
+const selectedSchemaFields = computed(() => {
+  if (!form.value.custom_schema_id) return [];
+  const schema = store.schemas.find(s => s.id === form.value.custom_schema_id);
+  return schema?.fields || [];
+});
+
 const form = ref({
   name: '',
   slug: '',
   description: '',
-  resource_type: '',
+  custom_schema_id: '' as string | null,
   capacity: 1,
   slot_duration_minutes: 30 as number | null,
   price: '0.00',
@@ -42,7 +49,7 @@ const form = ref({
 });
 
 onMounted(async () => {
-  await Promise.all([store.fetchCategories(), store.fetchResourceTypes()]);
+  await Promise.all([store.fetchCategories(), store.fetchSchemas()]);
   if (isEdit.value) {
     await store.fetchResourceDetail(route.params.id as string);
     if (store.currentResource) {
@@ -51,7 +58,7 @@ onMounted(async () => {
         name: resource.name,
         slug: resource.slug,
         description: resource.description || '',
-        resource_type: resource.resource_type,
+        custom_schema_id: resource.custom_schema_id || '',
         capacity: resource.capacity,
         slot_duration_minutes: resource.slot_duration_minutes,
         price: resource.price,
@@ -89,80 +96,81 @@ async function save() {
 
 <template>
   <div class="resource-form">
-    <h1>{{ isEdit ? 'Edit Resource' : 'New Resource' }}</h1>
+    <h1>{{ isEdit ? $t('booking.resourceForm.editResource') : $t('booking.resourceForm.newResource') }}</h1>
 
     <form @submit.prevent="save" class="resource-form__form">
       <div class="resource-form__grid">
         <div class="resource-form__field">
-          <label>Name</label>
+          <label>{{ $t('booking.resourceForm.name') }}</label>
           <input v-model="form.name" @blur="!isEdit && generateSlug()" required />
         </div>
 
         <div class="resource-form__field">
-          <label>Slug</label>
+          <label>{{ $t('booking.resourceForm.slug') }}</label>
           <input v-model="form.slug" required />
         </div>
 
         <div class="resource-form__field">
-          <label>Type</label>
-          <select v-model="form.resource_type">
-            <option v-for="resourceType in store.resourceTypes" :key="resourceType.slug" :value="resourceType.slug">{{ resourceType.name }}</option>
+          <label>{{ $t('booking.resourceForm.schema') }}</label>
+          <select v-model="form.custom_schema_id">
+            <option value="">{{ $t('booking.resourceForm.noSchema') }}</option>
+            <option v-for="schema in store.schemas" :key="schema.id" :value="schema.id">{{ schema.name }} ({{ schema.fields.length }} fields)</option>
           </select>
         </div>
 
         <div class="resource-form__field">
-          <label>Capacity</label>
+          <label>{{ $t('booking.resourceForm.capacity') }}</label>
           <input v-model.number="form.capacity" type="number" min="1" required />
         </div>
 
         <div class="resource-form__field">
-          <label>Slot Duration (minutes)</label>
-          <input v-model.number="form.slot_duration_minutes" type="number" min="1" placeholder="Leave empty for flexible (e.g. per night)" />
+          <label>{{ $t('booking.resourceForm.slotDuration') }}</label>
+          <input v-model.number="form.slot_duration_minutes" type="number" min="1" :placeholder="$t('booking.resourceForm.slotDurationHint')" />
         </div>
 
         <div class="resource-form__field">
-          <label>Price</label>
+          <label>{{ $t('booking.resourceForm.price') }}</label>
           <input v-model="form.price" type="number" step="0.01" min="0" required />
         </div>
 
         <div class="resource-form__field">
-          <label>Currency</label>
+          <label>{{ $t('booking.resourceForm.currency') }}</label>
           <input v-model="form.currency" maxlength="3" required />
         </div>
 
         <div class="resource-form__field">
-          <label>Price Unit</label>
+          <label>{{ $t('booking.resourceForm.priceUnit') }}</label>
           <select v-model="form.price_unit">
-            <option value="per_slot">Per Slot</option>
-            <option value="per_hour">Per Hour</option>
-            <option value="per_night">Per Night</option>
-            <option value="per_seat">Per Seat</option>
+            <option value="per_slot">{{ $t('booking.resourceForm.priceUnits.perSlot') }}</option>
+            <option value="per_hour">{{ $t('booking.resourceForm.priceUnits.perHour') }}</option>
+            <option value="per_night">{{ $t('booking.resourceForm.priceUnits.perNight') }}</option>
+            <option value="per_seat">{{ $t('booking.resourceForm.priceUnits.perSeat') }}</option>
           </select>
         </div>
 
         <div class="resource-form__field">
-          <label>Sort Order</label>
+          <label>{{ $t('booking.resourceForm.sortOrder') }}</label>
           <input v-model.number="form.sort_order" type="number" />
         </div>
 
         <div class="resource-form__field">
           <label>
             <input v-model="form.is_active" type="checkbox" />
-            Active
+            {{ $t('booking.resourceForm.active') }}
           </label>
         </div>
       </div>
 
       <div class="resource-form__field resource-form__field--full">
-        <label>Description</label>
+        <label>{{ $t('booking.resourceForm.description') }}</label>
         <textarea v-model="form.description" rows="3"></textarea>
       </div>
 
       <div class="categories-section">
-        <h3>Categories</h3>
+        <h3>{{ $t('booking.categories.title') }}</h3>
         <div class="categories-panels">
           <div class="category-panel">
-            <h4>Available</h4>
+            <h4>{{ $t('booking.categories.available') }}</h4>
             <div class="category-list">
               <div
                 v-for="category in availableCategories"
@@ -172,11 +180,11 @@ async function save() {
                 <span>{{ category.name }}</span>
                 <button type="button" class="assign-btn" @click="assignCategory(category.id)">+</button>
               </div>
-              <p v-if="availableCategories.length === 0" class="empty-hint">All categories assigned</p>
+              <p v-if="availableCategories.length === 0" class="empty-hint">{{ $t('booking.categories.allAssigned') }}</p>
             </div>
           </div>
           <div class="category-panel">
-            <h4>Assigned</h4>
+            <h4>{{ $t('booking.categories.assigned') }}</h4>
             <div class="category-list">
               <div
                 v-for="category in assignedCategories"
@@ -186,18 +194,31 @@ async function save() {
                 <span>{{ category.name }}</span>
                 <button type="button" class="unassign-btn" @click="unassignCategory(category.id)">&times;</button>
               </div>
-              <p v-if="assignedCategories.length === 0" class="empty-hint">No categories assigned</p>
+              <p v-if="assignedCategories.length === 0" class="empty-hint">{{ $t('booking.categories.noneAssigned') }}</p>
             </div>
           </div>
         </div>
       </div>
 
+      <!-- Image Gallery (edit mode only) -->
+      <ResourceImageGallery v-if="isEdit" :resource-id="route.params.id as string" />
+
+      <!-- Schema fields preview -->
+      <div v-if="selectedSchemaFields.length" class="schema-preview">
+        <h3>{{ $t('booking.resourceForm.schemaPreview') }}</h3>
+        <div class="schema-preview__fields">
+          <span v-for="field in selectedSchemaFields" :key="field.id" class="schema-preview__field">
+            {{ field.label }} <small>({{ field.type }}{{ field.required ? ', required' : '' }})</small>
+          </span>
+        </div>
+      </div>
+
       <div class="resource-form__actions">
         <button type="submit" :disabled="saving" class="btn btn--primary">
-          {{ saving ? 'Saving...' : (isEdit ? 'Update' : 'Create') }}
+          {{ saving ? $t('booking.resourceForm.saving') : (isEdit ? $t('booking.resourceForm.update') : $t('booking.resourceForm.create')) }}
         </button>
         <button type="button" @click="router.push('/admin/booking/resources')" class="btn btn--secondary">
-          Cancel
+          {{ $t('booking.resourceForm.cancel') }}
         </button>
       </div>
     </form>
@@ -334,6 +355,40 @@ async function save() {
   padding: 20px 0;
 }
 
+.schema-preview {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 6px;
+  border: 1px solid #e9ecef;
+}
+
+.schema-preview h3 {
+  margin: 0 0 0.5rem;
+  font-size: 0.85rem;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.schema-preview__fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.schema-preview__field {
+  padding: 4px 10px;
+  background: #e3f2fd;
+  color: #1565c0;
+  border-radius: 10px;
+  font-size: 0.8rem;
+}
+
+.schema-preview__field small {
+  color: #6b7280;
+}
+
 .resource-form__actions {
   display: flex;
   gap: 0.5rem;
@@ -343,4 +398,25 @@ async function save() {
 .btn { padding: 0.5rem 1rem; border-radius: 4px; border: none; cursor: pointer; font-weight: 500; }
 .btn--primary { background: var(--vbwd-primary, #3498db); color: #fff; }
 .btn--secondary { background: var(--vbwd-bg-secondary, #f1f5f9); color: var(--vbwd-text, #1e293b); }
+
+@media (max-width: 768px) {
+  .resource-form { padding: 12px; }
+  .resource-form h1 { font-size: 1.2rem; }
+  .resource-form__form { padding: 1rem; }
+  .resource-form__grid { grid-template-columns: 1fr; }
+  .categories-panels { grid-template-columns: 1fr; }
+  .category-list { min-height: 80px; max-height: 180px; }
+  .resource-form__actions { flex-direction: column; }
+  .resource-form__actions .btn { width: 100%; text-align: center; }
+  .schema-preview__fields { gap: 0.25rem; }
+  .schema-preview__field { font-size: 0.75rem; }
+}
+
+@media (max-width: 480px) {
+  .resource-form__form { padding: 0.75rem; }
+  .resource-form__field label { font-size: 0.8rem; }
+  .resource-form__field input,
+  .resource-form__field select,
+  .resource-form__field textarea { font-size: 0.85rem; padding: 0.4rem; }
+}
 </style>

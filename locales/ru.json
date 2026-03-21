@@ -1,0 +1,218 @@
+{
+  "booking": {
+    "nav": {
+      "dashboard": "Панель управления",
+      "allBookings": "Все бронирования",
+      "resources": "Ресурсы"
+    },
+    "resources": {
+      "title": "Ресурсы и категории",
+      "tabs": {
+        "resources": "Ресурсы",
+        "categories": "Категории",
+        "schemas": "Схемы"
+      },
+      "newResource": "+ Новый ресурс",
+      "search": "Поиск ресурсов...",
+      "noResourcesFound": "Ресурсы не найдены.",
+      "createFirst": "Создать первый ресурс",
+      "table": {
+        "name": "Название",
+        "schema": "Схема",
+        "capacity": "Вместимость",
+        "price": "Цена",
+        "categories": "Категории",
+        "status": "Статус",
+        "actions": "Действия"
+      },
+      "exportCsv": "Экспорт CSV",
+      "exportJson": "Экспорт JSON",
+      "import": "Импорт",
+      "importResult": "Импортировано: {created} создано, {updated} обновлено",
+      "importErrors": "{count} ошибок",
+      "importFailed": "Ошибка импорта"
+    },
+    "resourceForm": {
+      "newResource": "Новый ресурс",
+      "editResource": "Редактировать ресурс",
+      "name": "Название",
+      "slug": "Slug",
+      "schema": "Схема",
+      "noSchema": "Без схемы",
+      "capacity": "Вместимость",
+      "slotDuration": "Длительность слота (минуты)",
+      "slotDurationHint": "Оставьте пустым для гибкого режима (напр. за ночь)",
+      "price": "Цена",
+      "currency": "Валюта",
+      "priceUnit": "Единица цены",
+      "priceUnits": {
+        "perSlot": "За слот",
+        "perHour": "За час",
+        "perNight": "За ночь",
+        "perSeat": "За место"
+      },
+      "sortOrder": "Порядок сортировки",
+      "description": "Описание",
+      "active": "Активен",
+      "schemaPreview": "Предпросмотр полей схемы",
+      "saving": "Сохранение...",
+      "update": "Обновить",
+      "create": "Создать",
+      "cancel": "Отмена"
+    },
+    "categories": {
+      "title": "Категории",
+      "addCategory": "Добавить категорию",
+      "categoryName": "Название категории",
+      "slug": "slug",
+      "noCategoriesYet": "Категорий пока нет.",
+      "table": {
+        "name": "Название",
+        "slug": "Slug",
+        "description": "Описание",
+        "resources": "Ресурсы",
+        "status": "Статус",
+        "actions": "Действия"
+      },
+      "available": "Доступные",
+      "assigned": "Назначенные",
+      "allAssigned": "Все категории назначены",
+      "noneAssigned": "Категории не назначены"
+    },
+    "categoryEditor": {
+      "editCategory": "Редактировать категорию",
+      "name": "Название",
+      "slug": "Slug",
+      "description": "Описание",
+      "imageUrl": "URL изображения",
+      "sortOrder": "Порядок сортировки",
+      "active": "Активна",
+      "saving": "Сохранение...",
+      "save": "Сохранить",
+      "cancel": "Отмена"
+    },
+    "schemas": {
+      "title": "Схемы",
+      "addSchema": "Добавить схему",
+      "schemaName": "Название схемы",
+      "slug": "slug",
+      "noSchemasYet": "Схем пока нет.",
+      "table": {
+        "name": "Название",
+        "slug": "Slug",
+        "fields": "Поля",
+        "resources": "Ресурсы",
+        "status": "Статус",
+        "actions": "Действия"
+      }
+    },
+    "schemaEditor": {
+      "title": "Редактор схемы",
+      "noFieldsYet": "Полей пока нет. Добавьте поля, которые пользователи должны заполнить при бронировании.",
+      "table": {
+        "label": "Метка",
+        "id": "ID",
+        "type": "Тип",
+        "required": "Обязательное",
+        "options": "Варианты",
+        "actions": "Действия"
+      },
+      "fieldTypes": {
+        "string": "Строка",
+        "text": "Текст",
+        "integer": "Целое число",
+        "boolean": "Логическое",
+        "select": "Выбор"
+      },
+      "fieldLabel": "Метка поля",
+      "optionsHint": "Вариант1, Вариант2, ...",
+      "addField": "+ Добавить поле",
+      "remove": "Удалить",
+      "saving": "Сохранение...",
+      "save": "Сохранить",
+      "cancel": "Отмена"
+    },
+    "dashboard": {
+      "title": "Панель бронирований",
+      "todaysBookings": "Бронирования на сегодня",
+      "upcoming": "Предстоящие",
+      "resources": "Ресурсы",
+      "categories": "Категории",
+      "recentBookings": "Последние бронирования",
+      "noBookingsYet": "Бронирований пока нет.",
+      "unknown": "Неизвестно",
+      "table": {
+        "resource": "Ресурс",
+        "date": "Дата",
+        "status": "Статус",
+        "quantity": "Количество"
+      }
+    },
+    "bookings": {
+      "title": "Все бронирования",
+      "allStatuses": "Все статусы",
+      "noBookingsFound": "Бронирования не найдены.",
+      "statuses": {
+        "confirmed": "Подтверждено",
+        "pending": "Ожидает",
+        "cancelled": "Отменено",
+        "completed": "Завершено",
+        "noShow": "Неявка"
+      },
+      "table": {
+        "resource": "Ресурс",
+        "start": "Начало",
+        "end": "Окончание",
+        "status": "Статус",
+        "quantity": "Количество",
+        "created": "Создано"
+      }
+    },
+    "bookingDetail": {
+      "title": "Детали бронирования",
+      "backToBookings": "Назад к бронированиям",
+      "notFound": "Бронирование не найдено.",
+      "resource": "Ресурс",
+      "status": "Статус",
+      "start": "Начало",
+      "end": "Окончание",
+      "quantity": "Количество",
+      "invoice": "Счёт",
+      "viewInvoice": "Просмотреть счёт",
+      "customFields": "Дополнительные поля",
+      "userNotes": "Заметки пользователя",
+      "adminNotes": "Заметки администратора",
+      "actions": {
+        "confirm": "Подтвердить",
+        "cancel": "Отменить",
+        "markComplete": "Отметить как завершённое",
+        "markNoShow": "Отметить как неявку",
+        "cancelUserPolicy": "Отменить (политика пользователя)",
+        "cancelByProvider": "Отменить провайдером"
+      },
+      "cancelByProviderModal": {
+        "title": "Отмена провайдером",
+        "description": "Будет произведён 100% возврат средств независимо от политики отмены.",
+        "reasonPlaceholder": "Причина отмены (обязательно)",
+        "confirm": "Подтвердить отмену провайдером",
+        "cancel": "Отмена"
+      }
+    },
+    "imageGallery": {
+      "title": "Изображения",
+      "setPrimary": "Сделать основным",
+      "remove": "Удалить",
+      "addImage": "Добавить изображение",
+      "uploading": "Загрузка..."
+    },
+    "common": {
+      "loading": "Загрузка...",
+      "edit": "Редактировать",
+      "delete": "Удалить",
+      "add": "Добавить",
+      "active": "Активен",
+      "inactive": "Неактивен",
+      "noData": "—"
+    }
+  }
+}
