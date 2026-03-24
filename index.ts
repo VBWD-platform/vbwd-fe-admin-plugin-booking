@@ -60,6 +60,11 @@ export const bookingAdminPlugin: IPlugin = {
       name: 'booking-schema-editor',
       component: () => import('./booking/views/SchemaEditor.vue'),
     });
+    sdk.addRoute({
+      path: 'booking/resources/:id/schedule',
+      name: 'booking-resource-schedule',
+      component: () => import('./booking/views/ResourceSchedule.vue'),
+    });
 
     // Extension registry — add nav section to admin sidebar
     extensionRegistry.register('booking', {

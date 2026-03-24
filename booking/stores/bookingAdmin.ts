@@ -6,6 +6,10 @@ export interface Booking {
   id: string;
   resource_id: string;
   user_id: string;
+  customer_email: string;
+  customer_name: string;
+  customer_phone: string;
+  customer_company: string;
   invoice_id: string | null;
   start_at: string;
   end_at: string;

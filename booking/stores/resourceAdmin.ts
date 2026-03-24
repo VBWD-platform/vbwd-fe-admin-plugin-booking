@@ -65,6 +65,23 @@ export interface BookableResource {
   categories: Array<{ id: string; name: string; slug: string }>;
 }
 
+export interface ScheduleSlot {
+  start: string;
+  end: string;
+  status: 'available' | 'booked' | 'blocked';
+  booking_id?: string;
+  booking_status?: string;
+  customer_name?: string;
+  block_id?: string;
+  reason?: string;
+}
+
+export interface ScheduleDay {
+  date: string;
+  closed: boolean;
+  slots: ScheduleSlot[];
+}
+
 export const useResourceAdminStore = defineStore('resourceAdmin', () => {
   const resources = ref<BookableResource[]>([]);
   const currentResource = ref<BookableResource | null>(null);
@@ -195,6 +212,25 @@ export const useResourceAdminStore = defineStore('resourceAdmin', () => {
     await api.delete(`/admin/booking/resources/${resourceId}/images/${imageId}`);
   }
 
+  // ── Schedule ──────────────────────────────────────────────────────────
+
+  async function fetchSchedule(resourceId: string, dateFrom: string, dateTo: string): Promise<ScheduleDay[]> {
+    const response = await api.get(`/admin/booking/resources/${resourceId}/schedule?date_from=${dateFrom}&date_to=${dateTo}`) as { days: ScheduleDay[] };
+    return response.days;
+  }
+
+  async function blockSlot(resourceId: string, data: { date: string; start: string; end: string; reason?: string }) {
+    return await api.post(`/admin/booking/resources/${resourceId}/block-slot`, data);
+  }
+
+  async function unblockSlot(resourceId: string, blockId: string) {
+    await api.delete(`/admin/booking/resources/${resourceId}/block-slot/${blockId}`);
+  }
+
+  async function copySchedule(resourceId: string, targetResourceIds: string[]) {
+    return await api.post(`/admin/booking/resources/${resourceId}/copy-schedule`, { target_resource_ids: targetResourceIds });
+  }
+
   return {
     resources,
     currentResource,
@@ -221,5 +257,9 @@ export const useResourceAdminStore = defineStore('resourceAdmin', () => {
     setResourceImagePrimary,
     reorderResourceImages,
     deleteResourceImage,
+    fetchSchedule,
+    blockSlot,
+    unblockSlot,
+    copySchedule,
   };
 });

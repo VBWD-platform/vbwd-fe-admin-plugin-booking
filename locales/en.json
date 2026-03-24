@@ -28,6 +28,9 @@
       "exportCsv": "Export CSV",
       "exportJson": "Export JSON",
       "import": "Import",
+      "selected": "selected",
+      "activate": "Activate",
+      "deactivate": "Deactivate",
       "importResult": "Imported: {created} created, {updated} updated",
       "importErrors": "{count} errors",
       "importFailed": "Import failed"
@@ -166,12 +169,22 @@
         "status": "Status",
         "quantity": "Quantity",
         "created": "Created"
+      },
+      "bulk": {
+        "complete": "Mark Complete",
+        "noShow": "Mark No-Show",
+        "cancelUser": "Cancel (User)",
+        "cancelProvider": "Cancel (Provider)"
       }
     },
     "bookingDetail": {
       "title": "Booking Detail",
       "backToBookings": "Back to Bookings",
       "notFound": "Booking not found.",
+      "customer": "Customer",
+      "email": "Email",
+      "phone": "Phone",
+      "company": "Company",
       "resource": "Resource",
       "status": "Status",
       "start": "Start",
@@ -204,6 +217,45 @@
       "remove": "Remove",
       "addImage": "Add image",
       "uploading": "Uploading..."
+    },
+    "schedule": {
+      "title": "Schedule",
+      "editMode": "Edit Mode",
+      "viewMode": "View Mode",
+      "daily": "Day",
+      "weekly": "Week",
+      "monthly": "Month",
+      "available": "Available",
+      "booked": "Booked",
+      "blocked": "Blocked",
+      "closed": "Closed",
+      "blockSlot": "Block",
+      "unblockSlot": "Unblock",
+      "reason": "Reason (optional)",
+      "copySchedule": "Copy Schedule To...",
+      "copyTitle": "Copy Schedule",
+      "copyDesc": "Copy weekly schedule template to selected resources.",
+      "copyButton": "Copy",
+      "copied": "Schedule copied",
+      "weeklyTemplate": "Weekly Template",
+      "settings": "Settings",
+      "bufferMinutes": "Buffer (min)",
+      "leadTimeHours": "Lead time (hrs)",
+      "maxAdvanceDays": "Max advance (days)",
+      "saveSettings": "Save Settings",
+      "saved": "Settings saved",
+      "addBlock": "+ Add",
+      "to": "to",
+      "slotsCount": "slots",
+      "days": {
+        "mon": "Monday",
+        "tue": "Tuesday",
+        "wed": "Wednesday",
+        "thu": "Thursday",
+        "fri": "Friday",
+        "sat": "Saturday",
+        "sun": "Sunday"
+      }
     },
     "common": {
       "loading": "Loading...",

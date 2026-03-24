@@ -95,8 +95,13 @@ async function save() {
 </script>
 
 <template>
-  <div class="resource-form">
-    <h1>{{ isEdit ? $t('booking.resourceForm.editResource') : $t('booking.resourceForm.newResource') }}</h1>
+  <div class="plans-view">
+    <div class="plans-header">
+      <div class="header-left">
+        <h2>{{ isEdit ? $t('booking.resourceForm.editResource') : $t('booking.resourceForm.newResource') }}</h2>
+        <button v-if="isEdit" class="action-btn schedule-btn" @click="router.push(`/admin/booking/resources/${route.params.id}/schedule`)">{{ $t('booking.schedule.title') }}</button>
+      </div>
+    </div>
 
     <form @submit.prevent="save" class="resource-form__form">
       <div class="resource-form__grid">
@@ -226,6 +231,41 @@ async function save() {
 </template>
 
 <style scoped>
+.plans-view {
+  padding: 0;
+}
+
+.plans-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.header-left h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--vbwd-text, #1e293b);
+}
+
+.action-btn {
+  padding: 4px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.schedule-btn { background: #3498db; color: white; }
+.schedule-btn:hover { background: #2980b9; }
+
 .resource-form__form {
   background: var(--vbwd-bg-card, #fff);
   border: 1px solid var(--vbwd-border, #e2e8f0);
@@ -400,8 +440,6 @@ async function save() {
 .btn--secondary { background: var(--vbwd-bg-secondary, #f1f5f9); color: var(--vbwd-text, #1e293b); }
 
 @media (max-width: 768px) {
-  .resource-form { padding: 12px; }
-  .resource-form h1 { font-size: 1.2rem; }
   .resource-form__form { padding: 1rem; }
   .resource-form__grid { grid-template-columns: 1fr; }
   .categories-panels { grid-template-columns: 1fr; }

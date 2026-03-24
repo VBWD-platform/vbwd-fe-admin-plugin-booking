@@ -1,14 +1,93 @@
 {
-  "booking": {
-    "nav_section": {
-      "id": "booking",
-      "label": "Bookings",
-      "items": [
-        { "label": "Dashboard", "to": "/admin/booking" },
-        { "label": "All Bookings", "to": "/admin/booking/list" },
-        { "label": "Resources", "to": "/admin/booking/resources" }
+  "tabs": [
+    {
+      "id": "general",
+      "label": "General",
+      "fields": [
+        {
+          "key": "default_timezone",
+          "label": "Default Timezone",
+          "component": "input",
+          "inputType": "text"
+        },
+        {
+          "key": "default_confirmation_mode",
+          "label": "Confirmation Mode",
+          "component": "input",
+          "inputType": "text"
+        },
+        {
+          "key": "invoice_prefix",
+          "label": "Invoice Prefix",
+          "component": "input",
+          "inputType": "text"
+        }
       ]
     },
-    "dashboard_widget": true
-  }
+    {
+      "id": "scheduling",
+      "label": "Scheduling",
+      "fields": [
+        {
+          "key": "default_slot_duration_minutes",
+          "label": "Default Slot Duration (minutes)",
+          "component": "input",
+          "inputType": "number",
+          "min": 5,
+          "max": 480
+        },
+        {
+          "key": "default_buffer_minutes",
+          "label": "Default Buffer Between Slots (minutes)",
+          "component": "input",
+          "inputType": "number",
+          "min": 0,
+          "max": 120
+        },
+        {
+          "key": "min_lead_time_hours",
+          "label": "Minimum Lead Time (hours)",
+          "component": "input",
+          "inputType": "number",
+          "min": 0,
+          "max": 168
+        },
+        {
+          "key": "max_advance_booking_days",
+          "label": "Max Advance Booking (days)",
+          "component": "input",
+          "inputType": "number",
+          "min": 1,
+          "max": 365
+        }
+      ]
+    },
+    {
+      "id": "limits",
+      "label": "Limits & Policies",
+      "fields": [
+        {
+          "key": "cancellation_grace_period_hours",
+          "label": "Cancellation Grace Period (hours)",
+          "component": "input",
+          "inputType": "number",
+          "min": 0,
+          "max": 168
+        },
+        {
+          "key": "max_bookings_per_user_per_day",
+          "label": "Max Bookings Per User Per Day",
+          "component": "input",
+          "inputType": "number",
+          "min": 1,
+          "max": 100
+        },
+        {
+          "key": "enable_recurring_bookings",
+          "label": "Enable Recurring Bookings",
+          "component": "checkbox"
+        }
+      ]
+    }
+  ]
 }

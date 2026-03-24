@@ -44,16 +44,37 @@ function goBack() {
 </script>
 
 <template>
-  <div class="booking-detail">
-    <button @click="goBack" class="booking-detail__back">&larr; {{ $t('booking.bookingDetail.backToBookings') }}</button>
+  <div class="plans-view">
+    <div class="plans-header">
+      <div class="header-left">
+        <button @click="goBack" class="back-btn">&larr;</button>
+        <h2>{{ $t('booking.bookingDetail.title') }}</h2>
+        <span v-if="store.currentBooking" class="status-badge" :class="store.currentBooking.status">{{ store.currentBooking.status }}</span>
+      </div>
+    </div>
 
-    <div v-if="store.loading">{{ $t('booking.common.loading') }}</div>
+    <div v-if="store.loading" class="loading-state"><div class="spinner" /><p>{{ $t('booking.common.loading') }}</p></div>
 
     <template v-else-if="store.currentBooking">
-      <h1>{{ $t('booking.bookingDetail.title') }}</h1>
 
       <div class="booking-detail__card">
         <div class="booking-detail__grid">
+          <div class="booking-detail__field">
+            <label>{{ $t('booking.bookingDetail.customer') }}</label>
+            <span>{{ store.currentBooking.customer_name || store.currentBooking.customer_email || store.currentBooking.user_id }}</span>
+          </div>
+          <div class="booking-detail__field">
+            <label>{{ $t('booking.bookingDetail.email') }}</label>
+            <span>{{ store.currentBooking.customer_email }}</span>
+          </div>
+          <div class="booking-detail__field" v-if="store.currentBooking.customer_phone">
+            <label>{{ $t('booking.bookingDetail.phone') }}</label>
+            <span>{{ store.currentBooking.customer_phone }}</span>
+          </div>
+          <div class="booking-detail__field" v-if="store.currentBooking.customer_company">
+            <label>{{ $t('booking.bookingDetail.company') }}</label>
+            <span>{{ store.currentBooking.customer_company }}</span>
+          </div>
           <div class="booking-detail__field">
             <label>{{ $t('booking.bookingDetail.resource') }}</label>
             <span>{{ store.currentBooking.resource?.name || $t('booking.dashboard.unknown') }}</span>
@@ -137,19 +158,28 @@ function goBack() {
       </div>
     </template>
 
-    <p v-else>{{ $t('booking.bookingDetail.notFound') }}</p>
+    <p v-else class="empty-state">{{ $t('booking.bookingDetail.notFound') }}</p>
   </div>
 </template>
 
 <style scoped>
-.booking-detail__back {
-  background: none;
-  border: none;
-  color: var(--vbwd-primary, #3498db);
-  cursor: pointer;
-  padding: 0;
-  margin-bottom: 1rem;
-}
+.plans-view { background: white; padding: 20px; border-radius: 8px; }
+.plans-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.header-left { display: flex; align-items: center; gap: 12px; }
+.header-left h2 { margin: 0; color: #2c3e50; }
+.back-btn { background: none; border: 1px solid #ddd; border-radius: 4px; padding: 4px 10px; cursor: pointer; font-size: 16px; color: #3498db; }
+.back-btn:hover { background: #f0f0f0; }
+.loading-state { text-align: center; padding: 40px; color: #666; }
+.spinner { width: 40px; height: 40px; border: 3px solid #f3f3f3; border-top: 3px solid #3498db; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 15px; }
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+.empty-state { text-align: center; padding: 40px; color: #666; }
+
+.status-badge { display: inline-block; padding: 4px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: 500; }
+.status-badge.confirmed { background: #d4edda; color: #155724; }
+.status-badge.pending { background: #fff3cd; color: #856404; }
+.status-badge.cancelled { background: #f8d7da; color: #721c24; }
+.status-badge.completed { background: #cce5ff; color: #004085; }
+.status-badge.no_show { background: #e9ecef; color: #495057; }
 
 .booking-detail__card {
   background: var(--vbwd-bg-card, #fff);

@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { onMounted, ref, computed } from 'vue';
+import { onMounted, ref, computed, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import { useBookingAdminStore } from '../stores/bookingAdmin';
+import { api } from '@/api';
 
 const router = useRouter();
 const store = useBookingAdminStore();
@@ -71,6 +72,32 @@ onMounted(() => {
 function viewDetail(bookingId: string) {
   router.push(`/admin/booking/${bookingId}`);
 }
+
+// Bulk operations
+const selectedBookingIds = reactive(new Set<string>());
+
+const allBookingsSelected = computed(() =>
+  sortedBookings.value.length > 0 && sortedBookings.value.every(b => selectedBookingIds.has(b.id))
+);
+
+function toggleAllBookings() {
+  if (allBookingsSelected.value) sortedBookings.value.forEach(b => selectedBookingIds.delete(b.id));
+  else sortedBookings.value.forEach(b => selectedBookingIds.add(b.id));
+}
+
+function toggleBooking(bookingId: string) {
+  if (selectedBookingIds.has(bookingId)) selectedBookingIds.delete(bookingId);
+  else selectedBookingIds.add(bookingId);
+}
+
+async function bulkUpdateStatus(status: string) {
+  const ids = [...selectedBookingIds];
+  await Promise.all(ids.map(id =>
+    api.put(`/admin/booking/bookings/${id}`, { status })
+  ));
+  selectedBookingIds.clear();
+  await store.fetchBookings();
+}
 </script>
 
 <template>
@@ -83,6 +110,14 @@ function viewDetail(bookingId: string) {
           class="total-count"
         >{{ filteredBookings.length }} {{ $t('booking.common.noData') !== '—' ? '' : '' }}</span>
       </div>
+    </div>
+
+    <!-- Bulk action bar -->
+    <div v-if="selectedBookingIds.size > 0" class="bulk-bar">
+      <span>{{ selectedBookingIds.size }} {{ $t('booking.resources.selected') }}</span>
+      <button class="action-btn bulk-btn" @click="bulkUpdateStatus('completed')">{{ $t('booking.bookings.bulk.complete') }}</button>
+      <button class="action-btn bulk-btn" @click="bulkUpdateStatus('no_show')">{{ $t('booking.bookings.bulk.noShow') }}</button>
+      <button class="action-btn bulk-btn-warn" @click="bulkUpdateStatus('cancelled')">{{ $t('booking.bookings.bulk.cancelUser') }}</button>
     </div>
 
     <div class="plans-filters">
@@ -127,6 +162,7 @@ function viewDetail(bookingId: string) {
       <table class="plans-table">
         <thead>
           <tr>
+            <th class="checkbox-col"><input type="checkbox" :checked="allBookingsSelected" @change="toggleAllBookings"></th>
             <th
               class="sortable"
               @click="handleSort('resource')"
@@ -166,6 +202,7 @@ function viewDetail(bookingId: string) {
             class="plan-row"
             @click="viewDetail(booking.id)"
           >
+            <td class="checkbox-col" @click.stop><input type="checkbox" :checked="selectedBookingIds.has(booking.id)" @change="toggleBooking(booking.id)"></td>
             <td>{{ booking.resource?.name || $t('booking.dashboard.unknown') }}</td>
             <td>{{ formatDateTime(booking.start_at) }}</td>
             <td>{{ formatDateTime(booking.end_at) }}</td>
@@ -219,6 +256,15 @@ function viewDetail(bookingId: string) {
 .status-badge.cancelled { background: #f8d7da; color: #721c24; }
 .status-badge.completed { background: #cce5ff; color: #004085; }
 .status-badge.no_show { background: #e9ecef; color: #495057; }
+.bulk-bar { display: flex; align-items: center; gap: 10px; padding: 10px 15px; margin-bottom: 15px; background: #e3f2fd; border-radius: 6px; border: 1px solid #bbdefb; }
+.bulk-bar span { font-weight: 600; color: #1565c0; font-size: 0.9rem; margin-right: 5px; }
+.action-btn { padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer; font-size: 12px; }
+.bulk-btn { background: #ffc107; color: #212529; }
+.bulk-btn:hover { background: #e0a800; }
+.bulk-btn-warn { background: #f8d7da; color: #721c24; }
+.bulk-btn-warn:hover { background: #f5c6cb; }
+.checkbox-col { width: 40px; text-align: center; }
+.checkbox-col input[type="checkbox"] { cursor: pointer; }
 
 @media (max-width: 768px) {
   .plans-view { padding: 12px; border-radius: 0; }

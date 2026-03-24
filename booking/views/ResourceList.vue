@@ -17,8 +17,6 @@
     <template v-if="activeTab === 'resources'">
       <div class="plans-subheader">
         <div class="export-import-actions">
-          <button class="action-btn archive" @click="exportEntity('resources', 'csv')">{{ $t('booking.resources.exportCsv') }}</button>
-          <button class="action-btn archive" @click="exportEntity('resources', 'json')">{{ $t('booking.resources.exportJson') }}</button>
           <label class="action-btn archive import-label">
             {{ $t('booking.resources.import') }}
             <input type="file" accept=".csv,.json" class="import-input" @change="importEntity('resources', $event)">
@@ -26,6 +24,17 @@
         </div>
         <button class="create-btn" @click="createResource">{{ $t('booking.resources.newResource') }}</button>
       </div>
+
+      <!-- Bulk action bar -->
+      <div v-if="selectedResourceIds.size > 0" class="bulk-bar">
+        <span>{{ selectedResourceIds.size }} {{ $t('booking.resources.selected') }}</span>
+        <button class="action-btn archive" @click="bulkExport('csv')">{{ $t('booking.resources.exportCsv') }}</button>
+        <button class="action-btn archive" @click="bulkExport('json')">{{ $t('booking.resources.exportJson') }}</button>
+        <button class="action-btn archive" @click="bulkSetActive(true)">{{ $t('booking.resources.activate') }}</button>
+        <button class="action-btn archive" @click="bulkSetActive(false)">{{ $t('booking.resources.deactivate') }}</button>
+        <button class="action-btn delete" @click="bulkDelete">{{ $t('booking.common.delete') }}</button>
+      </div>
+
       <div class="plans-filters">
         <input v-model="searchQuery" type="text" :placeholder="$t('booking.resources.search')" class="search-input">
       </div>
@@ -40,6 +49,7 @@
         <table class="plans-table">
           <thead>
             <tr>
+              <th class="checkbox-col"><input type="checkbox" :checked="allResourcesSelected" @change="toggleAllResources"></th>
               <th class="sortable" @click="handleSort('name')">{{ $t('booking.resources.table.name') }} <span class="sort-indicator">{{ getSortIndicator('name') }}</span></th>
               <th>{{ $t('booking.resources.table.schema') }}</th>
               <th class="sortable" @click="handleSort('capacity')">{{ $t('booking.resources.table.capacity') }} <span class="sort-indicator">{{ getSortIndicator('capacity') }}</span></th>
@@ -51,6 +61,7 @@
           </thead>
           <tbody>
             <tr v-for="resource in sortedResources" :key="resource.id" class="plan-row" @click="editResource(resource.id)">
+              <td class="checkbox-col" @click.stop><input type="checkbox" :checked="selectedResourceIds.has(resource.id)" @change="toggleResource(resource.id)"></td>
               <td>{{ resource.name }}</td>
               <td><span class="category-slug">{{ resource.resource_type_name || resource.resource_type }}</span></td>
               <td>{{ resource.capacity }}</td>
@@ -62,7 +73,10 @@
               <td>
                 <span class="status-badge" :class="resource.is_active ? 'active' : 'inactive'" @click.stop="toggleActive(resource)">{{ resource.is_active ? $t('booking.common.active') : $t('booking.common.inactive') }}</span>
               </td>
-              <td @click.stop><button class="action-btn archive" @click="editResource(resource.id)">{{ $t('booking.common.edit') }}</button></td>
+              <td @click.stop>
+                <button class="action-btn archive" @click="editResource(resource.id)">{{ $t('booking.common.edit') }}</button>
+                <button class="action-btn schedule-btn" @click="openSchedule(resource.id)">{{ $t('booking.schedule.title') }}</button>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -161,7 +175,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, computed } from 'vue';
+import { onMounted, ref, computed, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import { useResourceAdminStore } from '../stores/resourceAdmin';
 import { api } from '@/api';
@@ -171,6 +185,7 @@ const importMessage = ref('');
 const store = useResourceAdminStore();
 const activeTab = ref<'resources' | 'categories' | 'schemas'>('resources');
 const searchQuery = ref('');
+const selectedResourceIds = reactive(new Set<string>());
 type SortColumn = 'name' | 'capacity' | 'price' | null;
 type SortDirection = 'asc' | 'desc';
 const sortColumn = ref<SortColumn>(null);
@@ -211,6 +226,7 @@ function getSortIndicator(column: SortColumn): string {
   return sortDirection.value === 'asc' ? '▲' : '▼';
 }
 function editResource(resourceId: string) { router.push(`/admin/booking/resources/${resourceId}`); }
+function openSchedule(resourceId: string) { router.push(`/admin/booking/resources/${resourceId}/schedule`); }
 function createResource() { router.push('/admin/booking/resources/new'); }
 async function toggleActive(resource: { id: string; is_active: boolean }) {
   await store.updateResource(resource.id, { is_active: !resource.is_active });
@@ -257,6 +273,49 @@ async function createSchema() {
   await store.createSchema({ name: newSchemaName.value, slug: newSchemaSlug.value, fields: [] });
   newSchemaName.value = '';
   newSchemaSlug.value = '';
+}
+
+// Bulk operations for resources
+const allResourcesSelected = computed(() =>
+  sortedResources.value.length > 0 && sortedResources.value.every(r => selectedResourceIds.has(r.id))
+);
+
+function toggleAllResources() {
+  if (allResourcesSelected.value) sortedResources.value.forEach(r => selectedResourceIds.delete(r.id));
+  else sortedResources.value.forEach(r => selectedResourceIds.add(r.id));
+}
+
+function toggleResource(resourceId: string) {
+  if (selectedResourceIds.has(resourceId)) selectedResourceIds.delete(resourceId);
+  else selectedResourceIds.add(resourceId);
+}
+
+async function bulkSetActive(active: boolean) {
+  const ids = [...selectedResourceIds];
+  await Promise.all(ids.map(id => store.updateResource(id, { is_active: active })));
+  selectedResourceIds.clear();
+  await store.fetchResources();
+}
+
+async function bulkDelete() {
+  if (!confirm(`Delete ${selectedResourceIds.size} resource(s)?`)) return;
+  const ids = [...selectedResourceIds];
+  await Promise.all(ids.map(id => store.deleteResource(id)));
+  selectedResourceIds.clear();
+}
+
+function bulkExport(format: string) {
+  if (format === 'json') {
+    const rows = store.resources.filter(r => selectedResourceIds.has(r.id));
+    const blob = new Blob([JSON.stringify(rows, null, 2)], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `resources.${format}`;
+    a.click();
+    URL.revokeObjectURL(a.href);
+  } else {
+    exportEntity('resources', format);
+  }
 }
 
 // Export / Import
@@ -336,6 +395,12 @@ async function importEntity(entity: string, event: Event) {
 .import-toast { padding: 10px 16px; border-radius: 6px; font-size: 13px; margin-bottom: 12px; background: #d1fae5; color: #065f46; }
 .action-btn.delete { background: #f8d7da; color: #721c24; margin-left: 4px; }
 .action-btn.delete:hover { background: #f5c6cb; }
+.schedule-btn { background: #3498db; color: white; margin-left: 4px; }
+.schedule-btn:hover { background: #2980b9; }
+.bulk-bar { display: flex; align-items: center; gap: 10px; padding: 10px 15px; margin-bottom: 15px; background: #e3f2fd; border-radius: 6px; border: 1px solid #bbdefb; }
+.bulk-bar span { font-weight: 600; color: #1565c0; font-size: 0.9rem; margin-right: 5px; }
+.checkbox-col { width: 40px; text-align: center; }
+.checkbox-col input[type="checkbox"] { cursor: pointer; }
 
 /* ── Tablet ───────────────────────────────────────────────── */
 @media (max-width: 1024px) {
