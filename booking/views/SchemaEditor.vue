@@ -4,19 +4,33 @@
       <h2>{{ schema ? schema.name : $t('booking.schemaEditor.title') }}</h2>
     </div>
 
-    <div v-if="loading" class="loading-state"><div class="spinner" /><p>{{ $t('booking.common.loading') }}</p></div>
+    <div
+      v-if="loading"
+      class="loading-state"
+    >
+      <div class="spinner" /><p>{{ $t('booking.common.loading') }}</p>
+    </div>
 
     <template v-else-if="schema">
-      <form class="resource-form__form" @submit.prevent="save">
+      <form
+        class="resource-form__form"
+        @submit.prevent="save"
+      >
         <!-- Name & Slug -->
         <div class="resource-form__grid">
           <div class="resource-form__field">
             <label>{{ $t('booking.resourceForm.name') }}</label>
-            <input v-model="schema.name" required />
+            <input
+              v-model="schema.name"
+              required
+            >
           </div>
           <div class="resource-form__field">
             <label>{{ $t('booking.resourceForm.slug') }}</label>
-            <input v-model="schema.slug" required />
+            <input
+              v-model="schema.slug"
+              required
+            >
           </div>
         </div>
 
@@ -24,11 +38,18 @@
         <div class="schema-fields-section">
           <h3>{{ $t('booking.schemas.table.fields') }}</h3>
 
-          <div v-if="schema.fields.length === 0" class="empty-state" style="padding: 20px;">
+          <div
+            v-if="schema.fields.length === 0"
+            class="empty-state"
+            style="padding: 20px;"
+          >
             <p>{{ $t('booking.schemaEditor.noFieldsYet') }}</p>
           </div>
 
-          <table v-else class="plans-table">
+          <table
+            v-else
+            class="plans-table"
+          >
             <thead>
               <tr>
                 <th>{{ $t('booking.schemaEditor.table.label') }}</th>
@@ -40,29 +61,49 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(field, index) in schema.fields" :key="index" class="plan-row">
+              <tr
+                v-for="(field, index) in schema.fields"
+                :key="index"
+                class="plan-row"
+              >
                 <td>
                   <input
                     v-model="field.label"
                     class="inline-input"
                     :placeholder="$t('booking.schemaEditor.fieldLabel')"
                     @blur="autoGenerateFieldId(field)"
-                  />
+                  >
                 </td>
                 <td>
                   <span class="category-slug">{{ field.id }}</span>
                 </td>
                 <td>
-                  <select v-model="field.type" class="inline-select">
-                    <option value="string">{{ $t('booking.schemaEditor.fieldTypes.string') }}</option>
-                    <option value="text">{{ $t('booking.schemaEditor.fieldTypes.text') }}</option>
-                    <option value="integer">{{ $t('booking.schemaEditor.fieldTypes.integer') }}</option>
-                    <option value="boolean">{{ $t('booking.schemaEditor.fieldTypes.boolean') }}</option>
-                    <option value="select">{{ $t('booking.schemaEditor.fieldTypes.select') }}</option>
+                  <select
+                    v-model="field.type"
+                    class="inline-select"
+                  >
+                    <option value="string">
+                      {{ $t('booking.schemaEditor.fieldTypes.string') }}
+                    </option>
+                    <option value="text">
+                      {{ $t('booking.schemaEditor.fieldTypes.text') }}
+                    </option>
+                    <option value="integer">
+                      {{ $t('booking.schemaEditor.fieldTypes.integer') }}
+                    </option>
+                    <option value="boolean">
+                      {{ $t('booking.schemaEditor.fieldTypes.boolean') }}
+                    </option>
+                    <option value="select">
+                      {{ $t('booking.schemaEditor.fieldTypes.select') }}
+                    </option>
                   </select>
                 </td>
                 <td>
-                  <input v-model="field.required" type="checkbox" />
+                  <input
+                    v-model="field.required"
+                    type="checkbox"
+                  >
                 </td>
                 <td>
                   <input
@@ -71,27 +112,50 @@
                     class="inline-input"
                     :placeholder="$t('booking.schemaEditor.optionsHint')"
                     @blur="parseOptions(field, $event)"
-                  />
-                  <span v-else class="no-category">—</span>
+                  >
+                  <span
+                    v-else
+                    class="no-category"
+                  >—</span>
                 </td>
                 <td @click.stop>
-                  <button type="button" class="action-btn delete" @click="removeField(index)">{{ $t('booking.schemaEditor.remove') }}</button>
+                  <button
+                    type="button"
+                    class="action-btn delete"
+                    @click="removeField(index)"
+                  >
+                    {{ $t('booking.schemaEditor.remove') }}
+                  </button>
                 </td>
               </tr>
             </tbody>
           </table>
 
           <div style="margin-top: 15px;">
-            <button type="button" class="create-btn" @click="addField">{{ $t('booking.schemaEditor.addField') }}</button>
+            <button
+              type="button"
+              class="create-btn"
+              @click="addField"
+            >
+              {{ $t('booking.schemaEditor.addField') }}
+            </button>
           </div>
         </div>
 
         <!-- Actions -->
         <div class="resource-form__actions">
-          <button type="submit" :disabled="saving" class="btn btn--primary">
+          <button
+            type="submit"
+            :disabled="saving"
+            class="btn btn--primary"
+          >
             {{ saving ? $t('booking.schemaEditor.saving') : $t('booking.schemaEditor.save') }}
           </button>
-          <button type="button" class="btn btn--secondary" @click="router.push('/admin/booking/resources')">
+          <button
+            type="button"
+            class="btn btn--secondary"
+            @click="router.push('/admin/booking/resources')"
+          >
             {{ $t('booking.schemaEditor.cancel') }}
           </button>
         </div>

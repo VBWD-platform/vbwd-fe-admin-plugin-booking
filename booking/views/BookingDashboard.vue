@@ -22,26 +22,50 @@ onMounted(async () => {
 
     <div class="booking-dashboard__stats">
       <div class="booking-dashboard__stat-card">
-        <div class="booking-dashboard__stat-value">{{ bookingStore.dashboardStats.today }}</div>
-        <div class="booking-dashboard__stat-label">{{ $t('booking.dashboard.todaysBookings') }}</div>
+        <div class="booking-dashboard__stat-value">
+          {{ bookingStore.dashboardStats.today }}
+        </div>
+        <div class="booking-dashboard__stat-label">
+          {{ $t('booking.dashboard.todaysBookings') }}
+        </div>
       </div>
       <div class="booking-dashboard__stat-card">
-        <div class="booking-dashboard__stat-value">{{ bookingStore.dashboardStats.upcoming }}</div>
-        <div class="booking-dashboard__stat-label">{{ $t('booking.dashboard.upcoming') }}</div>
+        <div class="booking-dashboard__stat-value">
+          {{ bookingStore.dashboardStats.upcoming }}
+        </div>
+        <div class="booking-dashboard__stat-label">
+          {{ $t('booking.dashboard.upcoming') }}
+        </div>
       </div>
       <div class="booking-dashboard__stat-card">
-        <div class="booking-dashboard__stat-value">{{ resourceStore.resources.length }}</div>
-        <div class="booking-dashboard__stat-label">{{ $t('booking.dashboard.resources') }}</div>
+        <div class="booking-dashboard__stat-value">
+          {{ resourceStore.resources.length }}
+        </div>
+        <div class="booking-dashboard__stat-label">
+          {{ $t('booking.dashboard.resources') }}
+        </div>
       </div>
       <div class="booking-dashboard__stat-card">
-        <div class="booking-dashboard__stat-value">{{ resourceStore.categories.length }}</div>
-        <div class="booking-dashboard__stat-label">{{ $t('booking.dashboard.categories') }}</div>
+        <div class="booking-dashboard__stat-value">
+          {{ resourceStore.categories.length }}
+        </div>
+        <div class="booking-dashboard__stat-label">
+          {{ $t('booking.dashboard.categories') }}
+        </div>
       </div>
     </div>
 
     <h2>{{ $t('booking.dashboard.recentBookings') }}</h2>
-    <div v-if="bookingStore.loading" class="booking-dashboard__loading">{{ $t('booking.common.loading') }}</div>
-    <table v-else-if="bookingStore.bookings.length" class="booking-dashboard__table">
+    <div
+      v-if="bookingStore.loading"
+      class="booking-dashboard__loading"
+    >
+      {{ $t('booking.common.loading') }}
+    </div>
+    <table
+      v-else-if="bookingStore.bookings.length"
+      class="booking-dashboard__table"
+    >
       <thead>
         <tr>
           <th>{{ $t('booking.dashboard.table.resource') }}</th>
@@ -54,8 +78,8 @@ onMounted(async () => {
         <tr
           v-for="booking in bookingStore.bookings.slice(0, 10)"
           :key="booking.id"
-          @click="$router.push(`/admin/booking/${booking.id}`)"
           class="booking-dashboard__row"
+          @click="$router.push(`/admin/booking/${booking.id}`)"
         >
           <td>{{ booking.resource?.name || $t('booking.dashboard.unknown') }}</td>
           <td>{{ new Date(booking.start_at).toLocaleString() }}</td>
@@ -68,7 +92,9 @@ onMounted(async () => {
         </tr>
       </tbody>
     </table>
-    <p v-else>{{ $t('booking.dashboard.noBookingsYet') }}</p>
+    <p v-else>
+      {{ $t('booking.dashboard.noBookingsYet') }}
+    </p>
   </div>
 </template>
 

@@ -4,33 +4,90 @@
     <div class="plans-header">
       <h2>{{ $t('booking.schedule.title') }}: {{ resource?.name || '...' }}</h2>
       <div class="header-actions">
-        <button class="action-btn archive" @click="showCopyModal = true">{{ $t('booking.schedule.copySchedule') }}</button>
+        <button
+          class="action-btn archive"
+          @click="showCopyModal = true"
+        >
+          {{ $t('booking.schedule.copySchedule') }}
+        </button>
       </div>
     </div>
 
     <!-- Date navigation + view tabs -->
     <div class="schedule-nav">
       <div class="date-nav">
-        <button class="nav-arrow" @click="navigateDate(-1)">&larr;</button>
+        <button
+          class="nav-arrow"
+          @click="navigateDate(-1)"
+        >
+          &larr;
+        </button>
         <span class="current-date">{{ formattedDateRange }}</span>
-        <button class="nav-arrow" @click="navigateDate(1)">&rarr;</button>
+        <button
+          class="nav-arrow"
+          @click="navigateDate(1)"
+        >
+          &rarr;
+        </button>
       </div>
       <div class="view-tabs">
-        <button class="tab-btn" :class="{ active: viewMode === 'day' }" @click="viewMode = 'day'">{{ $t('booking.schedule.daily') }}</button>
-        <button class="tab-btn" :class="{ active: viewMode === 'week' }" @click="viewMode = 'week'">{{ $t('booking.schedule.weekly') }}</button>
-        <button class="tab-btn" :class="{ active: viewMode === 'month' }" @click="viewMode = 'month'">{{ $t('booking.schedule.monthly') }}</button>
+        <button
+          class="tab-btn"
+          :class="{ active: viewMode === 'day' }"
+          @click="viewMode = 'day'"
+        >
+          {{ $t('booking.schedule.daily') }}
+        </button>
+        <button
+          class="tab-btn"
+          :class="{ active: viewMode === 'week' }"
+          @click="viewMode = 'week'"
+        >
+          {{ $t('booking.schedule.weekly') }}
+        </button>
+        <button
+          class="tab-btn"
+          :class="{ active: viewMode === 'month' }"
+          @click="viewMode = 'month'"
+        >
+          {{ $t('booking.schedule.monthly') }}
+        </button>
       </div>
     </div>
 
     <!-- Loading -->
-    <div v-if="scheduleLoading" class="loading-state"><div class="spinner" /><p>{{ $t('booking.common.loading') }}</p></div>
+    <div
+      v-if="scheduleLoading"
+      class="loading-state"
+    >
+      <div class="spinner" /><p>{{ $t('booking.common.loading') }}</p>
+    </div>
 
     <!-- Day View -->
-    <div v-else-if="viewMode === 'day'" class="day-view">
-      <div v-if="currentDayData" class="day-content">
-        <div v-if="currentDayData.closed" class="closed-banner">{{ $t('booking.schedule.closed') }}</div>
-        <div v-else-if="currentDayData.slots.length === 0" class="empty-state"><p>{{ $t('booking.schedule.available') }}: 0 {{ $t('booking.schedule.slotsCount') }}</p></div>
-        <div v-else class="slot-list">
+    <div
+      v-else-if="viewMode === 'day'"
+      class="day-view"
+    >
+      <div
+        v-if="currentDayData"
+        class="day-content"
+      >
+        <div
+          v-if="currentDayData.closed"
+          class="closed-banner"
+        >
+          {{ $t('booking.schedule.closed') }}
+        </div>
+        <div
+          v-else-if="currentDayData.slots.length === 0"
+          class="empty-state"
+        >
+          <p>{{ $t('booking.schedule.available') }}: 0 {{ $t('booking.schedule.slotsCount') }}</p>
+        </div>
+        <div
+          v-else
+          class="slot-list"
+        >
           <div
             v-for="(slot, slotIndex) in currentDayData.slots"
             :key="slotIndex"
@@ -39,27 +96,46 @@
             @click="slot.status === 'booked' && slot.booking_id ? router.push(`/admin/booking/${slot.booking_id}`) : handleSlotClick(slot)"
           >
             <span class="slot-time">{{ slot.start }} - {{ slot.end }}</span>
-            <span class="status-badge" :class="slot.booking_status || slot.status">{{ slot.booking_status || $t('booking.schedule.' + slot.status) }}</span>
-            <span v-if="slot.customer_name" class="slot-customer">{{ slot.customer_name }}</span>
-            <span v-if="slot.reason" class="slot-reason">{{ slot.reason }}</span>
+            <span
+              class="status-badge"
+              :class="slot.booking_status || slot.status"
+            >{{ slot.booking_status || $t('booking.schedule.' + slot.status) }}</span>
+            <span
+              v-if="slot.customer_name"
+              class="slot-customer"
+            >{{ slot.customer_name }}</span>
+            <span
+              v-if="slot.reason"
+              class="slot-reason"
+            >{{ slot.reason }}</span>
           </div>
         </div>
       </div>
     </div>
 
     <!-- Week View -->
-    <div v-else-if="viewMode === 'week'" class="week-view">
+    <div
+      v-else-if="viewMode === 'week'"
+      class="week-view"
+    >
       <div class="plans-table-wrap">
         <table class="plans-table week-table">
           <thead>
             <tr>
-              <th v-for="day in scheduleDays" :key="day.date" :class="{ 'today-col': isToday(day.date) }">
+              <th
+                v-for="day in scheduleDays"
+                :key="day.date"
+                :class="{ 'today-col': isToday(day.date) }"
+              >
                 {{ formatWeekDay(day.date) }}<br><small>{{ formatShortDate(day.date) }}</small>
               </th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="timeRow in weekTimeRows" :key="timeRow">
+            <tr
+              v-for="timeRow in weekTimeRows"
+              :key="timeRow"
+            >
               <td
                 v-for="day in scheduleDays"
                 :key="day.date + timeRow"
@@ -75,10 +151,17 @@
     </div>
 
     <!-- Month View -->
-    <div v-else-if="viewMode === 'month'" class="month-view">
+    <div
+      v-else-if="viewMode === 'month'"
+      class="month-view"
+    >
       <div class="month-grid">
         <div class="month-header-row">
-          <span v-for="dayName in weekDayNames" :key="dayName" class="month-header-cell">{{ dayName }}</span>
+          <span
+            v-for="dayName in weekDayNames"
+            :key="dayName"
+            class="month-header-cell"
+          >{{ dayName }}</span>
         </div>
         <div class="month-body">
           <div
@@ -89,7 +172,10 @@
             @click="cell.inMonth && goToDay(cell.date)"
           >
             <span class="month-day-num">{{ cell.dayNum }}</span>
-            <span v-if="cell.inMonth && cell.slotInfo" class="month-slot-info">{{ cell.slotInfo }}</span>
+            <span
+              v-if="cell.inMonth && cell.slotInfo"
+              class="month-slot-info"
+            >{{ cell.slotInfo }}</span>
           </div>
         </div>
       </div>
@@ -99,20 +185,49 @@
     <div class="section-divider" />
     <div class="template-section">
       <h3>{{ $t('booking.schedule.weeklyTemplate') }}</h3>
-      <div v-for="(dayKey, dayIndex) in weekDayKeys" :key="dayKey" class="template-day">
+      <div
+        v-for="(dayKey, dayIndex) in weekDayKeys"
+        :key="dayKey"
+        class="template-day"
+      >
         <span class="template-day-label">{{ $t('booking.schedule.days.' + dayKey) }}</span>
         <div class="template-blocks">
           <template v-if="templateSchedule[dayIndex] && templateSchedule[dayIndex].length > 0">
-            <div v-for="(block, blockIndex) in templateSchedule[dayIndex]" :key="blockIndex" class="template-block">
-              <input type="time" v-model="block.start" class="time-input">
+            <div
+              v-for="(block, blockIndex) in templateSchedule[dayIndex]"
+              :key="blockIndex"
+              class="template-block"
+            >
+              <input
+                v-model="block.start"
+                type="time"
+                class="time-input"
+              >
               <span class="template-to">{{ $t('booking.schedule.to') }}</span>
-              <input type="time" v-model="block.end" class="time-input">
-              <button class="action-btn delete" @click="removeTemplateBlock(dayIndex, blockIndex)">&times;</button>
+              <input
+                v-model="block.end"
+                type="time"
+                class="time-input"
+              >
+              <button
+                class="action-btn delete"
+                @click="removeTemplateBlock(dayIndex, blockIndex)"
+              >
+                &times;
+              </button>
             </div>
           </template>
-          <span v-else class="closed-label">-- {{ $t('booking.schedule.closed') }} --</span>
+          <span
+            v-else
+            class="closed-label"
+          >-- {{ $t('booking.schedule.closed') }} --</span>
         </div>
-        <button class="action-btn archive add-block-btn" @click="addTemplateBlock(dayIndex)">{{ $t('booking.schedule.addBlock') }}</button>
+        <button
+          class="action-btn archive add-block-btn"
+          @click="addTemplateBlock(dayIndex)"
+        >
+          {{ $t('booking.schedule.addBlock') }}
+        </button>
       </div>
     </div>
 
@@ -122,50 +237,123 @@
       <div class="settings-row">
         <label class="setting-field">
           <span>{{ $t('booking.schedule.bufferMinutes') }}</span>
-          <input type="number" v-model.number="settingsBuffer" min="0" class="search-input setting-input">
+          <input
+            v-model.number="settingsBuffer"
+            type="number"
+            min="0"
+            class="search-input setting-input"
+          >
         </label>
         <label class="setting-field">
           <span>{{ $t('booking.schedule.leadTimeHours') }}</span>
-          <input type="number" v-model.number="settingsLeadTime" min="0" class="search-input setting-input">
+          <input
+            v-model.number="settingsLeadTime"
+            type="number"
+            min="0"
+            class="search-input setting-input"
+          >
         </label>
         <label class="setting-field">
           <span>{{ $t('booking.schedule.maxAdvanceDays') }}</span>
-          <input type="number" v-model.number="settingsMaxAdvance" min="1" class="search-input setting-input">
+          <input
+            v-model.number="settingsMaxAdvance"
+            type="number"
+            min="1"
+            class="search-input setting-input"
+          >
         </label>
       </div>
-      <button class="create-btn" @click="saveSettings" :disabled="saving">{{ saving ? '...' : $t('booking.schedule.saveSettings') }}</button>
-      <p v-if="savedMessage" class="import-toast">{{ savedMessage }}</p>
+      <button
+        class="create-btn"
+        :disabled="saving"
+        @click="saveSettings"
+      >
+        {{ saving ? '...' : $t('booking.schedule.saveSettings') }}
+      </button>
+      <p
+        v-if="savedMessage"
+        class="import-toast"
+      >
+        {{ savedMessage }}
+      </p>
     </div>
 
     <!-- Copy Modal -->
-    <div v-if="showCopyModal" class="modal-overlay" @click.self="showCopyModal = false">
+    <div
+      v-if="showCopyModal"
+      class="modal-overlay"
+      @click.self="showCopyModal = false"
+    >
       <div class="modal-box">
         <h3>{{ $t('booking.schedule.copyTitle') }}</h3>
         <p>{{ $t('booking.schedule.copyDesc') }}</p>
         <div class="copy-resource-list">
-          <label v-for="otherResource in otherResources" :key="otherResource.id" class="copy-resource-item">
-            <input type="checkbox" v-model="copyTargetIds" :value="otherResource.id">
+          <label
+            v-for="otherResource in otherResources"
+            :key="otherResource.id"
+            class="copy-resource-item"
+          >
+            <input
+              v-model="copyTargetIds"
+              type="checkbox"
+              :value="otherResource.id"
+            >
             <span>{{ otherResource.name }}</span>
           </label>
         </div>
         <div class="modal-actions">
-          <button class="create-btn" :disabled="copyTargetIds.length === 0 || copying" @click="doCopy">{{ copying ? '...' : $t('booking.schedule.copyButton') }}</button>
-          <button class="action-btn archive" @click="showCopyModal = false">{{ $t('booking.resourceForm.cancel') }}</button>
+          <button
+            class="create-btn"
+            :disabled="copyTargetIds.length === 0 || copying"
+            @click="doCopy"
+          >
+            {{ copying ? '...' : $t('booking.schedule.copyButton') }}
+          </button>
+          <button
+            class="action-btn archive"
+            @click="showCopyModal = false"
+          >
+            {{ $t('booking.resourceForm.cancel') }}
+          </button>
         </div>
-        <p v-if="copyMessage" class="import-toast">{{ copyMessage }}</p>
+        <p
+          v-if="copyMessage"
+          class="import-toast"
+        >
+          {{ copyMessage }}
+        </p>
       </div>
     </div>
 
     <!-- Block Slot Modal -->
-    <div v-if="showBlockModal" class="modal-overlay" @click.self="showBlockModal = false">
+    <div
+      v-if="showBlockModal"
+      class="modal-overlay"
+      @click.self="showBlockModal = false"
+    >
       <div class="modal-box">
         <h3>{{ $t('booking.schedule.blockSlot') }}</h3>
         <div class="block-form">
-          <input type="text" v-model="blockReason" :placeholder="$t('booking.schedule.reason')" class="search-input">
+          <input
+            v-model="blockReason"
+            type="text"
+            :placeholder="$t('booking.schedule.reason')"
+            class="search-input"
+          >
         </div>
         <div class="modal-actions">
-          <button class="create-btn" @click="confirmBlock">{{ $t('booking.schedule.blockSlot') }}</button>
-          <button class="action-btn archive" @click="showBlockModal = false">{{ $t('booking.resourceForm.cancel') }}</button>
+          <button
+            class="create-btn"
+            @click="confirmBlock"
+          >
+            {{ $t('booking.schedule.blockSlot') }}
+          </button>
+          <button
+            class="action-btn archive"
+            @click="showBlockModal = false"
+          >
+            {{ $t('booking.resourceForm.cancel') }}
+          </button>
         </div>
       </div>
     </div>

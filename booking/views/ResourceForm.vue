@@ -99,68 +99,126 @@ async function save() {
     <div class="plans-header">
       <div class="header-left">
         <h2>{{ isEdit ? $t('booking.resourceForm.editResource') : $t('booking.resourceForm.newResource') }}</h2>
-        <button v-if="isEdit" class="action-btn schedule-btn" @click="router.push(`/admin/booking/resources/${route.params.id}/schedule`)">{{ $t('booking.schedule.title') }}</button>
+        <button
+          v-if="isEdit"
+          class="action-btn schedule-btn"
+          @click="router.push(`/admin/booking/resources/${route.params.id}/schedule`)"
+        >
+          {{ $t('booking.schedule.title') }}
+        </button>
       </div>
     </div>
 
-    <form @submit.prevent="save" class="resource-form__form">
+    <form
+      class="resource-form__form"
+      @submit.prevent="save"
+    >
       <div class="resource-form__grid">
         <div class="resource-form__field">
           <label>{{ $t('booking.resourceForm.name') }}</label>
-          <input v-model="form.name" @blur="!isEdit && generateSlug()" required />
+          <input
+            v-model="form.name"
+            required
+            @blur="!isEdit && generateSlug()"
+          >
         </div>
 
         <div class="resource-form__field">
           <label>{{ $t('booking.resourceForm.slug') }}</label>
-          <input v-model="form.slug" required />
+          <input
+            v-model="form.slug"
+            required
+          >
         </div>
 
         <div class="resource-form__field">
           <label>{{ $t('booking.resourceForm.schema') }}</label>
           <select v-model="form.custom_schema_id">
-            <option value="">{{ $t('booking.resourceForm.noSchema') }}</option>
-            <option v-for="schema in store.schemas" :key="schema.id" :value="schema.id">{{ schema.name }} ({{ schema.fields.length }} fields)</option>
+            <option value="">
+              {{ $t('booking.resourceForm.noSchema') }}
+            </option>
+            <option
+              v-for="schema in store.schemas"
+              :key="schema.id"
+              :value="schema.id"
+            >
+              {{ schema.name }} ({{ schema.fields.length }} fields)
+            </option>
           </select>
         </div>
 
         <div class="resource-form__field">
           <label>{{ $t('booking.resourceForm.capacity') }}</label>
-          <input v-model.number="form.capacity" type="number" min="1" required />
+          <input
+            v-model.number="form.capacity"
+            type="number"
+            min="1"
+            required
+          >
         </div>
 
         <div class="resource-form__field">
           <label>{{ $t('booking.resourceForm.slotDuration') }}</label>
-          <input v-model.number="form.slot_duration_minutes" type="number" min="1" :placeholder="$t('booking.resourceForm.slotDurationHint')" />
+          <input
+            v-model.number="form.slot_duration_minutes"
+            type="number"
+            min="1"
+            :placeholder="$t('booking.resourceForm.slotDurationHint')"
+          >
         </div>
 
         <div class="resource-form__field">
           <label>{{ $t('booking.resourceForm.price') }}</label>
-          <input v-model="form.price" type="number" step="0.01" min="0" required />
+          <input
+            v-model="form.price"
+            type="number"
+            step="0.01"
+            min="0"
+            required
+          >
         </div>
 
         <div class="resource-form__field">
           <label>{{ $t('booking.resourceForm.currency') }}</label>
-          <input v-model="form.currency" maxlength="3" required />
+          <input
+            v-model="form.currency"
+            maxlength="3"
+            required
+          >
         </div>
 
         <div class="resource-form__field">
           <label>{{ $t('booking.resourceForm.priceUnit') }}</label>
           <select v-model="form.price_unit">
-            <option value="per_slot">{{ $t('booking.resourceForm.priceUnits.perSlot') }}</option>
-            <option value="per_hour">{{ $t('booking.resourceForm.priceUnits.perHour') }}</option>
-            <option value="per_night">{{ $t('booking.resourceForm.priceUnits.perNight') }}</option>
-            <option value="per_seat">{{ $t('booking.resourceForm.priceUnits.perSeat') }}</option>
+            <option value="per_slot">
+              {{ $t('booking.resourceForm.priceUnits.perSlot') }}
+            </option>
+            <option value="per_hour">
+              {{ $t('booking.resourceForm.priceUnits.perHour') }}
+            </option>
+            <option value="per_night">
+              {{ $t('booking.resourceForm.priceUnits.perNight') }}
+            </option>
+            <option value="per_seat">
+              {{ $t('booking.resourceForm.priceUnits.perSeat') }}
+            </option>
           </select>
         </div>
 
         <div class="resource-form__field">
           <label>{{ $t('booking.resourceForm.sortOrder') }}</label>
-          <input v-model.number="form.sort_order" type="number" />
+          <input
+            v-model.number="form.sort_order"
+            type="number"
+          >
         </div>
 
         <div class="resource-form__field">
           <label>
-            <input v-model="form.is_active" type="checkbox" />
+            <input
+              v-model="form.is_active"
+              type="checkbox"
+            >
             {{ $t('booking.resourceForm.active') }}
           </label>
         </div>
@@ -168,7 +226,10 @@ async function save() {
 
       <div class="resource-form__field resource-form__field--full">
         <label>{{ $t('booking.resourceForm.description') }}</label>
-        <textarea v-model="form.description" rows="3"></textarea>
+        <textarea
+          v-model="form.description"
+          rows="3"
+        />
       </div>
 
       <div class="categories-section">
@@ -183,9 +244,20 @@ async function save() {
                 class="category-item"
               >
                 <span>{{ category.name }}</span>
-                <button type="button" class="assign-btn" @click="assignCategory(category.id)">+</button>
+                <button
+                  type="button"
+                  class="assign-btn"
+                  @click="assignCategory(category.id)"
+                >
+                  +
+                </button>
               </div>
-              <p v-if="availableCategories.length === 0" class="empty-hint">{{ $t('booking.categories.allAssigned') }}</p>
+              <p
+                v-if="availableCategories.length === 0"
+                class="empty-hint"
+              >
+                {{ $t('booking.categories.allAssigned') }}
+              </p>
             </div>
           </div>
           <div class="category-panel">
@@ -197,32 +269,61 @@ async function save() {
                 class="category-item"
               >
                 <span>{{ category.name }}</span>
-                <button type="button" class="unassign-btn" @click="unassignCategory(category.id)">&times;</button>
+                <button
+                  type="button"
+                  class="unassign-btn"
+                  @click="unassignCategory(category.id)"
+                >
+                  &times;
+                </button>
               </div>
-              <p v-if="assignedCategories.length === 0" class="empty-hint">{{ $t('booking.categories.noneAssigned') }}</p>
+              <p
+                v-if="assignedCategories.length === 0"
+                class="empty-hint"
+              >
+                {{ $t('booking.categories.noneAssigned') }}
+              </p>
             </div>
           </div>
         </div>
       </div>
 
       <!-- Image Gallery (edit mode only) -->
-      <ResourceImageGallery v-if="isEdit" :resource-id="route.params.id as string" />
+      <ResourceImageGallery
+        v-if="isEdit"
+        :resource-id="route.params.id as string"
+      />
 
       <!-- Schema fields preview -->
-      <div v-if="selectedSchemaFields.length" class="schema-preview">
+      <div
+        v-if="selectedSchemaFields.length"
+        class="schema-preview"
+      >
         <h3>{{ $t('booking.resourceForm.schemaPreview') }}</h3>
         <div class="schema-preview__fields">
-          <span v-for="field in selectedSchemaFields" :key="field.id" class="schema-preview__field">
+          <span
+            v-for="field in selectedSchemaFields"
+            :key="field.id"
+            class="schema-preview__field"
+          >
             {{ field.label }} <small>({{ field.type }}{{ field.required ? ', required' : '' }})</small>
           </span>
         </div>
       </div>
 
       <div class="resource-form__actions">
-        <button type="submit" :disabled="saving" class="btn btn--primary">
+        <button
+          type="submit"
+          :disabled="saving"
+          class="btn btn--primary"
+        >
           {{ saving ? $t('booking.resourceForm.saving') : (isEdit ? $t('booking.resourceForm.update') : $t('booking.resourceForm.create')) }}
         </button>
-        <button type="button" @click="router.push('/admin/booking/resources')" class="btn btn--secondary">
+        <button
+          type="button"
+          class="btn btn--secondary"
+          @click="router.push('/admin/booking/resources')"
+        >
           {{ $t('booking.resourceForm.cancel') }}
         </button>
       </div>

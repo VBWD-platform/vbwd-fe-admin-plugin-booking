@@ -6,12 +6,35 @@
 
     <!-- Tabs -->
     <div class="tabs">
-      <button class="tab-btn" :class="{ active: activeTab === 'resources' }" @click="activeTab = 'resources'">{{ $t('booking.resources.tabs.resources') }}</button>
-      <button class="tab-btn" :class="{ active: activeTab === 'categories' }" @click="activeTab = 'categories'">{{ $t('booking.resources.tabs.categories') }}</button>
-      <button class="tab-btn" :class="{ active: activeTab === 'schemas' }" @click="activeTab = 'schemas'">{{ $t('booking.resources.tabs.schemas') }}</button>
+      <button
+        class="tab-btn"
+        :class="{ active: activeTab === 'resources' }"
+        @click="activeTab = 'resources'"
+      >
+        {{ $t('booking.resources.tabs.resources') }}
+      </button>
+      <button
+        class="tab-btn"
+        :class="{ active: activeTab === 'categories' }"
+        @click="activeTab = 'categories'"
+      >
+        {{ $t('booking.resources.tabs.categories') }}
+      </button>
+      <button
+        class="tab-btn"
+        :class="{ active: activeTab === 'schemas' }"
+        @click="activeTab = 'schemas'"
+      >
+        {{ $t('booking.resources.tabs.schemas') }}
+      </button>
     </div>
 
-    <p v-if="importMessage" class="import-toast">{{ importMessage }}</p>
+    <p
+      v-if="importMessage"
+      class="import-toast"
+    >
+      {{ importMessage }}
+    </p>
 
     <!-- Resources Tab -->
     <template v-if="activeTab === 'resources'">
@@ -19,63 +42,178 @@
         <div class="export-import-actions">
           <label class="action-btn archive import-label">
             {{ $t('booking.resources.import') }}
-            <input type="file" accept=".csv,.json" class="import-input" @change="importEntity('resources', $event)">
+            <input
+              type="file"
+              accept=".csv,.json"
+              class="import-input"
+              @change="importEntity('resources', $event)"
+            >
           </label>
         </div>
-        <button class="create-btn" @click="createResource">{{ $t('booking.resources.newResource') }}</button>
+        <button
+          class="create-btn"
+          @click="createResource"
+        >
+          {{ $t('booking.resources.newResource') }}
+        </button>
       </div>
 
       <!-- Bulk action bar -->
-      <div v-if="selectedResourceIds.size > 0" class="bulk-bar">
+      <div
+        v-if="selectedResourceIds.size > 0"
+        class="bulk-bar"
+      >
         <span>{{ selectedResourceIds.size }} {{ $t('booking.resources.selected') }}</span>
-        <button class="action-btn archive" @click="bulkExport('csv')">{{ $t('booking.resources.exportCsv') }}</button>
-        <button class="action-btn archive" @click="bulkExport('json')">{{ $t('booking.resources.exportJson') }}</button>
-        <button class="action-btn archive" @click="bulkSetActive(true)">{{ $t('booking.resources.activate') }}</button>
-        <button class="action-btn archive" @click="bulkSetActive(false)">{{ $t('booking.resources.deactivate') }}</button>
-        <button class="action-btn delete" @click="bulkDelete">{{ $t('booking.common.delete') }}</button>
+        <button
+          class="action-btn archive"
+          @click="bulkExport('csv')"
+        >
+          {{ $t('booking.resources.exportCsv') }}
+        </button>
+        <button
+          class="action-btn archive"
+          @click="bulkExport('json')"
+        >
+          {{ $t('booking.resources.exportJson') }}
+        </button>
+        <button
+          class="action-btn archive"
+          @click="bulkSetActive(true)"
+        >
+          {{ $t('booking.resources.activate') }}
+        </button>
+        <button
+          class="action-btn archive"
+          @click="bulkSetActive(false)"
+        >
+          {{ $t('booking.resources.deactivate') }}
+        </button>
+        <button
+          class="action-btn delete"
+          @click="bulkDelete"
+        >
+          {{ $t('booking.common.delete') }}
+        </button>
       </div>
 
       <div class="plans-filters">
-        <input v-model="searchQuery" type="text" :placeholder="$t('booking.resources.search')" class="search-input">
+        <input
+          v-model="searchQuery"
+          type="text"
+          :placeholder="$t('booking.resources.search')"
+          class="search-input"
+        >
       </div>
 
-      <div v-if="store.loading" class="loading-state"><div class="spinner" /><p>{{ $t('booking.common.loading') }}</p></div>
-      <div v-else-if="filteredResources.length === 0" class="empty-state">
+      <div
+        v-if="store.loading"
+        class="loading-state"
+      >
+        <div class="spinner" /><p>{{ $t('booking.common.loading') }}</p>
+      </div>
+      <div
+        v-else-if="filteredResources.length === 0"
+        class="empty-state"
+      >
         <p>{{ $t('booking.resources.noResourcesFound') }}</p>
-        <button class="create-btn" @click="createResource">{{ $t('booking.resources.createFirst') }}</button>
+        <button
+          class="create-btn"
+          @click="createResource"
+        >
+          {{ $t('booking.resources.createFirst') }}
+        </button>
       </div>
 
-      <div v-else class="plans-table-wrap">
+      <div
+        v-else
+        class="plans-table-wrap"
+      >
         <table class="plans-table">
           <thead>
             <tr>
-              <th class="checkbox-col"><input type="checkbox" :checked="allResourcesSelected" @change="toggleAllResources"></th>
-              <th class="sortable" @click="handleSort('name')">{{ $t('booking.resources.table.name') }} <span class="sort-indicator">{{ getSortIndicator('name') }}</span></th>
+              <th class="checkbox-col">
+                <input
+                  type="checkbox"
+                  :checked="allResourcesSelected"
+                  @change="toggleAllResources"
+                >
+              </th>
+              <th
+                class="sortable"
+                @click="handleSort('name')"
+              >
+                {{ $t('booking.resources.table.name') }} <span class="sort-indicator">{{ getSortIndicator('name') }}</span>
+              </th>
               <th>{{ $t('booking.resources.table.schema') }}</th>
-              <th class="sortable" @click="handleSort('capacity')">{{ $t('booking.resources.table.capacity') }} <span class="sort-indicator">{{ getSortIndicator('capacity') }}</span></th>
-              <th class="sortable" @click="handleSort('price')">{{ $t('booking.resources.table.price') }} <span class="sort-indicator">{{ getSortIndicator('price') }}</span></th>
+              <th
+                class="sortable"
+                @click="handleSort('capacity')"
+              >
+                {{ $t('booking.resources.table.capacity') }} <span class="sort-indicator">{{ getSortIndicator('capacity') }}</span>
+              </th>
+              <th
+                class="sortable"
+                @click="handleSort('price')"
+              >
+                {{ $t('booking.resources.table.price') }} <span class="sort-indicator">{{ getSortIndicator('price') }}</span>
+              </th>
               <th>{{ $t('booking.resources.table.categories') }}</th>
               <th>{{ $t('booking.resources.table.status') }}</th>
               <th>{{ $t('booking.resources.table.actions') }}</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="resource in sortedResources" :key="resource.id" class="plan-row" @click="editResource(resource.id)">
-              <td class="checkbox-col" @click.stop><input type="checkbox" :checked="selectedResourceIds.has(resource.id)" @change="toggleResource(resource.id)"></td>
+            <tr
+              v-for="resource in sortedResources"
+              :key="resource.id"
+              class="plan-row"
+              @click="editResource(resource.id)"
+            >
+              <td
+                class="checkbox-col"
+                @click.stop
+              >
+                <input
+                  type="checkbox"
+                  :checked="selectedResourceIds.has(resource.id)"
+                  @change="toggleResource(resource.id)"
+                >
+              </td>
               <td>{{ resource.name }}</td>
               <td><span class="category-slug">{{ resource.resource_type_name || resource.resource_type }}</span></td>
               <td>{{ resource.capacity }}</td>
               <td>{{ resource.price }} {{ resource.currency }} / {{ resource.price_unit.replace('per_', '') }}</td>
               <td class="categories-cell">
-                <span v-for="cat in (resource.categories || [])" :key="cat.id" class="category-slug">{{ cat.name }}</span>
-                <span v-if="!resource.categories || resource.categories.length === 0" class="no-category">—</span>
+                <span
+                  v-for="cat in (resource.categories || [])"
+                  :key="cat.id"
+                  class="category-slug"
+                >{{ cat.name }}</span>
+                <span
+                  v-if="!resource.categories || resource.categories.length === 0"
+                  class="no-category"
+                >—</span>
               </td>
               <td>
-                <span class="status-badge" :class="resource.is_active ? 'active' : 'inactive'" @click.stop="toggleActive(resource)">{{ resource.is_active ? $t('booking.common.active') : $t('booking.common.inactive') }}</span>
+                <span
+                  class="status-badge"
+                  :class="resource.is_active ? 'active' : 'inactive'"
+                  @click.stop="toggleActive(resource)"
+                >{{ resource.is_active ? $t('booking.common.active') : $t('booking.common.inactive') }}</span>
               </td>
               <td @click.stop>
-                <button class="action-btn archive" @click="editResource(resource.id)">{{ $t('booking.common.edit') }}</button>
-                <button class="action-btn schedule-btn" @click="openSchedule(resource.id)">{{ $t('booking.schedule.title') }}</button>
+                <button
+                  class="action-btn archive"
+                  @click="editResource(resource.id)"
+                >
+                  {{ $t('booking.common.edit') }}
+                </button>
+                <button
+                  class="action-btn schedule-btn"
+                  @click="openSchedule(resource.id)"
+                >
+                  {{ $t('booking.schedule.title') }}
+                </button>
               </td>
             </tr>
           </tbody>
@@ -87,15 +225,33 @@
     <template v-if="activeTab === 'categories'">
       <div class="plans-subheader">
         <div class="export-import-actions">
-          <button class="action-btn archive" @click="exportEntity('categories', 'csv')">{{ $t('booking.resources.exportCsv') }}</button>
-          <button class="action-btn archive" @click="exportEntity('categories', 'json')">{{ $t('booking.resources.exportJson') }}</button>
+          <button
+            class="action-btn archive"
+            @click="exportEntity('categories', 'csv')"
+          >
+            {{ $t('booking.resources.exportCsv') }}
+          </button>
+          <button
+            class="action-btn archive"
+            @click="exportEntity('categories', 'json')"
+          >
+            {{ $t('booking.resources.exportJson') }}
+          </button>
           <label class="action-btn archive import-label">
             {{ $t('booking.resources.import') }}
-            <input type="file" accept=".csv,.json" class="import-input" @change="importEntity('categories', $event)">
+            <input
+              type="file"
+              accept=".csv,.json"
+              class="import-input"
+              @change="importEntity('categories', $event)"
+            >
           </label>
         </div>
       </div>
-      <div v-if="store.categories.length" class="plans-table-wrap">
+      <div
+        v-if="store.categories.length"
+        class="plans-table-wrap"
+      >
         <table class="plans-table">
           <thead>
             <tr>
@@ -108,35 +264,80 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="category in store.categories" :key="category.id" class="plan-row" @click="editCategory(category.id)">
+            <tr
+              v-for="category in store.categories"
+              :key="category.id"
+              class="plan-row"
+              @click="editCategory(category.id)"
+            >
               <td>{{ category.name }}</td>
               <td><span class="category-slug">{{ category.slug }}</span></td>
               <td>{{ category.description || '—' }}</td>
               <td>{{ countResourcesInCategory(category.id) }}</td>
-              <td><span class="status-badge" :class="category.is_active ? 'active' : 'inactive'">{{ category.is_active ? $t('booking.common.active') : $t('booking.common.inactive') }}</span></td>
+              <td>
+                <span
+                  class="status-badge"
+                  :class="category.is_active ? 'active' : 'inactive'"
+                >{{ category.is_active ? $t('booking.common.active') : $t('booking.common.inactive') }}</span>
+              </td>
               <td @click.stop>
-                <button class="action-btn archive" @click="editCategory(category.id)">{{ $t('booking.common.edit') }}</button>
-                <button class="action-btn delete" @click="deleteCategory(category.id)">{{ $t('booking.common.delete') }}</button>
+                <button
+                  class="action-btn archive"
+                  @click="editCategory(category.id)"
+                >
+                  {{ $t('booking.common.edit') }}
+                </button>
+                <button
+                  class="action-btn delete"
+                  @click="deleteCategory(category.id)"
+                >
+                  {{ $t('booking.common.delete') }}
+                </button>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
-      <div v-else class="empty-state"><p>{{ $t('booking.categories.noCategoriesYet') }}</p></div>
+      <div
+        v-else
+        class="empty-state"
+      >
+        <p>{{ $t('booking.categories.noCategoriesYet') }}</p>
+      </div>
 
       <div class="add-form-section">
         <h3>{{ $t('booking.categories.addCategory') }}</h3>
         <div class="add-form-row">
-          <input v-model="newCategoryName" type="text" :placeholder="$t('booking.categories.categoryName')" class="search-input" @blur="generateCategorySlug">
-          <input v-model="newCategorySlug" type="text" :placeholder="$t('booking.categories.slug')" class="search-input">
-          <button class="create-btn" :disabled="!newCategoryName || !newCategorySlug" @click="createCategory">{{ $t('booking.common.add') }}</button>
+          <input
+            v-model="newCategoryName"
+            type="text"
+            :placeholder="$t('booking.categories.categoryName')"
+            class="search-input"
+            @blur="generateCategorySlug"
+          >
+          <input
+            v-model="newCategorySlug"
+            type="text"
+            :placeholder="$t('booking.categories.slug')"
+            class="search-input"
+          >
+          <button
+            class="create-btn"
+            :disabled="!newCategoryName || !newCategorySlug"
+            @click="createCategory"
+          >
+            {{ $t('booking.common.add') }}
+          </button>
         </div>
       </div>
     </template>
 
     <!-- Schemas Tab -->
     <template v-if="activeTab === 'schemas'">
-      <div v-if="store.schemas.length" class="plans-table-wrap">
+      <div
+        v-if="store.schemas.length"
+        class="plans-table-wrap"
+      >
         <table class="plans-table">
           <thead>
             <tr>
@@ -149,25 +350,64 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="schema in store.schemas" :key="schema.id" class="plan-row" @click="editSchema(schema.id)">
+            <tr
+              v-for="schema in store.schemas"
+              :key="schema.id"
+              class="plan-row"
+              @click="editSchema(schema.id)"
+            >
               <td>{{ schema.name }}</td>
               <td><span class="category-slug">{{ schema.slug }}</span></td>
               <td>{{ schema.fields.length }}</td>
               <td>{{ countResourcesBySchema(schema.slug) }}</td>
-              <td><span class="status-badge" :class="schema.is_active ? 'active' : 'inactive'">{{ schema.is_active ? $t('booking.common.active') : $t('booking.common.inactive') }}</span></td>
-              <td @click.stop><button class="action-btn archive" @click="deleteSchema(schema.id)">{{ $t('booking.common.delete') }}</button></td>
+              <td>
+                <span
+                  class="status-badge"
+                  :class="schema.is_active ? 'active' : 'inactive'"
+                >{{ schema.is_active ? $t('booking.common.active') : $t('booking.common.inactive') }}</span>
+              </td>
+              <td @click.stop>
+                <button
+                  class="action-btn archive"
+                  @click="deleteSchema(schema.id)"
+                >
+                  {{ $t('booking.common.delete') }}
+                </button>
+              </td>
             </tr>
           </tbody>
         </table>
       </div>
-      <div v-else class="empty-state"><p>{{ $t('booking.schemas.noSchemasYet') }}</p></div>
+      <div
+        v-else
+        class="empty-state"
+      >
+        <p>{{ $t('booking.schemas.noSchemasYet') }}</p>
+      </div>
 
       <div class="add-form-section">
         <h3>{{ $t('booking.schemas.addSchema') }}</h3>
         <div class="add-form-row">
-          <input v-model="newSchemaName" type="text" :placeholder="$t('booking.schemas.schemaName')" class="search-input" @blur="generateSchemaSlug">
-          <input v-model="newSchemaSlug" type="text" :placeholder="$t('booking.schemas.slug')" class="search-input">
-          <button class="create-btn" :disabled="!newSchemaName || !newSchemaSlug" @click="createSchema">{{ $t('booking.common.add') }}</button>
+          <input
+            v-model="newSchemaName"
+            type="text"
+            :placeholder="$t('booking.schemas.schemaName')"
+            class="search-input"
+            @blur="generateSchemaSlug"
+          >
+          <input
+            v-model="newSchemaSlug"
+            type="text"
+            :placeholder="$t('booking.schemas.slug')"
+            class="search-input"
+          >
+          <button
+            class="create-btn"
+            :disabled="!newSchemaName || !newSchemaSlug"
+            @click="createSchema"
+          >
+            {{ $t('booking.common.add') }}
+          </button>
         </div>
       </div>
     </template>

@@ -113,11 +113,29 @@ async function bulkUpdateStatus(status: string) {
     </div>
 
     <!-- Bulk action bar -->
-    <div v-if="selectedBookingIds.size > 0" class="bulk-bar">
+    <div
+      v-if="selectedBookingIds.size > 0"
+      class="bulk-bar"
+    >
       <span>{{ selectedBookingIds.size }} {{ $t('booking.resources.selected') }}</span>
-      <button class="action-btn bulk-btn" @click="bulkUpdateStatus('completed')">{{ $t('booking.bookings.bulk.complete') }}</button>
-      <button class="action-btn bulk-btn" @click="bulkUpdateStatus('no_show')">{{ $t('booking.bookings.bulk.noShow') }}</button>
-      <button class="action-btn bulk-btn-warn" @click="bulkUpdateStatus('cancelled')">{{ $t('booking.bookings.bulk.cancelUser') }}</button>
+      <button
+        class="action-btn bulk-btn"
+        @click="bulkUpdateStatus('completed')"
+      >
+        {{ $t('booking.bookings.bulk.complete') }}
+      </button>
+      <button
+        class="action-btn bulk-btn"
+        @click="bulkUpdateStatus('no_show')"
+      >
+        {{ $t('booking.bookings.bulk.noShow') }}
+      </button>
+      <button
+        class="action-btn bulk-btn-warn"
+        @click="bulkUpdateStatus('cancelled')"
+      >
+        {{ $t('booking.bookings.bulk.cancelUser') }}
+      </button>
     </div>
 
     <div class="plans-filters">
@@ -131,12 +149,24 @@ async function bulkUpdateStatus(status: string) {
         v-model="statusFilter"
         class="filter-select"
       >
-        <option value="">{{ $t('booking.bookings.allStatuses') }}</option>
-        <option value="confirmed">{{ $t('booking.bookings.statuses.confirmed') }}</option>
-        <option value="pending">{{ $t('booking.bookings.statuses.pending') }}</option>
-        <option value="cancelled">{{ $t('booking.bookings.statuses.cancelled') }}</option>
-        <option value="completed">{{ $t('booking.bookings.statuses.completed') }}</option>
-        <option value="no_show">{{ $t('booking.bookings.statuses.noShow') }}</option>
+        <option value="">
+          {{ $t('booking.bookings.allStatuses') }}
+        </option>
+        <option value="confirmed">
+          {{ $t('booking.bookings.statuses.confirmed') }}
+        </option>
+        <option value="pending">
+          {{ $t('booking.bookings.statuses.pending') }}
+        </option>
+        <option value="cancelled">
+          {{ $t('booking.bookings.statuses.cancelled') }}
+        </option>
+        <option value="completed">
+          {{ $t('booking.bookings.statuses.completed') }}
+        </option>
+        <option value="no_show">
+          {{ $t('booking.bookings.statuses.noShow') }}
+        </option>
       </select>
     </div>
 
@@ -162,7 +192,13 @@ async function bulkUpdateStatus(status: string) {
       <table class="plans-table">
         <thead>
           <tr>
-            <th class="checkbox-col"><input type="checkbox" :checked="allBookingsSelected" @change="toggleAllBookings"></th>
+            <th class="checkbox-col">
+              <input
+                type="checkbox"
+                :checked="allBookingsSelected"
+                @change="toggleAllBookings"
+              >
+            </th>
             <th
               class="sortable"
               @click="handleSort('resource')"
@@ -202,7 +238,16 @@ async function bulkUpdateStatus(status: string) {
             class="plan-row"
             @click="viewDetail(booking.id)"
           >
-            <td class="checkbox-col" @click.stop><input type="checkbox" :checked="selectedBookingIds.has(booking.id)" @change="toggleBooking(booking.id)"></td>
+            <td
+              class="checkbox-col"
+              @click.stop
+            >
+              <input
+                type="checkbox"
+                :checked="selectedBookingIds.has(booking.id)"
+                @change="toggleBooking(booking.id)"
+              >
+            </td>
             <td>{{ booking.resource?.name || $t('booking.dashboard.unknown') }}</td>
             <td>{{ formatDateTime(booking.start_at) }}</td>
             <td>{{ formatDateTime(booking.end_at) }}</td>

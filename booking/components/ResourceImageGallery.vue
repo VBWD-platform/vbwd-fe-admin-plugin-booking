@@ -52,24 +52,36 @@ onMounted(loadImages);
         class="image-gallery__card"
         :class="{ primary: image.is_primary }"
       >
-        <img :src="image.url" :alt="image.alt || ''" />
+        <img
+          :src="image.url"
+          :alt="image.alt || ''"
+        >
         <div class="image-gallery__actions">
           <button
-            @click="setPrimary(image.id)"
             :class="{ active: image.is_primary }"
             :title="$t('booking.imageGallery.setPrimary')"
-          >&#9733;</button>
+            @click="setPrimary(image.id)"
+          >
+            &#9733;
+          </button>
           <button
-            @click="removeImage(image.id)"
             class="delete"
             :title="$t('booking.imageGallery.remove')"
-          >&times;</button>
+            @click="removeImage(image.id)"
+          >
+            &times;
+          </button>
         </div>
       </div>
       <label class="image-gallery__add-card">
         <span v-if="uploading">{{ $t('booking.imageGallery.uploading') }}</span>
         <span v-else>+</span>
-        <input type="file" accept="image/*" @change="handleUpload" :disabled="uploading" />
+        <input
+          type="file"
+          accept="image/*"
+          :disabled="uploading"
+          @change="handleUpload"
+        >
       </label>
     </div>
   </div>

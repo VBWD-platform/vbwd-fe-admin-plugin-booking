@@ -4,48 +4,82 @@
       <h2>{{ category ? category.name : $t('booking.categoryEditor.editCategory') }}</h2>
     </div>
 
-    <div v-if="loading" class="loading-state"><div class="spinner" /><p>{{ $t('booking.common.loading') }}</p></div>
+    <div
+      v-if="loading"
+      class="loading-state"
+    >
+      <div class="spinner" /><p>{{ $t('booking.common.loading') }}</p>
+    </div>
 
     <template v-else-if="category">
-      <form class="resource-form__form" @submit.prevent="save">
+      <form
+        class="resource-form__form"
+        @submit.prevent="save"
+      >
         <div class="resource-form__grid">
           <div class="resource-form__field">
             <label>{{ $t('booking.categoryEditor.name') }}</label>
-            <input v-model="category.name" required />
+            <input
+              v-model="category.name"
+              required
+            >
           </div>
           <div class="resource-form__field">
             <label>{{ $t('booking.categoryEditor.slug') }}</label>
-            <input v-model="category.slug" required />
+            <input
+              v-model="category.slug"
+              required
+            >
           </div>
         </div>
 
         <div class="resource-form__field resource-form__field--full">
           <label>{{ $t('booking.categoryEditor.description') }}</label>
-          <textarea v-model="category.description" rows="3"></textarea>
+          <textarea
+            v-model="category.description"
+            rows="3"
+          />
         </div>
 
         <div class="resource-form__grid">
           <div class="resource-form__field">
             <label>{{ $t('booking.categoryEditor.imageUrl') }}</label>
-            <input v-model="category.image_url" placeholder="https://..." />
+            <input
+              v-model="category.image_url"
+              placeholder="https://..."
+            >
           </div>
           <div class="resource-form__field">
             <label>{{ $t('booking.categoryEditor.sortOrder') }}</label>
-            <input v-model.number="category.sort_order" type="number" />
+            <input
+              v-model.number="category.sort_order"
+              type="number"
+            >
           </div>
           <div class="resource-form__field">
             <label>
-              <input v-model="category.is_active" type="checkbox" />
+              <input
+                v-model="category.is_active"
+                type="checkbox"
+              >
               {{ $t('booking.categoryEditor.active') }}
             </label>
           </div>
         </div>
 
         <div class="resource-form__actions">
-          <button type="submit" :disabled="saving" class="btn btn--primary">
+          <button
+            type="submit"
+            :disabled="saving"
+            class="btn btn--primary"
+          >
             {{ saving ? $t('booking.categoryEditor.saving') : $t('booking.categoryEditor.save') }}
           </button>
-          <button type="button" class="btn btn--secondary" @click="goBack">
+          <button
+            type="button"
+            class="btn btn--secondary"
+            @click="goBack"
+          >
             {{ $t('booking.categoryEditor.cancel') }}
           </button>
         </div>
