@@ -66,22 +66,30 @@ export const bookingAdminPlugin: IPlugin = {
       component: () => import('./booking/views/ResourceSchedule.vue'),
     });
 
-    // Extension registry — add nav section to admin sidebar
+    // Routes are registered here (install runs once).
+    // Nav sections are registered in activate() so they respect enable/disable.
+  },
+
+  activate() {
     extensionRegistry.register('booking', {
-      navSections: [
-        {
-          id: 'booking',
-          label: 'Bookings',
-          items: [
-            { label: 'Dashboard', to: '/admin/booking' },
-            { label: 'All Bookings', to: '/admin/booking/list' },
-            { label: 'Resources', to: '/admin/booking/resources' },
-          ],
-        },
-      ],
+      sectionItems: {
+        sales: [
+          {
+            label: 'Bookings',
+            to: '/admin/booking',
+            id: 'bookings',
+            children: [
+              { label: 'Dashboard', to: '/admin/booking' },
+              { label: 'All Bookings', to: '/admin/booking/list' },
+              { label: 'Resources', to: '/admin/booking/resources' },
+            ],
+          },
+        ],
+      },
     });
   },
 
-  activate() {},
-  deactivate() {},
+  deactivate() {
+    extensionRegistry.unregister('booking');
+  },
 };
