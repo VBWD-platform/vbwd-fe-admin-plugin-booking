@@ -29,41 +29,49 @@ export const bookingAdminPlugin: IPlugin = {
       path: 'booking',
       name: 'booking-dashboard',
       component: () => import('./booking/views/BookingDashboard.vue'),
+      meta: { requiredPermission: 'booking.bookings.view' },
     });
     sdk.addRoute({
       path: 'booking/list',
       name: 'booking-list',
       component: () => import('./booking/views/BookingList.vue'),
+      meta: { requiredPermission: 'booking.bookings.view' },
     });
     sdk.addRoute({
       path: 'booking/:id',
       name: 'booking-detail',
       component: () => import('./booking/views/BookingDetail.vue'),
+      meta: { requiredPermission: 'booking.bookings.view' },
     });
     sdk.addRoute({
       path: 'booking/resources',
       name: 'booking-resources',
       component: () => import('./booking/views/ResourceList.vue'),
+      meta: { requiredPermission: 'booking.resources.view' },
     });
     sdk.addRoute({
       path: 'booking/resources/:id',
       name: 'booking-resource-form',
       component: () => import('./booking/views/ResourceForm.vue'),
+      meta: { requiredPermission: 'booking.resources.view' },
     });
     sdk.addRoute({
       path: 'booking/categories/:id',
       name: 'booking-category-editor',
       component: () => import('./booking/views/CategoryEditor.vue'),
+      meta: { requiredPermission: 'booking.resources.manage' },
     });
     sdk.addRoute({
       path: 'booking/schemas/:id',
       name: 'booking-schema-editor',
       component: () => import('./booking/views/SchemaEditor.vue'),
+      meta: { requiredPermission: 'booking.resources.manage' },
     });
     sdk.addRoute({
       path: 'booking/resources/:id/schedule',
       name: 'booking-resource-schedule',
       component: () => import('./booking/views/ResourceSchedule.vue'),
+      meta: { requiredPermission: 'booking.resources.manage' },
     });
 
     // Routes are registered here (install runs once).
@@ -78,10 +86,11 @@ export const bookingAdminPlugin: IPlugin = {
             label: 'Bookings',
             to: '/admin/booking',
             id: 'bookings',
+            requiredPermission: 'booking.bookings.view',
             children: [
-              { label: 'Dashboard', to: '/admin/booking' },
-              { label: 'All Bookings', to: '/admin/booking/list' },
-              { label: 'Resources', to: '/admin/booking/resources' },
+              { label: 'Dashboard', to: '/admin/booking', requiredPermission: 'booking.bookings.view' },
+              { label: 'All Bookings', to: '/admin/booking/list', requiredPermission: 'booking.bookings.view' },
+              { label: 'Resources', to: '/admin/booking/resources', requiredPermission: 'booking.resources.view' },
             ],
           },
         ],

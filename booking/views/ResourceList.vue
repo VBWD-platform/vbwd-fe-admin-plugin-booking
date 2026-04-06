@@ -51,6 +51,7 @@
           </label>
         </div>
         <button
+          v-if="canManage"
           class="create-btn"
           @click="createResource"
         >
@@ -77,18 +78,21 @@
           {{ $t('booking.resources.exportJson') }}
         </button>
         <button
+          v-if="canManage"
           class="action-btn archive"
           @click="bulkSetActive(true)"
         >
           {{ $t('booking.resources.activate') }}
         </button>
         <button
+          v-if="canManage"
           class="action-btn archive"
           @click="bulkSetActive(false)"
         >
           {{ $t('booking.resources.deactivate') }}
         </button>
         <button
+          v-if="canManage"
           class="action-btn delete"
           @click="bulkDelete"
         >
@@ -282,12 +286,14 @@
               </td>
               <td @click.stop>
                 <button
+                  v-if="canManage"
                   class="action-btn archive"
                   @click="editCategory(category.id)"
                 >
                   {{ $t('booking.common.edit') }}
                 </button>
                 <button
+                  v-if="canManage"
                   class="action-btn delete"
                   @click="deleteCategory(category.id)"
                 >
@@ -322,6 +328,7 @@
             class="search-input"
           >
           <button
+            v-if="canManage"
             class="create-btn"
             :disabled="!newCategoryName || !newCategorySlug"
             @click="createCategory"
@@ -368,6 +375,7 @@
               </td>
               <td @click.stop>
                 <button
+                  v-if="canManage"
                   class="action-btn archive"
                   @click="deleteSchema(schema.id)"
                 >
@@ -402,6 +410,7 @@
             class="search-input"
           >
           <button
+            v-if="canManage"
             class="create-btn"
             :disabled="!newSchemaName || !newSchemaSlug"
             @click="createSchema"
@@ -418,9 +427,12 @@
 import { onMounted, ref, computed, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import { useResourceAdminStore } from '../stores/resourceAdmin';
+import { useAuthStore } from '@/stores/auth';
 import { api } from '@/api';
 
 const router = useRouter();
+const authStore = useAuthStore();
+const canManage = computed(() => authStore.hasPermission('booking.resources.manage'));
 const importMessage = ref('');
 const store = useResourceAdminStore();
 const activeTab = ref<'resources' | 'categories' | 'schemas'>('resources');

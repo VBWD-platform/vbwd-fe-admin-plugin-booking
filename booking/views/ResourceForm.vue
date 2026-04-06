@@ -2,11 +2,14 @@
 import { onMounted, ref, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useResourceAdminStore } from '../stores/resourceAdmin';
+import { useAuthStore } from '@/stores/auth';
 import ResourceImageGallery from '../components/ResourceImageGallery.vue';
 
 const route = useRoute();
 const router = useRouter();
 const store = useResourceAdminStore();
+const authStore = useAuthStore();
+const canManage = computed(() => authStore.hasPermission('booking.resources.manage'));
 
 const isEdit = computed(() => route.params.id && route.params.id !== 'new');
 const saving = ref(false);
@@ -313,6 +316,7 @@ async function save() {
 
       <div class="resource-form__actions">
         <button
+          v-if="canManage"
           type="submit"
           :disabled="saving"
           class="btn btn--primary"

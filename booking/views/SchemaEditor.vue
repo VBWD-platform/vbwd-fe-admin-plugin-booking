@@ -120,6 +120,7 @@
                 </td>
                 <td @click.stop>
                   <button
+                    v-if="canManage"
                     type="button"
                     class="action-btn delete"
                     @click="removeField(index)"
@@ -133,6 +134,7 @@
 
           <div style="margin-top: 15px;">
             <button
+              v-if="canManage"
               type="button"
               class="create-btn"
               @click="addField"
@@ -145,6 +147,7 @@
         <!-- Actions -->
         <div class="resource-form__actions">
           <button
+            v-if="canManage"
             type="submit"
             :disabled="saving"
             class="btn btn--primary"
@@ -165,13 +168,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useResourceAdminStore, type SchemaField } from '../stores/resourceAdmin';
+import { useAuthStore } from '@/stores/auth';
 
 const route = useRoute();
 const router = useRouter();
 const store = useResourceAdminStore();
+const authStore = useAuthStore();
+const canManage = computed(() => authStore.hasPermission('booking.configure'));
 
 const schemaId = route.params.id as string;
 const schema = ref<{ name: string; slug: string; fields: SchemaField[] } | null>(null);

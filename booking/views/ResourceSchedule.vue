@@ -3,7 +3,10 @@
     <!-- Header -->
     <div class="plans-header">
       <h2>{{ $t('booking.schedule.title') }}: {{ resource?.name || '...' }}</h2>
-      <div class="header-actions">
+      <div
+        v-if="canManage"
+        class="header-actions"
+      >
         <button
           class="action-btn archive"
           @click="showCopyModal = true"
@@ -182,8 +185,14 @@
     </div>
 
     <!-- Weekly Template -->
-    <div class="section-divider" />
-    <div class="template-section">
+    <div
+      v-if="canManage"
+      class="section-divider"
+    />
+    <div
+      v-if="canManage"
+      class="template-section"
+    >
       <h3>{{ $t('booking.schedule.weeklyTemplate') }}</h3>
       <div
         v-for="(dayKey, dayIndex) in weekDayKeys"
@@ -232,7 +241,10 @@
     </div>
 
     <!-- Settings -->
-    <div class="template-section">
+    <div
+      v-if="canManage"
+      class="template-section"
+    >
       <h3>{{ $t('booking.schedule.settings') }}</h3>
       <div class="settings-row">
         <label class="setting-field">
@@ -327,7 +339,7 @@
 
     <!-- Block Slot Modal -->
     <div
-      v-if="showBlockModal"
+      v-if="canManage && showBlockModal"
       class="modal-overlay"
       @click.self="showBlockModal = false"
     >
@@ -364,7 +376,11 @@
 import { ref, computed, onMounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
+import { useAuthStore } from '@/stores/auth';
 import { useResourceAdminStore, type ScheduleDay, type ScheduleSlot, type BookableResource } from '../stores/resourceAdmin';
+
+const authStore = useAuthStore();
+const canManage = computed(() => authStore.hasPermission('booking.resources.manage'));
 
 const route = useRoute();
 const router = useRouter();

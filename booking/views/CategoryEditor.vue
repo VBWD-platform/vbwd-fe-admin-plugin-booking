@@ -69,6 +69,7 @@
 
         <div class="resource-form__actions">
           <button
+            v-if="canManage"
             type="submit"
             :disabled="saving"
             class="btn btn--primary"
@@ -89,13 +90,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useResourceAdminStore, type ResourceCategory } from '../stores/resourceAdmin';
+import { useAuthStore } from '@/stores/auth';
 
 const route = useRoute();
 const router = useRouter();
 const store = useResourceAdminStore();
+const authStore = useAuthStore();
+const canManage = computed(() => authStore.hasPermission('booking.resources.manage'));
 
 const categoryId = route.params.id as string;
 const category = ref<Partial<ResourceCategory> | null>(null);

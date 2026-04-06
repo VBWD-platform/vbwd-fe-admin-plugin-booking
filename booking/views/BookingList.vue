@@ -1,8 +1,12 @@
 <script setup lang="ts">
 import { onMounted, ref, computed, reactive } from 'vue';
 import { useRouter } from 'vue-router';
+import { useAuthStore } from '@/stores/auth';
 import { useBookingAdminStore } from '../stores/bookingAdmin';
 import { api } from '@/api';
+
+const authStore = useAuthStore();
+const canManage = computed(() => authStore.hasPermission('booking.bookings.manage'));
 
 const router = useRouter();
 const store = useBookingAdminStore();
@@ -114,7 +118,7 @@ async function bulkUpdateStatus(status: string) {
 
     <!-- Bulk action bar -->
     <div
-      v-if="selectedBookingIds.size > 0"
+      v-if="canManage && selectedBookingIds.size > 0"
       class="bulk-bar"
     >
       <span>{{ selectedBookingIds.size }} {{ $t('booking.resources.selected') }}</span>
@@ -192,7 +196,10 @@ async function bulkUpdateStatus(status: string) {
       <table class="plans-table">
         <thead>
           <tr>
-            <th class="checkbox-col">
+            <th
+              v-if="canManage"
+              class="checkbox-col"
+            >
               <input
                 type="checkbox"
                 :checked="allBookingsSelected"
@@ -239,6 +246,7 @@ async function bulkUpdateStatus(status: string) {
             @click="viewDetail(booking.id)"
           >
             <td
+              v-if="canManage"
               class="checkbox-col"
               @click.stop
             >

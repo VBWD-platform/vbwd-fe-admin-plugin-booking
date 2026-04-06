@@ -1,11 +1,14 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useBookingAdminStore } from '../stores/bookingAdmin';
+import { useAuthStore } from '@/stores/auth';
 
 const route = useRoute();
 const router = useRouter();
 const store = useBookingAdminStore();
+const authStore = useAuthStore();
+const canManage = computed(() => authStore.hasPermission('booking.bookings.manage'));
 const cancelReason = ref('');
 const showCancelByProvider = ref(false);
 
@@ -161,7 +164,7 @@ function goBack() {
 
       <!-- Admin Actions -->
       <div
-        v-if="store.currentBooking.status === 'pending'"
+        v-if="store.currentBooking.status === 'pending' && canManage"
         class="booking-detail__actions"
       >
         <button
@@ -179,7 +182,7 @@ function goBack() {
       </div>
 
       <div
-        v-if="store.currentBooking.status === 'confirmed'"
+        v-if="store.currentBooking.status === 'confirmed' && canManage"
         class="booking-detail__actions"
       >
         <button
