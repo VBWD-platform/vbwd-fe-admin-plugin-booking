@@ -172,9 +172,23 @@ jobs:
           done
           curl -sf http://localhost:5000/api/v1/health || exit 1
 
+      - name: Run migrations
+        working-directory: vbwd-backend
+        run: docker compose exec -T api alembic upgrade head || true
+
       - name: Seed test data
         working-directory: vbwd-backend
-        run: docker compose exec -T api flask seed-test-data || true
+        run: |
+          docker compose exec -T api flask seed-test-data || \
+          docker compose exec -T api python -c "
+          import os; os.environ['TEST_DATA_SEED']='true'
+          from vbwd.app import create_app
+          app = create_app()
+          with app.app_context():
+              from vbwd.testing.test_data_seeder import TestDataSeeder
+              from vbwd.extensions import db
+              TestDataSeeder(db.session).seed()
+          " || true
 
       - name: Start fe-admin dev server
         working-directory: vbwd-fe-admin
