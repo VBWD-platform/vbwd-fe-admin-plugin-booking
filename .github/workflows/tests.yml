@@ -140,6 +140,24 @@ jobs:
           ref: main
           path: vbwd-backend/plugins/booking
 
+      - name: Clone backend dependencies
+        run: |
+          for plugin in cms email subscription; do
+            git clone --depth=1 -q https://github.com/VBWD-platform/vbwd-plugin-${plugin}.git vbwd-backend/plugins/${plugin} || true
+          done
+
+      - name: Create backend plugins.json
+        run: |
+          python3 -c "
+          import json, os
+          plugins = {}
+          for d in os.listdir('vbwd-backend/plugins'):
+              if os.path.isfile(os.path.join('vbwd-backend/plugins', d, '__init__.py')):
+                  plugins[d] = {'enabled': True, 'version': '1.0.0', 'source': 'local'}
+          json.dump({'plugins': plugins}, open('vbwd-backend/plugins/plugins.json', 'w'))
+          print(f'Backend plugins.json: {sorted(plugins.keys())}')
+          "
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
