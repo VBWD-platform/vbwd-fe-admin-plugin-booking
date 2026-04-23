@@ -252,6 +252,12 @@
       "active": "启用",
       "inactive": "停用",
       "noData": "—"
+    },
+    "widget": {
+      "title": "预订",
+      "today": "今日预订",
+      "upcoming": "即将到来",
+      "resources": "资源"
     }
   }
 }

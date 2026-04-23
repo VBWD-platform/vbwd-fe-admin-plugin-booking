@@ -33,5 +33,20 @@
     "type": "integer",
     "default": 5,
     "description": "Maximum bookings a user can make per day"
+  },
+  "min_lead_time_hours": {
+    "type": "integer",
+    "default": 1,
+    "description": "Minimum hours in advance a booking must be made"
+  },
+  "cancellation_grace_period_hours": {
+    "type": "integer",
+    "default": 24,
+    "description": "How many hours before the booking's start time a user may still cancel or reschedule. Applies to both pending and confirmed bookings."
+  },
+  "enable_recurring_bookings": {
+    "type": "boolean",
+    "default": false,
+    "description": "Allow users to create recurring bookings (experimental)"
   }
 }

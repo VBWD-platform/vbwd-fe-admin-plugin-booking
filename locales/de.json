@@ -252,6 +252,12 @@
       "active": "Aktiv",
       "inactive": "Inaktiv",
       "noData": "—"
+    },
+    "widget": {
+      "title": "Buchungen",
+      "today": "heutige Buchungen",
+      "upcoming": "bevorstehend",
+      "resources": "Ressourcen"
     }
   }
 }

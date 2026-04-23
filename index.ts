@@ -74,6 +74,13 @@ export const bookingAdminPlugin: IPlugin = {
       meta: { requiredPermission: 'booking.resources.manage' },
     });
 
+    // Admin dashboard widget — component name "BookingWidget" matches the
+    // "booking" plugin key via Dashboard.vue's normalised-name filter.
+    sdk.addComponent(
+      'BookingWidget',
+      () => import('./booking/components/BookingWidget.vue') as Promise<{ default: unknown }>,
+    );
+
     // Routes are registered here (install runs once).
     // Nav sections are registered in activate() so they respect enable/disable.
   },

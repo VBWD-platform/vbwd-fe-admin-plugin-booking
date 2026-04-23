@@ -252,6 +252,12 @@
       "active": "Actif",
       "inactive": "Inactif",
       "noData": "—"
+    },
+    "widget": {
+      "title": "Réservations",
+      "today": "réservations aujourd'hui",
+      "upcoming": "à venir",
+      "resources": "ressources"
     }
   }
 }

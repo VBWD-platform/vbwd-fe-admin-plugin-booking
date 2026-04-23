@@ -252,6 +252,12 @@
       "active": "有効",
       "inactive": "無効",
       "noData": "—"
+    },
+    "widget": {
+      "title": "予約",
+      "today": "本日の予約",
+      "upcoming": "今後",
+      "resources": "リソース"
     }
   }
 }
