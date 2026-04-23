@@ -14,22 +14,26 @@ import { test, expect } from '@playwright/test';
 const ADMIN_EMAIL = 'admin@example.com';
 const ADMIN_PASSWORD = 'AdminPass123@';
 
+async function loginAsAdmin(page: import('@playwright/test').Page) {
+  await page.goto('/admin/login');
+
+  const emailInput = page.locator('input[type="email"], input[name="email"]');
+  const passwordInput = page.locator('input[type="password"], input[name="password"]');
+  const submitButton = page.locator('button[type="submit"]');
+
+  await emailInput.waitFor({ state: 'visible', timeout: 10000 });
+  await emailInput.fill(ADMIN_EMAIL);
+  await passwordInput.fill(ADMIN_PASSWORD);
+  await submitButton.click();
+
+  // Wait for SPA client-side redirect to /admin/dashboard rather than
+  // relying on networkidle, which completes before router.push finishes.
+  await page.waitForURL(/\/admin\/dashboard/, { timeout: 10000 });
+}
+
 test.describe('Booking Admin Plugin — Installation & Navigation', () => {
   test.beforeEach(async ({ page }) => {
-    // Login as admin
-    await page.goto('/admin/login');
-    await page.waitForLoadState('networkidle');
-
-    const emailInput = page.locator('input[type="email"], input[name="email"]');
-    const passwordInput = page.locator('input[type="password"], input[name="password"]');
-    const submitButton = page.locator('button[type="submit"]');
-
-    if (await emailInput.isVisible()) {
-      await emailInput.fill(ADMIN_EMAIL);
-      await passwordInput.fill(ADMIN_PASSWORD);
-      await submitButton.click();
-      await page.waitForLoadState('networkidle');
-    }
+    await loginAsAdmin(page);
   });
 
   test('admin dashboard loads after login', async ({ page }) => {
@@ -46,25 +50,34 @@ test.describe('Booking Admin Plugin — Installation & Navigation', () => {
     await page.waitForLoadState('networkidle');
 
     // Look for the Bookings section in the sidebar
-    const sidebar = page.locator('nav, .sidebar, [data-testid="sidebar-nav"]');
-    const bookingsSection = sidebar.locator('text=Bookings');
+    const sidebar = page.locator('nav, .sidebar, [data-testid="sidebar-nav"]').first();
+    const bookingsSection = sidebar.getByRole('link', { name: 'Bookings', exact: true });
 
     await expect(bookingsSection).toBeVisible({
       timeout: 10000,
     });
   });
 
+  async function expandBookingsSection(page: import('@playwright/test').Page) {
+    // The Bookings submenu is collapsed by default — its toggle button is
+    // the "▸" sibling of the Bookings link. Clicking it expands the submenu
+    // so the child links (Dashboard / All Bookings / Resources) render.
+    const bookingsLink = page
+      .locator('nav')
+      .first()
+      .getByRole('link', { name: 'Bookings', exact: true });
+    const toggle = bookingsLink.locator('xpath=following-sibling::button[1]');
+    if (await toggle.isVisible().catch(() => false)) {
+      await toggle.click();
+    }
+  }
+
   test('Bookings section has Dashboard nav item', async ({ page }) => {
     await page.goto('/admin/dashboard');
     await page.waitForLoadState('networkidle');
 
-    // Click to expand Bookings section
-    const bookingsHeader = page.locator('button:has-text("Bookings"), .nav-section-header:has-text("Bookings")');
-    if (await bookingsHeader.isVisible()) {
-      await bookingsHeader.click();
-    }
-
-    const dashboardLink = page.locator('a[href="/admin/booking"]');
+    await expandBookingsSection(page);
+    const dashboardLink = page.locator('a[href="/admin/booking"]').first();
     await expect(dashboardLink).toBeVisible({ timeout: 5000 });
   });
 
@@ -72,11 +85,7 @@ test.describe('Booking Admin Plugin — Installation & Navigation', () => {
     await page.goto('/admin/dashboard');
     await page.waitForLoadState('networkidle');
 
-    const bookingsHeader = page.locator('button:has-text("Bookings"), .nav-section-header:has-text("Bookings")');
-    if (await bookingsHeader.isVisible()) {
-      await bookingsHeader.click();
-    }
-
+    await expandBookingsSection(page);
     const listLink = page.locator('a[href="/admin/booking/list"]');
     await expect(listLink).toBeVisible({ timeout: 5000 });
   });
@@ -85,11 +94,7 @@ test.describe('Booking Admin Plugin — Installation & Navigation', () => {
     await page.goto('/admin/dashboard');
     await page.waitForLoadState('networkidle');
 
-    const bookingsHeader = page.locator('button:has-text("Bookings"), .nav-section-header:has-text("Bookings")');
-    if (await bookingsHeader.isVisible()) {
-      await bookingsHeader.click();
-    }
-
+    await expandBookingsSection(page);
     const resourcesLink = page.locator('a[href="/admin/booking/resources"]');
     await expect(resourcesLink).toBeVisible({ timeout: 5000 });
   });
@@ -97,19 +102,7 @@ test.describe('Booking Admin Plugin — Installation & Navigation', () => {
 
 test.describe('Booking Admin Plugin — Pages Load', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/admin/login');
-    await page.waitForLoadState('networkidle');
-
-    const emailInput = page.locator('input[type="email"], input[name="email"]');
-    const passwordInput = page.locator('input[type="password"], input[name="password"]');
-    const submitButton = page.locator('button[type="submit"]');
-
-    if (await emailInput.isVisible()) {
-      await emailInput.fill(ADMIN_EMAIL);
-      await passwordInput.fill(ADMIN_PASSWORD);
-      await submitButton.click();
-      await page.waitForLoadState('networkidle');
-    }
+    await loginAsAdmin(page);
   });
 
   test('booking dashboard page loads', async ({ page }) => {
@@ -125,7 +118,7 @@ test.describe('Booking Admin Plugin — Pages Load', () => {
     await page.waitForLoadState('networkidle');
 
     // Should have stat cards (Today's Bookings, Upcoming, Resources, Categories)
-    const statsArea = page.locator('.booking-dashboard__stats, .booking-dashboard');
+    const statsArea = page.locator('.booking-dashboard__stats').first();
     await expect(statsArea).toBeVisible({ timeout: 10000 });
 
     const body = await page.textContent('body');
@@ -139,7 +132,7 @@ test.describe('Booking Admin Plugin — Pages Load', () => {
     await page.goto('/admin/booking/list');
     await page.waitForLoadState('networkidle');
 
-    const heading = page.locator('h1:has-text("All Bookings")');
+    const heading = page.locator(':is(h1,h2,h3):has-text("All Bookings")');
     await expect(heading).toBeVisible({ timeout: 10000 });
   });
 
@@ -155,7 +148,7 @@ test.describe('Booking Admin Plugin — Pages Load', () => {
     await page.goto('/admin/booking/resources');
     await page.waitForLoadState('networkidle');
 
-    const heading = page.locator('h1:has-text("Resources")');
+    const heading = page.locator(':is(h1,h2,h3):has-text("Resources")').first();
     await expect(heading).toBeVisible({ timeout: 10000 });
   });
 
@@ -163,15 +156,17 @@ test.describe('Booking Admin Plugin — Pages Load', () => {
     await page.goto('/admin/booking/resources');
     await page.waitForLoadState('networkidle');
 
-    const newButton = page.locator('button:has-text("New Resource")');
-    await expect(newButton).toBeVisible({ timeout: 10000 });
+    const newButton = page.getByRole('button', { name: /new resource/i }).or(
+      page.getByRole('link', { name: /new resource/i }),
+    );
+    await expect(newButton.first()).toBeVisible({ timeout: 10000 });
   });
 
   test('new resource form loads', async ({ page }) => {
     await page.goto('/admin/booking/resources/new');
     await page.waitForLoadState('networkidle');
 
-    const heading = page.locator('h1:has-text("New Resource")');
+    const heading = page.locator(':is(h1,h2,h3):has-text("New Resource")');
     await expect(heading).toBeVisible({ timeout: 10000 });
   });
 

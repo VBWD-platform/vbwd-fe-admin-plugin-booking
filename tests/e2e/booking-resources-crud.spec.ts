@@ -16,14 +16,22 @@ test('booking: login → create categories → create resources', async ({ page 
 
   /* ── Login ─────────────────────────────────────────────────────────── */
   await page.goto('/admin/login');
-  await page.waitForLoadState('networkidle');
   await page.getByLabel('Email').fill(ADMIN_EMAIL);
   await page.getByLabel('Password').fill(ADMIN_PASSWORD);
   await page.getByRole('button', { name: 'Sign In' }).click();
-  await page.waitForLoadState('networkidle');
+  await page.waitForURL(/\/admin\/dashboard/, { timeout: 10000 });
 
   /* ── Navigate to Booking → Resources ───────────────────────────────── */
-  await page.locator('#nav-item-admin-booking-resources').click();
+  // Expand Bookings section first (sub-items are behind the ▸ toggle).
+  const bookingsLink = page
+    .locator('nav')
+    .first()
+    .getByRole('link', { name: 'Bookings', exact: true });
+  const toggle = bookingsLink.locator('xpath=following-sibling::button[1]');
+  if (await toggle.isVisible().catch(() => false)) {
+    await toggle.click();
+  }
+  await page.locator('a[href="/admin/booking/resources"]').click();
   await page.waitForLoadState('networkidle');
 
   /* ── Switch to Categories tab ──────────────────────────────────────── */
@@ -52,7 +60,7 @@ test('booking: login → create categories → create resources', async ({ page 
   await page.locator('button.tab-btn:has-text("Resources")').click();
   await page.locator('button:has-text("New Resource")').click();
   await page.waitForLoadState('networkidle');
-  await expect(page.locator('h1:has-text("New Resource")')).toBeVisible({ timeout: 15000 });
+  await expect(page.locator(':is(h1,h2,h3):has-text("New Resource")')).toBeVisible({ timeout: 15000 });
 
   /* ── Create resource 1: Massage Therapist (specialist) ─────────────── */
   await page.locator('.resource-form__field').filter({ hasText: 'Name' }).locator('input').fill(`Massage Therapist ${RUN_ID}`);
@@ -83,7 +91,7 @@ test('booking: login → create categories → create resources', async ({ page 
   /* ── Create resource 2: Conference Room (room) ─────────────────────── */
   await page.locator('button:has-text("New Resource")').click();
   await page.waitForLoadState('networkidle');
-  await expect(page.locator('h1:has-text("New Resource")')).toBeVisible({ timeout: 15000 });
+  await expect(page.locator(':is(h1,h2,h3):has-text("New Resource")')).toBeVisible({ timeout: 15000 });
 
   await page.locator('.resource-form__field').filter({ hasText: 'Name' }).locator('input').fill(`Conference Room ${RUN_ID}`);
   await page.locator('.resource-form__field').filter({ hasText: 'Name' }).locator('input').blur();
@@ -111,7 +119,7 @@ test('booking: login → create categories → create resources', async ({ page 
   /* ── Create resource 3: Yoga Studio (space, flexible duration) ─────── */
   await page.locator('button:has-text("New Resource")').click();
   await page.waitForLoadState('networkidle');
-  await expect(page.locator('h1:has-text("New Resource")')).toBeVisible({ timeout: 15000 });
+  await expect(page.locator(':is(h1,h2,h3):has-text("New Resource")')).toBeVisible({ timeout: 15000 });
 
   await page.locator('.resource-form__field').filter({ hasText: 'Name' }).locator('input').fill(`Yoga Studio ${RUN_ID}`);
   await page.locator('.resource-form__field').filter({ hasText: 'Name' }).locator('input').blur();
