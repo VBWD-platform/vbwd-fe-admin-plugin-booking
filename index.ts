@@ -109,3 +109,8 @@ export const bookingAdminPlugin: IPlugin = {
     extensionRegistry.unregister('booking');
   },
 };
+
+// Default export — loader falls back to scanning named exports when this
+// is missing, which is non-deterministic under some bundler hot-reload
+// paths. Matches the cms-admin pattern for robustness.
+export default bookingAdminPlugin;
