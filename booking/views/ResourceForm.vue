@@ -85,10 +85,16 @@ function generateSlug() {
 async function save() {
   saving.value = true;
   try {
+    // Empty string in a UUID FK column makes PostgreSQL reject the row;
+    // send null when the user hasn't picked a schema.
+    const payload = {
+      ...form.value,
+      custom_schema_id: form.value.custom_schema_id || null,
+    };
     if (isEdit.value) {
-      await store.updateResource(route.params.id as string, form.value);
+      await store.updateResource(route.params.id as string, payload);
     } else {
-      await store.createResource(form.value);
+      await store.createResource(payload);
     }
     router.push('/admin/booking/resources');
   } finally {
