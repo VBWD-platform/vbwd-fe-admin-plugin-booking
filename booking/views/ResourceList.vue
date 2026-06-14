@@ -29,27 +29,21 @@
       </button>
     </div>
 
-    <p
-      v-if="importMessage"
-      class="import-toast"
-    >
-      {{ importMessage }}
-    </p>
-
     <!-- Resources Tab -->
     <template v-if="activeTab === 'resources'">
       <div class="plans-subheader">
-        <div class="export-import-actions">
-          <label class="action-btn archive import-label">
-            {{ $t('booking.resources.import') }}
-            <input
-              type="file"
-              accept=".csv,.json"
-              class="import-input"
-              @change="importEntity('resources', $event)"
-            >
-          </label>
-        </div>
+        <ImportExportControls
+          v-if="showResourcesIE"
+          :api="dataExchangeApi"
+          entity-key="booking_resources"
+          :selected-ids="selectedResourceArray"
+          :can-export="resourcesCaps.can_export"
+          :can-import="resourcesCaps.can_import"
+          :can-export-pii="resourcesCaps.can_export_pii"
+          :is-superadmin="isSuperadmin"
+          :supported-formats="resourcesCaps.supported_formats"
+          @refresh="store.fetchResources"
+        />
         <button
           v-if="canManage"
           class="create-btn"
@@ -65,18 +59,6 @@
         class="bulk-bar"
       >
         <span>{{ selectedResourceIds.size }} {{ $t('booking.resources.selected') }}</span>
-        <button
-          class="action-btn archive"
-          @click="bulkExport('csv')"
-        >
-          {{ $t('booking.resources.exportCsv') }}
-        </button>
-        <button
-          class="action-btn archive"
-          @click="bulkExport('json')"
-        >
-          {{ $t('booking.resources.exportJson') }}
-        </button>
         <button
           v-if="canManage"
           class="action-btn archive"
@@ -228,29 +210,18 @@
     <!-- Categories Tab -->
     <template v-if="activeTab === 'categories'">
       <div class="plans-subheader">
-        <div class="export-import-actions">
-          <button
-            class="action-btn archive"
-            @click="exportEntity('categories', 'csv')"
-          >
-            {{ $t('booking.resources.exportCsv') }}
-          </button>
-          <button
-            class="action-btn archive"
-            @click="exportEntity('categories', 'json')"
-          >
-            {{ $t('booking.resources.exportJson') }}
-          </button>
-          <label class="action-btn archive import-label">
-            {{ $t('booking.resources.import') }}
-            <input
-              type="file"
-              accept=".csv,.json"
-              class="import-input"
-              @change="importEntity('categories', $event)"
-            >
-          </label>
-        </div>
+        <ImportExportControls
+          v-if="showCategoriesIE"
+          :api="dataExchangeApi"
+          entity-key="booking_categories"
+          :can-export="categoriesCaps.can_export"
+          :can-import="categoriesCaps.can_import"
+          :can-export-pii="categoriesCaps.can_export_pii"
+          :is-superadmin="isSuperadmin"
+          :supported-formats="categoriesCaps.supported_formats"
+          :allow-export-selected="false"
+          @refresh="store.fetchCategories"
+        />
       </div>
       <div
         v-if="store.categories.length"
@@ -426,15 +397,34 @@
 <script setup lang="ts">
 import { onMounted, ref, computed, reactive } from 'vue';
 import { useRouter } from 'vue-router';
+import { ImportExportControls } from 'vbwd-view-component';
 import { useResourceAdminStore } from '../stores/resourceAdmin';
 import { useAuthStore } from '@/stores/auth';
-import { api } from '@/api';
+import { createDataExchangeApi } from '@/api/dataExchangeApi';
+import { useDataExchangeManifest } from '@/composables/useDataExchangeManifest';
 
 const router = useRouter();
 const authStore = useAuthStore();
 const canManage = computed(() => authStore.hasPermission('booking.resources.manage'));
-const importMessage = ref('');
 const store = useResourceAdminStore();
+
+// Unified import/export. The bespoke `/admin/booking/import/<entity>` route was
+// removed in S61; these controls drive the core data-exchange seam
+// (`booking_resources` / `booking_categories` exchangers) which carries the
+// resource↔category link by slug and preserves `availability`. Capabilities
+// come from the perm-filtered manifest, so each control hides when neither
+// export nor import is permitted.
+const dataExchangeApi = createDataExchangeApi();
+const isSuperadmin = computed(() => authStore.isSuperAdmin);
+const { load: loadManifest, capabilitiesFor } = useDataExchangeManifest();
+const resourcesCaps = computed(() => capabilitiesFor('booking_resources'));
+const categoriesCaps = computed(() => capabilitiesFor('booking_categories'));
+const showResourcesIE = computed(
+  () => resourcesCaps.value.can_export || resourcesCaps.value.can_import,
+);
+const showCategoriesIE = computed(
+  () => categoriesCaps.value.can_export || categoriesCaps.value.can_import,
+);
 const activeTab = ref<'resources' | 'categories' | 'schemas'>('resources');
 const searchQuery = ref('');
 const selectedResourceIds = reactive(new Set<string>());
@@ -447,7 +437,9 @@ const newCategorySlug = ref('');
 const newSchemaName = ref('');
 const newSchemaSlug = ref('');
 
-onMounted(async () => { await Promise.all([store.fetchResources(), store.fetchCategories(), store.fetchSchemas()]); });
+const selectedResourceArray = computed(() => Array.from(selectedResourceIds));
+
+onMounted(async () => { await Promise.all([store.fetchResources(), store.fetchCategories(), store.fetchSchemas()]); loadManifest(); });
 
 const filteredResources = computed(() => {
   if (!searchQuery.value.trim()) return store.resources;
@@ -556,49 +548,6 @@ async function bulkDelete() {
   selectedResourceIds.clear();
 }
 
-function bulkExport(format: string) {
-  if (format === 'json') {
-    const rows = store.resources.filter(r => selectedResourceIds.has(r.id));
-    const blob = new Blob([JSON.stringify(rows, null, 2)], { type: 'application/json' });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = `resources.${format}`;
-    a.click();
-    URL.revokeObjectURL(a.href);
-  } else {
-    exportEntity('resources', format);
-  }
-}
-
-// Export / Import
-function exportEntity(entity: string, format: string) {
-  const token = localStorage.getItem('admin_token');
-  const baseUrl = import.meta.env.VITE_API_URL || '/api/v1';
-  window.open(`${baseUrl}/admin/booking/export/${entity}?format=${format}&token=${token}`, '_blank');
-}
-
-async function importEntity(entity: string, event: Event) {
-  const input = event.target as HTMLInputElement;
-  if (!input.files?.length) return;
-
-  const formData = new FormData();
-  formData.append('file', input.files[0]);
-
-  try {
-    const response = await api.post(`/admin/booking/import/${entity}`, formData) as { created: number; updated: number; errors: string[] };
-    importMessage.value = `Imported: ${response.created} created, ${response.updated} updated`;
-    if (response.errors?.length) {
-      importMessage.value += ` (${response.errors.length} errors)`;
-    }
-    // Refresh data
-    await Promise.all([store.fetchResources(), store.fetchCategories()]);
-  } catch (error) {
-    importMessage.value = error instanceof Error ? error.message : 'Import failed';
-  } finally {
-    input.value = '';
-    setTimeout(() => { importMessage.value = ''; }, 5000);
-  }
-}
 </script>
 
 <style scoped>

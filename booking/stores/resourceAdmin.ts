@@ -63,6 +63,8 @@ export interface BookableResource {
   is_active: boolean;
   sort_order: number;
   categories: Array<{ id: string; name: string; slug: string }>;
+  tax_ids: string[];
+  taxes: Array<{ id: string; code: string; name: string; rate: string }>;
 }
 
 export interface ScheduleSlot {

@@ -258,6 +258,19 @@
       "today": "今日预订",
       "upcoming": "即将到来",
       "resources": "资源"
+    },
+    "taxes": {
+      "title": "税",
+      "available": "可用税",
+      "assigned": "已应用税",
+      "allAssigned": "所有税已应用",
+      "noneAssigned": "未应用任何税"
+    },
+    "priceDisplay": {
+      "label": "价格显示",
+      "inherit": "继承（全局默认）",
+      "netto": "净价（不含税）",
+      "brutto": "毛价（含税）"
     }
   }
 }

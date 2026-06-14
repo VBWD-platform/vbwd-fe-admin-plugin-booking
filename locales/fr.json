@@ -258,6 +258,19 @@
       "today": "réservations aujourd'hui",
       "upcoming": "à venir",
       "resources": "ressources"
+    },
+    "taxes": {
+      "title": "Taxes",
+      "available": "Taxes disponibles",
+      "assigned": "Taxes appliquées",
+      "allAssigned": "Toutes les taxes appliquées",
+      "noneAssigned": "Aucune taxe appliquée"
+    },
+    "priceDisplay": {
+      "label": "Affichage des prix",
+      "inherit": "Hériter (par défaut global)",
+      "netto": "Net (hors taxe)",
+      "brutto": "Brut (TTC)"
     }
   }
 }

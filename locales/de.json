@@ -258,6 +258,19 @@
       "today": "heutige Buchungen",
       "upcoming": "bevorstehend",
       "resources": "Ressourcen"
+    },
+    "taxes": {
+      "title": "Steuern",
+      "available": "Verfügbare Steuern",
+      "assigned": "Angewendete Steuern",
+      "allAssigned": "Alle Steuern angewendet",
+      "noneAssigned": "Keine Steuern angewendet"
+    },
+    "priceDisplay": {
+      "label": "Preisanzeige",
+      "inherit": "Übernehmen (globaler Standard)",
+      "netto": "Netto (ohne Steuer)",
+      "brutto": "Brutto (inkl. Steuer)"
     }
   }
 }

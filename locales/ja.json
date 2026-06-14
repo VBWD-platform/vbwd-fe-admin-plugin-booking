@@ -258,6 +258,19 @@
       "today": "本日の予約",
       "upcoming": "今後",
       "resources": "リソース"
+    },
+    "taxes": {
+      "title": "税",
+      "available": "利用可能な税",
+      "assigned": "適用された税",
+      "allAssigned": "すべての税が適用されました",
+      "noneAssigned": "適用された税はありません"
+    },
+    "priceDisplay": {
+      "label": "価格表示",
+      "inherit": "継承（グローバル既定）",
+      "netto": "税抜（ネット）",
+      "brutto": "税込（ブルット）"
     }
   }
 }

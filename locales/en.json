@@ -271,6 +271,19 @@
       "today": "bookings today",
       "upcoming": "upcoming",
       "resources": "resources"
+    },
+    "taxes": {
+      "title": "Taxes",
+      "available": "Available taxes",
+      "assigned": "Applied taxes",
+      "allAssigned": "All taxes applied",
+      "noneAssigned": "No taxes applied"
+    },
+    "priceDisplay": {
+      "label": "Price display",
+      "inherit": "Inherit (global default)",
+      "netto": "Netto (net, excl. tax)",
+      "brutto": "Brutto (incl. tax)"
     }
   }
 }

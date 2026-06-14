@@ -4,6 +4,10 @@ import { useRoute, useRouter } from 'vue-router';
 import { useResourceAdminStore } from '../stores/resourceAdmin';
 import { useAuthStore } from '@/stores/auth';
 import ResourceImageGallery from '../components/ResourceImageGallery.vue';
+import DualListSelector from '@/components/DualListSelector.vue';
+import TagPicker from '@/components/TagPicker.vue';
+import CustomFieldsEditor from '@/components/CustomFieldsEditor.vue';
+import { useTaxOptions } from '@/composables/useTaxOptions';
 
 const route = useRoute();
 const router = useRouter();
@@ -49,9 +53,15 @@ const form = ref({
   is_active: true,
   sort_order: 0,
   category_ids: [] as string[],
+  tax_ids: [] as string[],
+  // '' = inherit the global mode; 'netto'/'brutto' = per-resource override (S72.4)
+  price_display_mode: '' as string,
 });
 
+const { taxOptions, loadTaxOptions } = useTaxOptions();
+
 onMounted(async () => {
+  loadTaxOptions();
   await Promise.all([store.fetchCategories(), store.fetchSchemas()]);
   if (isEdit.value) {
     await store.fetchResourceDetail(route.params.id as string);
@@ -70,6 +80,8 @@ onMounted(async () => {
         is_active: resource.is_active,
         sort_order: resource.sort_order,
         category_ids: resource.categories.map(category => category.id),
+        tax_ids: Array.isArray(resource.tax_ids) ? [...resource.tax_ids] : [],
+        price_display_mode: (resource as { price_display_mode?: string | null }).price_display_mode || '',
       };
     }
   }
@@ -90,6 +102,8 @@ async function save() {
     const payload = {
       ...form.value,
       custom_schema_id: form.value.custom_schema_id || null,
+      // Inherit (empty) maps to null so the backend falls back to the global mode.
+      price_display_mode: form.value.price_display_mode || null,
     };
     if (isEdit.value) {
       await store.updateResource(route.params.id as string, payload);
@@ -297,11 +311,62 @@ async function save() {
         </div>
       </div>
 
+      <div
+        class="taxes-section"
+        data-testid="resource-taxes-section"
+      >
+        <h3>{{ $t('booking.taxes.title') }}</h3>
+        <DualListSelector
+          v-model="form.tax_ids"
+          testid="tax"
+          :options="taxOptions"
+          :available-label="$t('booking.taxes.available')"
+          :assigned-label="$t('booking.taxes.assigned')"
+          :empty-available-label="$t('booking.taxes.allAssigned')"
+          :empty-assigned-label="$t('booking.taxes.noneAssigned')"
+        />
+
+        <!-- Price display override (S72.4) -->
+        <div class="resource-form__field">
+          <label>{{ $t('booking.priceDisplay.label') }}</label>
+          <select
+            v-model="form.price_display_mode"
+            data-testid="resource-price-display-mode"
+          >
+            <option value="">
+              {{ $t('booking.priceDisplay.inherit') }}
+            </option>
+            <option value="netto">
+              {{ $t('booking.priceDisplay.netto') }}
+            </option>
+            <option value="brutto">
+              {{ $t('booking.priceDisplay.brutto') }}
+            </option>
+          </select>
+        </div>
+      </div>
+
       <!-- Image Gallery (edit mode only) -->
       <ResourceImageGallery
         v-if="isEdit"
         :resource-id="route.params.id as string"
       />
+
+      <!-- Tags + Custom fields (S77, generic editors) -->
+      <div
+        v-if="isEdit"
+        class="resource-form__section"
+        data-testid="resource-tags-custom-fields"
+      >
+        <TagPicker
+          entity-type="booking_resource"
+          :entity-id="route.params.id as string"
+        />
+        <CustomFieldsEditor
+          entity-type="booking_resource"
+          :entity-id="route.params.id as string"
+        />
+      </div>
 
       <!-- Schema fields preview -->
       <div
@@ -415,13 +480,22 @@ async function save() {
   font-size: 0.9rem;
 }
 
-.categories-section {
+.categories-section,
+.taxes-section {
   margin-top: 1.5rem;
   padding-top: 1.25rem;
   border-top: 1px solid #eee;
 }
 
-.categories-section h3 {
+/* The Tags + Custom fields cards own their own outer margins, but this
+   wrapper still needs top clearance so the first card does not touch the
+   image gallery above it. */
+.resource-form__section {
+  margin-top: 1.5rem;
+}
+
+.categories-section h3,
+.taxes-section h3 {
   margin: 0 0 15px 0;
   color: #2c3e50;
 }

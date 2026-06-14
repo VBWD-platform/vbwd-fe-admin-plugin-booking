@@ -258,6 +258,19 @@
       "today": "reservas hoy",
       "upcoming": "próximas",
       "resources": "recursos"
+    },
+    "taxes": {
+      "title": "Impuestos",
+      "available": "Impuestos disponibles",
+      "assigned": "Impuestos aplicados",
+      "allAssigned": "Todos los impuestos aplicados",
+      "noneAssigned": "Ningún impuesto aplicado"
+    },
+    "priceDisplay": {
+      "label": "Visualización de precios",
+      "inherit": "Heredar (predeterminado global)",
+      "netto": "Neto (sin impuestos)",
+      "brutto": "Bruto (con impuestos)"
     }
   }
 }
