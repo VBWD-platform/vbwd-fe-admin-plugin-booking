@@ -204,7 +204,11 @@ jobs:
 
       - name: Run migrations
         working-directory: vbwd-backend
-        run: docker compose exec -T api alembic upgrade head || true
+        # 'heads' (plural): the core+plugin migration graph has multiple heads,
+        # so 'head' (singular) errors out and — with the old '|| true' — left the
+        # schema empty (relation "vbwd_user" does not exist → login 500). No
+        # '|| true': a migration failure must fail the job, not hide itself.
+        run: docker compose exec -T api alembic upgrade heads
 
       - name: Seed test data
         working-directory: vbwd-backend
