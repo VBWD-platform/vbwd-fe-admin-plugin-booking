@@ -226,7 +226,7 @@ jobs:
 
       - name: Start fe-admin dev server
         working-directory: vbwd-fe-admin
-        run: npm run dev -- --host > /tmp/vite-dev.log 2>&1 &
+        run: npm run dev -- --host &
 
       - name: Wait for fe-admin dev server
         run: |
@@ -235,24 +235,6 @@ jobs:
             sleep 2
           done
           curl -sf http://localhost:5173/ || exit 1
-
-      - name: Diagnose API proxy (temporary)
-        run: |
-          echo "--- direct backend 127.0.0.1:5000 ---"
-          curl -s -o /dev/null -w "%{http_code} %{content_type}\n" http://127.0.0.1:5000/api/v1/health || true
-          echo "--- via dev-server proxy 5173 ---"
-          curl -s -o /dev/null -w "%{http_code} %{content_type}\n" http://localhost:5173/api/v1/health || true
-          echo "--- login via proxy ---"
-          curl -s -w "\nHTTP %{http_code} %{content_type}\n" -X POST http://localhost:5173/api/v1/auth/login \
-            -H 'Content-Type: application/json' \
-            -d '{"email":"admin@example.com","password":"AdminPass123@"}' | head -c 400 || true
-          echo ""
-          echo "--- dev server log (proxy errors?) ---"
-          cat /tmp/vite-dev.log || true
-
-      - name: Diagnose api 500 (temporary)
-        working-directory: vbwd-backend
-        run: docker compose logs api --tail=120 || true
 
       - name: Run Playwright e2e tests
         working-directory: vbwd-fe-admin
