@@ -246,6 +246,10 @@ jobs:
           echo "--- dev server log (proxy errors?) ---"
           cat /tmp/vite-dev.log || true
 
+      - name: Diagnose api 500 (temporary)
+        working-directory: vbwd-backend
+        run: docker compose logs api --tail=120 || true
+
       - name: Run Playwright e2e tests
         working-directory: vbwd-fe-admin
         run: E2E_BASE_URL=http://localhost:5173 npx playwright test plugins/booking/tests/e2e/ --config=playwright.platform.config.ts --reporter=list
