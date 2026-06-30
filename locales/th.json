@@ -1,5 +1,8 @@
 {
   "booking": {
+    "topbar": {
+      "bookingsToday": "{count} การจองวันนี้"
+    },
     "nav": {
       "dashboard": "แดชบอร์ด",
       "allBookings": "การจองทั้งหมด",

@@ -1,5 +1,6 @@
 import type { IPlugin, IPlatformSDK } from 'vbwd-view-component';
 import { extensionRegistry } from '../../vue/src/plugins/extensionRegistry';
+import BookingTodayLink from './booking/components/BookingTodayLink.vue';
 import en from './locales/en.json';
 import de from './locales/de.json';
 import es from './locales/es.json';
@@ -87,6 +88,16 @@ export const bookingAdminPlugin: IPlugin = {
 
   activate() {
     extensionRegistry.register('booking', {
+      // Right-aligned topbar action: "<count> bookings today" → All Bookings.
+      // Self-scopes to /admin/booking pages (see the component).
+      topbarActions: [
+        {
+          id: 'booking-today',
+          component: BookingTodayLink,
+          order: 100,
+          requiredPermission: 'booking.bookings.view',
+        },
+      ],
       sectionItems: {
         sales: [
           {

@@ -1,5 +1,8 @@
 {
   "booking": {
+    "topbar": {
+      "bookingsToday": "{count} броней сегодня"
+    },
     "nav": {
       "dashboard": "Панель управления",
       "allBookings": "Все бронирования",

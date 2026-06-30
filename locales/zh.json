@@ -1,5 +1,8 @@
 {
   "booking": {
+    "topbar": {
+      "bookingsToday": "今日 {count} 个预订"
+    },
     "nav": {
       "dashboard": "仪表盘",
       "allBookings": "所有预订",

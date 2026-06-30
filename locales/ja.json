@@ -1,5 +1,8 @@
 {
   "booking": {
+    "topbar": {
+      "bookingsToday": "本日の予約 {count} 件"
+    },
     "nav": {
       "dashboard": "ダッシュボード",
       "allBookings": "すべての予約",

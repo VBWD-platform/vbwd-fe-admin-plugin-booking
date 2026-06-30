@@ -1,5 +1,8 @@
 {
   "booking": {
+    "topbar": {
+      "bookingsToday": "{count} réservations aujourd'hui"
+    },
     "nav": {
       "dashboard": "Tableau de bord",
       "allBookings": "Toutes les réservations",
